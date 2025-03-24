@@ -1,44 +1,96 @@
-import { fetchProducts } from "../utils/api.js";
+import dummyProducts from "../data/dummyProducts.js";
 
-document.addEventListener("DOMContentLoaded", loadProducts);
+const container = document.getElementById("products");
+const searchInput = document.getElementById("searchInput");
+const filterBtn = document.getElementById("filterBtn");
+const filterModal = document.getElementById("filterModal");
+const closeModal = document.getElementById("closeModal");
+const categoryList = document.getElementById("categoryList");
 
-// Function to fetch and render products
-async function loadProducts() {
-  const productsContainer = document.getElementById("products");
-  productsContainer.innerHTML = "<p>Loading products...</p>"; // Temporary message while loading
+let currentProducts = [...dummyProducts];
 
-  try {
-    const products = await fetchProducts();
-    productsContainer.innerHTML = ""; // Clear loading text
+window.addEventListener("DOMContentLoaded", () => {
+  renderByCategory(currentProducts);
+});
 
-    if (products.length > 0) {
-      products.forEach((product) => {
-        const productCard = createProductCard(product);
-        productsContainer.appendChild(productCard);
-      });
-    } else {
-      productsContainer.innerHTML = "<p>No products available.</p>";
-    }
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    productsContainer.innerHTML = "<p>Failed to load products.</p>";
+searchInput.addEventListener("input", () => {
+  const keyword = searchInput.value.toLowerCase();
+  const filtered = dummyProducts.filter((product) =>
+    product["Product-title"].toLowerCase().includes(keyword)
+  );
+  renderByCategory(filtered);
+});
+
+filterBtn.addEventListener("click", () => {
+  filterModal.classList.remove("hidden");
+  filterModal.classList.add("show");
+});
+
+closeModal.addEventListener("click", () => {
+  filterModal.classList.add("hidden");
+  filterModal.classList.remove("show");
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === filterModal) {
+    filterModal.classList.add("hidden");
+    filterModal.classList.remove("show");
   }
+});
+
+categoryList.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const selectedCategory = e.target.dataset.category;
+    const filtered =
+      selectedCategory === "all"
+        ? dummyProducts
+        : dummyProducts.filter(
+            (product) => product["Category"] === selectedCategory
+          );
+    renderByCategory(filtered);
+    filterModal.classList.add("hidden");
+    filterModal.classList.remove("show");
+  }
+});
+
+function renderByCategory(products) {
+  container.innerHTML = "";
+
+  const categories = [...new Set(products.map((p) => p["Category"]))];
+
+  categories.forEach((category) => {
+    const heading = document.createElement("h2");
+    heading.textContent = category;
+    container.appendChild(heading);
+
+    const row = document.createElement("div");
+    row.className = "product-row";
+
+    const items = products.filter((p) => p["Category"] === category);
+    items.forEach((product) => {
+      row.appendChild(createProductCard(product));
+    });
+
+    container.appendChild(row);
+  });
 }
 
-// Function to create an individual product card
 function createProductCard(product) {
-  const element = document.createElement("div");
-  element.className = "product-card";
+  const card = document.createElement("div");
+  card.className = "product-card";
 
-  element.innerHTML = `
-    <h3>${product.name}</h3>
-    <p>$${product.price.toFixed(2)}</p>
-    <button class="add-to-cart-btn">Add to Cart</button>
+  card.innerHTML = `
+    <img src="${product["Product-image-url"]}" 
+         alt="${product["Product-title"]}" 
+         onerror="this.onerror=null; this.src='./src/images/products/placeholder.jpg';" />
+    <h3>${product["Product-title"]}</h3>
+    <h4>${product["Product-description"]}</h4>
+    <p><strong>${product["Product-price"]}</strong></p>
+    <p class="product-meta">${product["Product-weight"]} &middot; ${product["Product-producer"]}</p>
+    <a href="${product["Matsmart-url"]}" target="_blank">
+      <button>Lägg i kundvagn</button>
+    </a>
   `;
 
-  element.querySelector(".add-to-cart-btn").addEventListener("click", () => {
-    alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
-  });
-
-  return element;
+  return card;
 }
