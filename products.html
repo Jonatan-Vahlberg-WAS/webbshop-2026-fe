@@ -3,11 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hakim Livs - products</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Produktlista | Hakim Livs</title>
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/products.css" />
   </head>
+
   <body>
-    <div id="app"></div>
-    <script type="module" src="main.js"></script>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav>
+        <a href="index.html" class="logo">Hakim Livs</a>
+        <ul class="nav-links">
+          <li><a href="products.html">Produkter</a></li>
+          <li>
+            <a href="cart.html" class="cart-link">
+              <img src="./public/cart.svg" alt="cart icon" />
+              <span class="cart-count"></span>
+            </a>
+          </li>
+          <li><a href="login.html">Logga in</a></li>
+          <li>
+            <a href="admin/admin-Product.html" id="admin-link">admin-Product</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-container">
+      <h2>
+        Produktlista <br />
+        &nbsp; – och kategorier
+      </h2>
+
+      <!-- Category filters -->
+      <div id="category-buttons"></div>
+      <div id="products"></div>
+      <!-- <button id="sortBtn">Sort alphabetically</button> -->
+    </div>
+
+    <!-- PAGE-SPECIFIC JAVASCRIPT -->
+    <script type="module" src="./src/scripts/products.js"></script>
   </body>
 </html>
