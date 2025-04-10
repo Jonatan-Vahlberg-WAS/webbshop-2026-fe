@@ -1,32 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Hakim Livs</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hakim Livs - Logga in</title>
+  <link rel="stylesheet" href="./global.css" />
+  <link rel="stylesheet" href="./header.css" />
+  <link rel="stylesheet" href="./footer.css" />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./css/login.css" />
+ 
+</head>
+<body>
+  <header class="site-header">
+    <nav>
+      <a href="index.html" class="logo">Hakim Livs</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Produkter</a></li>
+        <li><a href="cart.html">Kundvagn</a></li>
+        <li><a href="login.html">Logga in</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-      <h1>Login</h1>
-      <div id="login-container">
-        <form id="loginForm" class="login-form">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required />
-          </div>
-          <button type="submit">Login</button>
+  <main>
+    <section id="loginSection">
+      <div class="modal">
+        <span class="close-btn" id="closeLoginModal">&times;</span>
+        <h2>Logga in</h2>
+        <form id="loginForm">
+          <label for="login-email">E-post</label>
+          <input type="email" id="login-email" required />
+          <label for="login-password">Lösenord</label>
+          <input type="password" id="login-password" required />
+          <button type="submit">Logga in</button>
         </form>
+        <p class="switch-auth">
+          Inte medlem? <a href="#" id="openRegisterModal">Registrera dig här</a>
+        </p>
       </div>
-    </main>
+    </section>
 
-    <!-- PAGE-SPECIFIC JAVASCRIPT -->
-    <script type="module" src="./src/scripts/login.js"></script>
-  </body>
+    <section id="registerSection" class="hidden">
+      <div class="modal">
+        <span class="close-btn" id="closeRegisterModal">&times;</span>
+        <h2>Registrera dig</h2>
+        <form id="registerForm">
+          <input type="text" id="reg-firstname" placeholder="Förnamn" required />
+          <input type="text" id="reg-lastname" placeholder="Efternamn" required />
+          <input type="email" id="reg-email" placeholder="E-post" required />
+          <input type="email" id="reg-email-confirm" placeholder="Bekräfta e-post" required />
+          <input type="password" id="reg-password" placeholder="Lösenord" required />
+          <input type="password" id="reg-password2" placeholder="Bekräfta lösenord" required />
+          <button type="submit">Registrera</button>
+        </form>
+        <p class="switch-auth">
+          Redan medlem? <a href="#" id="showLogin">Logga in här</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2024 Hakim Livs. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/terms">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./src/scripts/login.js"></script>
+</body>
 </html>

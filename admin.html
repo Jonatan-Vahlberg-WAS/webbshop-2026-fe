@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Hakim Livs - Adminpanel</title>
+  <link rel="stylesheet" href="/admin.css" /> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script defer type="module" src="/src/scripts/admin.js"></script> 
+  <link rel="icon" type="image/x-icon" href="/src/images/hakimlivs-logo-favico.png">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2 class="menu-title">Navigation</h2>
+    <nav class="desktop-nav">
+      <ul>
+        <li> <a href="#" data-section="start-page">Start</a> </li> 
+        <li> <a href="#" data-section="product-add">Lägg till produkt</a> </li>
+        <li> <a href="#" data-section="product-list">Produktlista</a> </li>
+        <li> <a href="#" data-section="category-list">Kategorilista</a> </li>
+        <li> <a href="#" data-section="customer-list">Kundlista</a> </li>
+        <li> <a href="#" data-section="order-list">Orderhistorik</a> </li>
+      </ul>
+    </nav>
+  </div>
+  
+  <div class="main-content">
+    <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span> <span></span> <span></span>
+    </button>
+    
+    <a href="#" data-section="start-page" class="logo-link">
+        <img src="/src/images/hakimlivs-logo-full.png" class="main-content-logo" alt="HAKIM LIVS">
+    </a>
+    
+    <div class="content-section" id="start-page" style="display: block;"> 
+        <h3>Välkommen!</h3>
+        <p>Välkommen till din admin-panel. Här kan du hantera produkter, kategorier, kunder och ordrar.</p>
+    </div>
+
+    <div class="content-section" id="product-add">
+      <h3>Lägg till ny produkt</h3>
+      <form id="addProductForm">
+        <div class="form-group"> <label for="productTitle">Titel</label> <input type="text" id="productTitle" name="productTitle" placeholder="Lägg till produktens namn" /> </div>
+        <div class="form-group"> <label for="categories">Kategori</label> <select name="categories" id="categories"> </select> </div>
+        <div class="form-group"> <label for="productProducer">Producent</label> <input type="text" id="productProducer" name="productProducer" placeholder="Lägg till produktens producent" /> </div>
+        <div class="form-group"> <label for="productWeight">Vikt</label> <input type="number" min="0" id="productWeight" name="productWeight" placeholder="Specificera vikt (t.ex. 500)" /> </div> 
+        <div class="form-group"> <label for="productDescription">Beskrivning</label> <textarea id="productDescription" name="productDescription" rows="4" placeholder="Lägg till produktbeskrivning"></textarea> </div>
+        <div class="form-group"> <label for="forsaljningspris">Pris</label> <div class="price-group"> <input type="number" min="0" step="any" id="forsaljningspris" name="forsaljningspris" placeholder="Försäljningspris i kr per st" /> </div> </div>
+        <div class="form-group"> <label for="lager">Lager</label> <div class="price-stock"> <input type="number" min="0" id="lager" name="lager" placeholder="Lagersaldo" /> </div> </div>
+        <div class="form-group"> <label for="productImage">Bild</label> <input type="text" id="productImage" name="productImage" placeholder="Lägg till produktens bildadress" /> </div>
+        <div class="button-group"> <button type="submit" class="btn btn-primary">Lägg till produkt</button> <button type="button" class="btn btn-cancel">Avbryt</button> </div>
+      </form>
+    </div>
+
+    <div class="content-section" id="product-list">
+      <h3>Produktlista</h3>
+      <table class="product-table"> 
+        <thead> <tr> <th>Kategori</th> <th>Titel</th> <th>Producent</th> <th>Vikt</th> <th>Beskrivning</th> <th>kr/st</th> <th>Lager</th> <th>Åtgärder</th> </tr> </thead>
+        <tbody id="productListBody"></tbody>
+      </table>
+      <p id="productListError" class="error-message"></p> 
+    </div>
+
+    <div class="content-section" id="category-list">
+      <h3>Kategorilista</h3>
+      <table class="category-table">
+        <thead> <tr> <th>Namn</th> <th>Beskrivning</th> <th>Åtgärder</th> </tr> </thead>
+        <tbody id="categoryListBody"></tbody>
+      </table>
+      <p id="categoryListError" class="error-message"></p> 
+    </div>
+
+    <div class="content-section" id="customer-list">
+      <h3>Kundlista</h3>
+      <table class="customer-table">
+        <thead> <tr> <th>Förnamn</th> <th>Efternamn</th> <th>E-post</th> <th>Admin?</th> <th>Registrerad</th> <th>Åtgärder</th> </tr> </thead>
+        <tbody id="customerListBody"></tbody>
+      </table>
+      <p id="customerListError" class="error-message"></p> 
+    </div>
+
+    <div class="content-section" id="order-list"> 
+        <h3>Orderhistorik</h3> 
+        <table class="order-table"> 
+            <thead> <tr> <th>OrderID</th> <th>Förnamn</th> <th>Efternamn</th> <th>Leveransadress</th> <th>Telefon</th> <th>Mejladress</th> <th>Summa</th> <th>Detaljer</th> </tr> </thead>
+            <tbody id="orderListBody"> <tr><td colspan="8" style="text-align: center;">Orderfunktion ej implementerad än.</td></tr> </tbody>
+        </table>
+        <p id="orderListError" class="error-message"></p> 
+    </div> 
+    
+  </div><div class="nav-modal" id="navModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+      <div class="modal-content">
+          <button class="close-modal-btn" id="closeModalBtn" aria-label="Close menu">&times;</button>
+          <h2 id="modalTitle" class="menu-title">Navigation</h2>
+          <nav class="modal-nav">
+              <ul>
+                  <li> <a href="#" data-section="start-page">Start</a> </li> 
+                  <li> <a href="#" data-section="product-add">Lägg till produkt</a> </li>
+                  <li> <a href="#" data-section="product-list">Produktlista</a> </li>
+                  <li> <a href="#" data-section="category-list">Kategorilista</a> </li>
+                  <li> <a href="#" data-section="customer-list">Kundlista</a> </li>
+                  <li> <a href="#" data-section="order-list">Orderhistorik</a> </li>
+              </ul>
+          </nav>
+      </div>
+  </div>
+    
+</body>
+</html>
