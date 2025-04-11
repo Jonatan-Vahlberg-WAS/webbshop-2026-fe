@@ -1,0 +1,23 @@
+.loginMain{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+
+    #loginForm{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        .form-group{
+            
+
+            label{
+                display: block;
+
+            }
+        }
+    }
+}

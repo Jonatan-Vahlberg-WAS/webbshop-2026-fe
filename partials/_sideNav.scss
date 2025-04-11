@@ -1,0 +1,53 @@
+.side-nav {
+    width: 250px;
+    background-color: $Neutral50;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid $Neutral200;
+  
+    .nav-section {
+      margin-bottom: 2.5rem;
+  
+      h3 {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $Neutral700;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+  
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+  
+        li {
+          margin-bottom: 0.25rem;
+  
+          a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: $Neutral800;
+            transition: background-color 0.2s ease, color 0.2s ease;
+  
+            &:hover {
+              background-color: $Neutral100;
+              color: $blue300;
+            }
+  
+            &.active {
+              background-color: $Neutral0;
+              color: $Neutral900;
+              font-weight: 600;
+              box-shadow: 0 0 0 1px $blue300;
+            }
+          }
+        }
+      }
+    }
+  }
+  

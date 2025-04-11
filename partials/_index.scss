@@ -1,0 +1,331 @@
+@import "../partials/variables";
+@import "../partials/mixins";
+
+@font-face {
+  font-family: "Compacta";
+  src: url("/assets/fonts/Compacta Italic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+body {
+  margin: 0px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.greyBackground {
+  // width: 100vw;
+  background: #f5f7fa;
+}
+
+.index-page {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: $Neutral900;
+  background-color: $Neutral0;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  .indexCont {
+    background: #f5f7fa;
+    box-sizing: border-box;
+  }
+
+  .index-content {
+    display: flex;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: calc(100vh - 264px);
+
+    h1 {
+      font-family: "Compacta", sans-serif;
+      font-size: 56px;
+      color: rgb(0 30 98);
+      display: inline-block;
+      font-weight: 500;
+      line-height: 1.5rem;
+      letter-spacing: -1.5px;
+      letter-spacing: 0.01em;
+      margin-bottom: 40px;
+    }
+  }
+
+  .site-header {
+    background: white;
+
+    .welcomeBonus {
+      background-color: $blue500;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        color: white;
+        text-decoration: none;
+        text-decoration: underline;
+      }
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      // @include tablet{
+      //   flex-wrap: wrap;
+      // }
+
+      @media screen and (max-width: 930px) {
+        flex-direction: column;
+        gap: 20px;
+        .searchfield {
+          max-width: 300px;
+        }
+      }
+
+      .searchfield {
+        border: 2px solid $Neutral300;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        margin: 0px 16px;
+        padding: 5px;
+        gap: 5px;
+
+        &.searchfield:focus-within,
+        &:hover {
+          border: 2px solid $blue500;
+          cursor: text;
+        }
+
+        a {
+          height: 32px;
+        }
+
+        input {
+          font-size: 1rem;
+          width: 100%;
+        }
+
+        input,
+        input:focus-visible,
+        input:focus,
+        input:active,
+        input:target {
+          border: none;
+          outline: none;
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+
+        a {
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 64px;
+          width: 64px;
+
+          &:hover {
+          }
+
+          &.admin-link {
+            background-color: $red400;
+
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+
+            &:hover {
+              background-color: $red500;
+            }
+          }
+
+          img {
+            height: 32px;
+          }
+        }
+        .cart {
+          // width: 100%;
+          width: 200px;
+          height: 80px;
+          // font-weight: 700;
+          // font-style: italic;
+          color: white;
+          background: rgb(36 38 204);
+          border-style: solid;
+          border-width: 2px;
+          border-radius: 0.25rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: row;
+          cursor: pointer;
+          box-sizing: border-box;
+          border-color: rgb(0 30 98);
+          touch-action: manipulation;
+          padding: 12px;
+          font-family: "Compacta", sans-serif;
+          font-size: 24px;
+          box-shadow: 4px 4px 0px #001e62;
+          transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+          img {
+            margin-right: 8px;
+          }
+
+          &:hover {
+            box-shadow: 2px 2px 0px #001e62;
+            transform: translate(2px, 2px);
+          }
+
+          .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: fit-content;
+
+            p {
+              width: fit-content;
+              white-space: nowrap;
+              margin: 0px;
+              text-align: start;
+            }
+
+            .toCart {
+              color: white;
+            }
+
+            .price {
+              color: white;
+              font-weight: 400;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    width: 100%;
+    background-color: $Neutral50;
+    box-sizing: border-box;
+
+    // h1 {
+    //   font-size: 2.5rem;
+    //   font-weight: 700;
+    //   color: $Neutral900;
+    //   margin-bottom: 1rem;
+    // }
+  }
+
+  // #products {
+  //   display: grid;
+  //   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  //   gap: 2rem;
+  //   padding-top: 1rem;
+
+  //   .product-card {
+  //     border: 1px solid $Neutral200;
+  //     padding: 1rem;
+  //     border-radius: 8px;
+  //     text-align: center;
+  //     background-color: $Neutral0;
+
+  //     button {
+  //       background: $blue300;
+  //       color: white;
+  //       border: none;
+  //       padding: 0.5rem 1rem;
+  //       border-radius: 4px;
+  //       cursor: pointer;
+
+  //       &:hover {
+  //         background: $blue400;
+  //       }
+  //     }
+  //   }
+  // }
+
+  .site-footer {
+    background: #011e62;
+    color: white;
+    font-family: sans-serif;
+    margin-top: auto;
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+
+      div {
+        width: 100%;
+        align-self: flex-end;
+
+        div {
+          width: fit-content;
+          min-width: 200px;
+        }
+      }
+
+      div.flex-end {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        height: 100%;
+      }
+    }
+
+    p {
+      font-size: 14px;
+      margin: 4px;
+    }
+
+    p.bigger {
+      font-size: 18px;
+    }
+
+    span {
+      font-weight: 600;
+    }
+
+    p.big {
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+
+  #copy {
+    margin-top: 24px;
+  }
+}
+
+body > header > nav > ul > li:nth-child(3) {
+  position: relative;
+}
+
+// #tillKassa {
+//   width: 10px !important;
+// }

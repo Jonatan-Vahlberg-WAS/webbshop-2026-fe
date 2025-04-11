@@ -1,0 +1,384 @@
+#productContainer{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.productCard{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #b0b0b0;
+  padding: 16px;
+  margin: 10px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  width: 200px;
+  background-color: white;
+
+  .bold.L {
+    font-size: 20px;
+    font-weight: 600;
+    color: $blue500;
+    margin-bottom: 4px;
+  }
+  
+  .bold.M {
+    font-size: 16px;
+    color: $red400;
+  }
+
+  button{
+    width: 100%;
+    max-width: 400px;
+    height: 40px;
+    // font-weight: 700;
+    // font-style: italic;
+    color: white;
+    background: rgb(36 38 204);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-color: rgb(0 30 98);
+    touch-action: manipulation;
+    padding: 12px;
+    font-family: "Compacta", sans-serif;
+    font-size: 24px;
+    box-shadow: 4px 4px 0px #001e62;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+
+    img{
+      margin-right: 8px;
+    }
+  }
+
+  button:hover{
+    box-shadow: 2px 2px 0px #001e62;
+    transform: translate(2px, 2px);
+  }
+}
+
+.cartWrap{
+  margin-top: 10px;
+  width: 100%;
+}
+
+.productCard, .popup {
+
+    .plusMinusContainer{
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+
+      .quantityInput{
+        max-width: 50px;
+      }
+    }
+
+    .bold{
+      font-weight: bold;
+    }
+
+    p{
+      margin: 4px 0px;
+      font-size: 14px;
+    }
+
+    .M{
+      font-size: 16px;
+      margin: 8px 0px;
+    }
+
+    .L{
+      font-size: 24px;
+      margin: 12px 0px;
+    }
+
+    img{
+      max-width: 100%;
+    }
+
+    p.bold.M{
+      align-self: flex-end;
+    }
+  }
+
+#cartDiv{
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 24px;
+  top: 110%;
+  width: 300px;
+  right: -20%;
+  z-index: 2;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+
+  #cartProducts{
+    max-height: 230px;
+    overflow: auto;
+  }
+
+  #sum{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .buttonWrap{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    button{
+      width: 100%;
+      max-width: 400px;
+      height: 40px;
+      // font-weight: 700;
+      // font-style: italic;
+      color: white;
+      background: rgb(36 38 204);
+      border-style: solid;
+      border-width: 2px;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      cursor: pointer;
+      box-sizing: border-box;
+      border-color: rgb(0 30 98);
+      touch-action: manipulation;
+      padding: 12px;
+      font-family: "Compacta", sans-serif;
+      font-size: 24px;
+      box-shadow: 4px 4px 0px #001e62;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    button:hover{
+      box-shadow: 2px 2px 0px #001e62;
+      transform: translate(2px, 2px);
+    }
+  }
+}
+
+.popup {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 32px;
+  border-radius: 8px;
+  z-index: 3;
+  width: 800px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+
+  p {
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+
+  .produktBeskrivningP {
+    width: 400px;
+  }
+
+  .row {
+    margin-bottom: 24px;
+    border-bottom: 1px solid $Neutral200;
+    padding-bottom: 16px;
+
+  }
+
+  .bold.L {
+    color: $blue600;
+    font-size: 2rem;
+  }
+
+  .bold.M {
+    font-size: 20px;
+    color: $red400;
+  }
+
+  img{
+    width: 50%;
+  }
+
+  .closePopup{
+    align-self: flex-end;
+  }
+
+  .right{
+    text-align: end;
+    padding: 0;
+  }
+  
+
+  button{
+    width: 100%;
+      max-width: 400px;
+      height: 40px;
+      // font-weight: 700;
+      // font-style: italic;
+      color: white;
+      background: rgb(36 38 204);
+      border-style: solid;
+      border-width: 2px;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      cursor: pointer;
+      box-sizing: border-box;
+      border-color: rgb(0 30 98);
+      touch-action: manipulation;
+      padding: 12px;
+      font-family: "Compacta", sans-serif;
+      font-size: 24px;
+      box-shadow: 4px 4px 0px #001e62;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  }
+
+  button:first-of-type{
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  button.cartAdd{
+    display: flex;
+    width: 100%;
+    justify-content:center;
+    align-items: center;
+    gap: 8px;
+
+    img{
+      width: 30px;
+    }
+
+    span{
+      font-weight: 400;
+      font-size: 26px;
+    }
+  }
+
+
+  button:hover{
+    box-shadow: 2px 2px 0px #001e62;
+    transform: translate(2px, 2px);
+  }
+
+  button:hover{
+    box-shadow: 2px 2px 0px #001e62;
+    transform: translate(2px, 2px);
+  }
+}
+
+// div:last-of-type{
+//   padding-top: 8px;
+// }
+div.productInformation div.column.right > div{
+  p:not(.bold){
+    margin:0px;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.column:first-of-type{
+  padding: 0px 16px;
+}
+
+.productInformation{
+  padding: 16px 0px;
+}
+
+div#cartProducts{
+  div{
+    display: flex;
+    align-items: center;
+
+    div{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-left: 16px;
+
+      p{
+        margin: 0;
+        font-size: 14px;
+      }
+
+      p.bold{
+        font-weight: bold;
+        width: 50%;
+      }
+
+      p.L{
+        font-size: 16px;
+      }
+
+      p.M{
+        font-size: 14px;
+      }
+    }
+  }
+  img{
+    height: 100px;
+  }
+}
+
+div.marginTB{
+  margin: 24px 0;
+}
+
+.popup {
+  animation: fadeInScale 0.25s ease-out;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

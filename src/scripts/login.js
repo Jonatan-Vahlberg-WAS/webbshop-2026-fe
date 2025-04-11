@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", initLogin);
 
 function initLogin() {
@@ -9,15 +10,24 @@ function initLogin() {
   });
 }
 
-function handleLogin() {
+async function handleLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
+  const url = "https://grupp-11-backend.vercel.app/api/auth/login"
+  try{
+    const loginDetails = {
+      username: `${username}`,
+      password: `${password}`
+    }
 
-  // Basic demo login - NOT SECURE
-  if (username === "admin" && password === "admin") {
-    window.location.href = "admin.html";
-  } else {
-    alert("Invalid credentials: LOGGING IN ANYWAY");
-    window.location.href = "admin.html";
+    const response = await axios.post(url, loginDetails);
+    if(response.status === 200){
+      sessionStorage.setItem("jwt", response.data.token);
+      window.location.href = "/HTML/admin.html";
+    }
+    
+
+  }catch(error){
+    alert("Password or Username is invalid");
   }
 }

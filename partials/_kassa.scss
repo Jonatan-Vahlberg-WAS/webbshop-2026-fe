@@ -1,0 +1,130 @@
+main.main-content.kassa {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 500px;
+    box-sizing: border-box;
+    display: flex;
+
+    div.cart{
+        width: 90%;
+    }
+}
+
+.cart {
+  //   display: flex;
+  //   justify-content: center;
+  //   //   width: 100%;
+  //   //   // min-width: 1100px;
+  //   //   width: 400px;
+  //   width: 200px;
+  //   height: 80px;
+
+  //   button {
+  //     width: fit-content;
+  //     height: fit-content;
+  //   }
+
+  //   input {
+  //     max-width: 80px;
+  //     height: fit-content;
+  //   }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+#cartWrap {
+  width: 100%;
+  height: auto;
+  background-color: white;
+  border: 1px solid rgb(142, 142, 142);
+  border-radius: 20px;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#productsWrap {
+  width: 66%;
+  margin: 0;
+  padding: 24px;
+}
+
+#summaryWrap {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 33%;
+  background-color: #dde7ff68;
+  height: 100%;
+  padding: 24px;
+
+  button {
+    width: 100%;
+    max-width: 400px;
+    height: 40px;
+    // font-weight: 700;
+    // font-style: italic;
+    color: white;
+    background: rgb(36 38 204);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-color: rgb(0 30 98);
+    touch-action: manipulation;
+    padding: 12px;
+    font-family: "Compacta", sans-serif;
+    font-size: 24px;
+    box-shadow: 4px 4px 0px #001e62;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  button:hover {
+    box-shadow: 2px 2px 0px #001e62;
+    transform: translate(2px, 2px);
+  }
+
+  p {
+    align-self: center;
+    font-size: 24px;
+  }
+
+  p.bold.big {
+    font-size: 32px;
+  }
+}
+
+.productAllInfo {
+  border: 1px solid rgb(183, 183, 183);
+  border-radius: 20px;
+  margin: 4px 0;
+  padding: 16px;
+}
+
+p.bold {
+  font-weight: bold;
+}
+
+p.semi-bold {
+  font-weight: 500;
+}
+
+p.big {
+  font-size: 24px;
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hakim Livs</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="admin-page">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="welcomeBonus" id="welcomeHakim"><h3>Välkommen, Hakim!</h3></div>
+      <nav>
+        <a href="../index.html" class="logo"><img src="../assets/logos/HakimLivsLogga.png" alt="logo"></a>
+        <div class="searchfield">
+          <a id="searchBtnAdmin" href=""><img src="../assets/logos/search.svg" alt=""></a>
+          <input class="search" id="searchAdmin" placeholder="Sök..."></input>
+        </div>
+        <nav class="nav-links">
+          <button id="productsBtn">Produkter</button>
+          <button id="ordersBtn"  class="notActive">Beställningar</button>
+        </nav>
+      </nav>
+    </header>
+
+    <div class="admin-content">
+      <!-- MAIN CONTENT -->
+      <!-- <main class="admin-container">
+          
+        <button id="showFormBtn">Lägg till Produkt</button>
+
+        <form id="addProductsForm" action="/upload" method="POST" enctype="multipart/form-data" style="display: none;">
+          <div class="formPart1">
+              <label for="name">Produktnamn:</label>
+              <input type="text" name="name" id="name" required />
+
+              <label for="info">Beskrivning:</label>
+              <textarea name="info" id="info" required></textarea>
+
+              <label for="price">Pris:</label>
+              <input type="number" step="0.01" min="0.5" max="9999" id="price" name="price" required />
+
+              <label for="category">Kategori(er):</label>
+              <input type="text" id="category" name="category" placeholder="Frukter, Ekologiskt" required />
+
+              <label for="image">Bild:</label>
+              <input type="text" id="image" name="image" required />
+
+          </div>
+          <div class="formPart2">
+              <label for="ammount">Mängd:</label>
+              <input type="text" id="ammount" name="ammount" required />
+
+              <label for="brand">Varumärke:</label>
+              <input type="text" id="brand" name="brand" required />
+
+              <label for="content">Innehållsförteckning:</label>
+              <input type="text" id="content" name="content" required />
+
+              <label for="compare">Jämförelsepris:</label>
+              <input type="number" step="0.01" min="0.01" max="9999" id="compare" name="compare" required />
+
+              <label for="supplier">Leverantör:</label>
+              <input type="text" id="supplier" name="supplier" required />
+          </div>
+          <div class="submitBtnDiv">
+              <button type="submit">Lägg Till</button>
+          </div>
+        </form>
+
+        <div id="productContainer"></div>
+      </main> -->
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer admin">
+      <div class="footer-content column">
+        <div class="row">
+          <div class="öppetid">
+            <p class="big">Öppettider</p>
+            <p><span>Måndag:</span> 8:00-21:00</p>
+            <p><span>Tisdag:</span> 8:00-21:00</p>
+            <p><span>Onsdag:</span> 8:00-21:00</p>
+            <p><span>Torsdag:</span> 8:00-21:00</p>
+            <p><span>Fredag:</span> 8:00-21:00</p>
+            <p><span>Lördag:</span> 8:00-19:00</p>
+            <p><span>Söndag:</span> 8:00-19:00</p>
+          </div>
+          <div class="flex-end">
+            <p class="bigger"><span>Adress:</span> Östgötagatan 12, 116 25, Stockholm</p>
+            <p class="bigger"><span>Telefonumer:</span> +46 76 112 11 11</p>
+            <p class="bigger"><span>Mail:</span> Hakim@hakimLivs.se </p>
+          </div>
+        </div>
+        <p id="copy">&copy; 2024 Hakim Livs. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- PAGE-SPECIFIC JAVASCRIPT -->
+    <script type="module" src="../src/scripts/admin.js" defer></script>
+  </body>
+</html>
