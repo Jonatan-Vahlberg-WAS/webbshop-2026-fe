@@ -1,0 +1,410 @@
+@import "../partials/variables";
+@import "../partials/mixins";
+
+@media screen and (max-width: 768px) {
+  #addProductsForm {
+    flex-direction: column !important;
+  }
+
+  #addProductsForm .formPart1,
+  #addProductsForm .formPart2 {
+    width: 100% !important;
+    flex-basis: auto !important;
+  }
+
+  #addProductsForm .submitBtnDiv {
+    align-self: center;
+    margin-top: 1rem;
+  }
+}
+
+.admin-page {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: $Neutral900;
+  background-color: $Neutral0;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  #showFormBtn,
+  #productsBtn,
+  #ordersBtn {
+    width: 100%;
+    max-width: 400px;
+    height: 40px;
+    // font-weight: 700;
+    // font-style: italic;
+    color: white;
+    background: rgb(36 38 204);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-color: rgb(0 30 98);
+    touch-action: manipulation;
+    padding: 12px;
+    font-family: "Compacta", sans-serif;
+    font-size: 24px;
+    box-shadow: 4px 4px 0px #001e62;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+    &:hover {
+      background: rgb(23, 26, 153);
+      box-shadow: 2px 2px 0px #001e62;
+      transform: translate(2px, 2px);
+    }
+    &:active {
+      background: rgb(23, 26, 153);
+      box-shadow: 0px 0px 0px #001e62;
+      transform: translate(4px, 4px);
+    }
+  }
+
+  #welcomeHakim {
+    color: $Neutral0;
+  }
+
+  .admin-content {
+    display: flex;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .site-header {
+    background: white;
+
+    .welcomeBonus {
+      background-color: $blue500;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        color: white;
+        text-decoration: none;
+        text-decoration: underline;
+      }
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+
+      .notActive {
+        border: 2px solid #cacfd8;
+        background-color: #f5f7fa;
+        border-radius: 4px;
+        color: #cacfd8;
+        box-shadow: 4px 4px 0px #979aa1;
+
+        &:hover {
+          border-color: rgb(0 30 98);
+          color: white;
+          background: rgb(23, 26, 153);
+          box-shadow: 2px 2px 0px #001e62;
+        }
+        &:active {
+          border-color: rgb(0 30 98);
+          color: white;
+          background: rgb(23, 26, 153);
+          box-shadow: 0px 0px 0px #001e62;
+        }
+      }
+
+      @media screen and (max-width: 930px) {
+        flex-direction: column;
+        gap: 20px;
+        .searchfield {
+          max-width: 300px;
+        }
+      }
+
+      .searchfield {
+        border: 2px solid $Neutral300;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        margin: 0px 16px;
+        padding: 5px;
+        gap: 5px;
+
+        &.searchfield:focus-within,
+        &:hover {
+          border: 2px solid $blue500;
+          cursor: text;
+        }
+
+        a {
+          height: 32px;
+        }
+
+        input {
+          font-size: 1rem;
+        }
+
+        input,
+        input:focus-visible,
+        input:focus,
+        input:active,
+        input:target {
+          border: none;
+          outline: none;
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+
+        a {
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 64px;
+          width: 64px;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          &.admin-link {
+            background-color: $red400;
+
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+
+            &:hover {
+              background-color: $red500;
+            }
+          }
+
+          img {
+            height: 32px;
+          }
+        }
+        .cart {
+          flex-direction: row;
+          align-items: center;
+          width: auto;
+          gap: 8px;
+          border: 2px solid $Neutral300;
+          background-color: $Neutral50;
+          border-radius: 4px;
+          padding: 0px 12px;
+          height: auto;
+
+          &:hover {
+            text-decoration: none;
+          }
+
+          .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: fit-content;
+
+            p {
+              width: fit-content;
+              white-space: nowrap;
+              margin: 0px;
+              text-align: start;
+            }
+
+            .toCart {
+              color: $Neutral300;
+            }
+
+            .price {
+              color: $Neutral300;
+              font-weight: 800;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .admin-container {
+    flex: 1;
+    padding: 2rem;
+    width: 100%;
+    min-height: 50vh;
+    background-color: $Neutral50;
+
+    #addProductsForm {
+      max-width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.7rem;
+      flex-direction: row;
+      align-items: flex-start;
+
+      .formPart1,
+      .formPart2 {
+        flex-grow: 1;
+        flex-basis: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .submitBtnDiv {
+        align-self: flex-end;
+      }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: $Neutral900;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .site-footer.admin {
+    background: #011e62;
+    color: white;
+    font-family: sans-serif;
+    margin-top: auto;
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+
+      div {
+        width: 100%;
+        align-self: flex-end;
+
+        div {
+          width: fit-content;
+          min-width: 200px;
+        }
+      }
+
+      div.flex-end {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        height: 100%;
+      }
+    }
+
+    p {
+      font-size: 14px;
+      margin: 4px;
+    }
+
+    p.bigger {
+      font-size: 18px;
+    }
+
+    span {
+      font-weight: 600;
+    }
+
+    p.big {
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+
+  #copy {
+    margin-top: 24px;
+  }
+}
+
+.adminProductTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+
+  thead {
+    background-color: $Neutral200;
+
+    th {
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+      color: $Neutral700;
+      border-bottom: 2px solid $Neutral300;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $Neutral100;
+
+      &:hover {
+        background-color: $Neutral50;
+      }
+
+      td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgb(99, 99, 99);
+
+        .tableImg {
+          width: 50px;
+          height: auto;
+          border-radius: 4px;
+        }
+
+        .editBtn,
+        .deleteBtn {
+          padding: 6px 10px;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          cursor: pointer;
+        }
+
+        .editBtn {
+          background-color: $blue400;
+          color: white;
+
+          &:hover {
+            background-color: $blue500;
+          }
+        }
+
+        .deleteBtn {
+          background-color: $red400;
+          color: white;
+
+          &:hover {
+            background-color: $red500;
+          }
+        }
+      }
+    }
+    tr:nth-child(odd) {
+      background: #f0f1f5;
+    }
+  }
+}

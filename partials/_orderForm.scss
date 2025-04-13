@@ -1,0 +1,302 @@
+#formArea {
+  position: fixed; /* always cover entire viewport, even on scroll */
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* for Safari */
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 999; /* make sure it sits above everything */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all; /* absorbs clicks */
+
+  h2 {
+    margin-top: 0px;
+  }
+  .background {
+    // max-height: 90vh;
+    // overflow-y: scroll;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 40px 120px;
+    border-radius: 10px;
+    @media (max-width: 1020px) {
+      max-width: 540px;
+      box-sizing: border-box;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
+
+    .orderSuccessDiv {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+
+      h2 {
+        font-size: 28px;
+      }
+
+      p {
+        margin: 0px;
+      }
+
+      .payment {
+        font-size: 20px;
+      }
+      .italic {
+        font-style: italic;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    }
+
+    .productsOrderCont {
+      display: flex;
+      gap: 120px;
+      flex-wrap: wrap;
+      justify-content: center;
+      .orderHeading,
+      .deliveryTitle {
+        font-family: "Compacta", sans-serif;
+        font-size: 30px;
+        color: rgb(0 30 98);
+        display: inline-block;
+        font-weight: 500;
+        line-height: 1.5rem;
+        letter-spacing: -1.5px;
+        letter-spacing: 0.01em;
+      }
+
+      .productsContainer {
+        height: 100%;
+        max-width: 825px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        ul {
+          list-style-type: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba($color: #ecedee, $alpha: 0.3);
+          margin: 0;
+          margin-top: 40px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+
+          .product {
+            div {
+              display: flex;
+              justify-content: space-between;
+              gap: 24px;
+
+              p {
+                padding: 0px;
+                margin: 0px;
+              }
+            }
+          }
+        }
+        .priceDiv {
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba($color: #ecedee, $alpha: 0.3);
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          div {
+            display: flex;
+            justify-content: space-between;
+
+            p {
+              padding: 0px;
+              margin: 0px;
+            }
+
+            :first-child {
+              font-weight: bold;
+            }
+            &.momsCont {
+              p {
+                font-weight: unset;
+                font-size: 14px;
+                color: #31333d;
+              }
+            }
+          }
+
+          .deliverCont {
+            padding-bottom: 8px;
+            border-bottom: #191b25 1px solid;
+          }
+          .totalCont {
+            padding-top: 6px;
+            font-size: 18px;
+            .total {
+              font-weight: bold;
+              padding-bottom: 2px;
+            }
+          }
+        }
+      }
+
+      #formContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 400px;
+
+        .obligatoriskt {
+          // position: absolute;
+          // top: 0px;
+          // right: 20px;
+          padding: 0px;
+          margin: 0px;
+          font-style: italic;
+        }
+
+        .userForm {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          gap: 16px;
+          width: 100%;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba($color: #ecedee, $alpha: 0.3);
+          box-sizing: border-box;
+          // flex-wrap: wrap;
+
+          @media (max-height: 1025px) and (min-width: 1020px) {
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+          }
+
+          .formGroupsCont1,
+          .formGroupsCont2 {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .formGroup {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            box-sizing: border-box;
+
+            label,
+            input {
+              width: 100%;
+              box-sizing: border-box;
+            }
+
+            label {
+              font-weight: bold;
+              color: rgb(5, 10, 80);
+            }
+            input {
+              font-family: Inter, system-ui, Avenir, Helvetica, Arial,
+                sans-serif;
+              padding: 8px 12px;
+              border: 2px solid rgb(203, 204, 209);
+              border-radius: 4px;
+
+              &::placeholder {
+                color: rgb(132, 133, 145);
+              }
+            }
+          }
+
+          :last-child {
+            width: 100%;
+            box-sizing: border-box;
+            .infoField {
+              font-family: Inter, system-ui, Avenir, Helvetica, Arial,
+                sans-serif;
+              padding: 8px 12px;
+              resize: none;
+              height: 80px;
+              border: 1px solid black;
+              border-radius: 4px;
+              border: 2px solid rgb(203, 204, 209);
+              &::placeholder {
+                color: rgb(132, 133, 145);
+              }
+            }
+            #charCount {
+              all: unset;
+              align-self: flex-end;
+            }
+          }
+        }
+      }
+    }
+
+    .sendFormBtn {
+      width: 100%;
+      max-width: 400px;
+      height: 40px;
+      // font-weight: 700;
+      // font-style: italic;
+      color: white;
+      background: rgb(36 38 204);
+      border-style: solid;
+      border-width: 2px;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      cursor: pointer;
+      box-sizing: border-box;
+      border-color: rgb(0 30 98);
+      touch-action: manipulation;
+      padding: 12px;
+      font-family: "Compacta", sans-serif;
+      font-size: 24px;
+      box-shadow: 4px 4px 0px #001e62;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+      &:hover {
+        box-shadow: 2px 2px 0px #001e62;
+        transform: translate(2px, 2px);
+      }
+      &:active {
+        box-shadow: 0px 0px 0px #001e62;
+        transform: translate(4px, 4px);
+      }
+    }
+  }
+}
