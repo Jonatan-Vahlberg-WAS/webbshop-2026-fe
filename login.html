@@ -1,32 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Hakim Livs</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hakim Livs - Logga in</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./css/login.css" />
+  <link rel="icon" type="image/x-icon" href="/src/images/hakimlivs-logo-favico.png">
+</head>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-      <h1>Login</h1>
-      <div id="login-container">
-        <form id="loginForm" class="login-form">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required />
-          </div>
-          <button type="submit">Login</button>
-        </form>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <nav>
+      <a href="index.html" class="logo"><img src="/src/images/hakimlivs-logo-full.png" class="header-logo"></a>
+  
+      <div class="search-container">
+        <input id="site-header-search" type="text" placeholder="Sök..." />
+        <span class="search-icon">🔍</span>
       </div>
-    </main>
+  
+      <ul class="nav-links">
+        <!--<li class="nav-li-products"><a href="products.html">Products</a></li> -->
+        <li class="nav-li-cart">
+          <div id="cart-header">Varukorg (0)</div>
+        </li>
+        <li class="nav-li-login"><a href="/login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- MAIN -->
+  <main>
+    <!-- Login Section -->
+    <section class="login-section" id="loginSection">
+      <button class="close-btn" id="closeLogin">❌</button>
+      <h2>Logga in</h2>
+      <form id="loginForm">
+        <input type="email" id="login-email" placeholder="E-post" required />
+        <input type="password" id="login-password" placeholder="Lösenord" required />
+        <button type="submit">Logga in</button>
+        <div class="switch-auth">
+          Har du inget konto? <a href="#" id="openRegisterModal">Registrera dig</a>
+        </div>
+      </form>
+    </section>
 
-    <!-- PAGE-SPECIFIC JAVASCRIPT -->
-    <script type="module" src="./src/scripts/login.js"></script>
-  </body>
+    <!-- Register Section -->
+    <section class="register-section hidden" id="registerSection">
+      <button class="close-btn" id="closeRegister">❌</button>
+      <h2>Registrera dig</h2>
+      <form id="registerForm">
+        <input type="text" id="reg-firstname" placeholder="Förnamn" required />
+        <input type="text" id="reg-lastname" placeholder="Efternamn" required />
+        <input type="email" id="reg-email" placeholder="E-post" required />
+        <input type="email" id="reg-email-confirm" placeholder="Bekräfta e-post" required />
+        <input type="password" id="reg-password" placeholder="Lösenord" required />
+        <input type="password" id="reg-password2" placeholder="Bekräfta lösenord" required />
+        <button type="submit">Registrera</button>
+        <div class="switch-auth">
+          Har du redan ett konto? <a href="#" id="showLogin">Logga in</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2024 Hakim Livs. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/terms">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script type="module" src="./src/scripts/login.js"></script>
+  
+</body>
 </html>

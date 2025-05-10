@@ -5,25 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hakim Livs</title>
     <link rel="stylesheet" href="style.css" />
+    <script type="module" src="./src/scripts/index.js" defer></script>
   </head>
   <body>
-
     <!-- HEADER -->
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">Hakim Livs</a>
+        <a href="index.html" class="logo"><img src="/src/images/hakimlivs-logo-full.png" class="header-logo"></a>
+    
+        <div class="search-container">
+          <input id="site-header-search" type="text" placeholder="Sök..." />
+          <span class="search-icon">🔍</span>
+        </div>
+    
         <ul class="nav-links">
-          <li><a href="products.html">Products</a></li>
-          <li><a href="cart.html">Cart (0)</a></li>
-          <li><a href="login.html">Login</a></li>
+          <!--<li class="nav-li-products"><a href="products.html">Products</a></li> -->
+          <li class="nav-li-cart">
+            <div id="cart-header">Varukorg (0)</div>
+          </li>
+          <li class="nav-li-login"><a href="/login.html">Login</a></li>
         </ul>
       </nav>
     </header>
+    
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <div class="sidebar-items">
+        Kategorier
+        <div id="categorylist"></div>
+      </div>
+    </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="main-content">
-      <h1>Welcome to Hakim Livs</h1>
+    <main id="main">
+      <div class="main-content">
+        <h1>Välkommen till Hakim Livs!</h1>
         <div id="products"></div>
+        <div id="mobilemenu">
+          <div class="mobile-menu-list">
+            <button id="togglesidebar">Menu</button>
+            <div id="cart-mobilemenu">Varukorg (0)</div>
+          </div>
+        </div>
+      </div>
+      <div class="main-product-card-content">
+        <div id="productCardBackground" class="product-card-background">
+
+        </div>
+      </div>
+      <div class="cart-content">
+        <div class="cart-background">
+          <div class="cart-list"></div>
+        </div>
+      </div>
     </main>
 
     <!-- FOOTER -->

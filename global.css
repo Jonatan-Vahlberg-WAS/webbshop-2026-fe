@@ -1,0 +1,59 @@
+:root {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #fff;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "site-header"
+      "main-content"
+      "site-footer";
+  }
+  
+  @media (min-width: 800px) {
+    body {
+      grid-template-columns: 300px 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "site-header site-header"
+        "sidebar main-content"
+        "site-footer site-footer";
+    }
+  }
+  
+  /* Header, nav, main, product, footer, etc. */
+  .site-header {
+    grid-area: site-header;
+    background: #eaeaea;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  
+  
