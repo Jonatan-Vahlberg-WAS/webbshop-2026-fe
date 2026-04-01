@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sole Search</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav>
+        <a href="index.html" class="logo">Sole Search</a>
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="admin.html">Admin</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="login-main">
+      <!-- LOGIN SECTION -->
+      <section id="login-section" class="auth-section">
+        <div class="auth-left" id="login-left">
+          <div class="auth-brand" id="login-brand">
+            <h1>STEP INTO THE DROP</h1>
+          </div>
+        </div>
+ 
+        <div class="auth-right" id="login-right">
+          <div class="auth-form-header" id="login-form-header">
+            <p class="auth-secure-label" id="login-secure-label">Secure verification required</p>
+            <h2 id="login-title">Identity Check</h2>
+          </div>
+ 
+          <form id="loginForm" class="auth-form">
+ 
+            <div class="form-group" id="login-email-group">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" name="email" required />
+            </div>
+ 
+            <div class="form-group" id="login-password-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" required />
+            </div>
+
+<!-- skip this for now will implement later if we have time-->
+            <!-- <div class="form-group form-group--inline" id="login-options-group">
+              <div class="form-inline-left">
+                <input type="checkbox" id="remember-me" name="rememberMe" />
+                <label for="remember-me">Remember me</label>
+              </div>
+              <a href="#" class="forgot-password-link" id="forgot-password-link">Forgot password?</a>
+            </div> -->  
+
+            <p class="auth-error-msg" id="login-error"></p>
+
+            <button type="submit" class="btn btn--primary" id="login-submit-btn">Sign In</button>
+
+          </form>
+
+          <button class="btn btn--outline" id="go-to-register-btn" onclick="showRegister()">
+            Register here
+          </button>
+        </div>
+      </section>
+
+      <!-- REGISTER SECTION (hidden by default) -->
+      <section id="register-section" class="auth-section hidden">
+        <div class="auth-left" id="register-left">
+            <h1>SOLE<br>SEARCH</h1>
+            <p>Artistry in motion / Global collective</p>
+        </div>
+
+        <div class="auth-right" id="register-right">
+          <div class="auth-form-header" id="register-form-header">
+            <h2 id="register-title">Create Account</h2>
+          </div>
+
+          <form id="registerForm" class="auth-form">
+            <div class="form-group" id="register-name-group">
+              <label for="register-name">Full Name</label>
+              <input type="text" id="register-name" name="name" required />
+            </div>
+            <div class="form-group" id="register-email-group">
+              <label for="register-email">Email Address</label>
+              <input type="email" id="register-email" name="email" required />
+            </div>
+
+            <div class="form-group" id="register-password-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" name="password" required />
+              <class="pw-requirements" id="pw-requirements">
+                <li id="req-length">Minimum 8 characters</li> 
+                <li id="req-upper">At least one capital letter</li>
+                <li id="req-number">At least one number</li>
+                <li id="req-special">At least one special character (! @ # $ % & *)</li>
+              </ul>
+            </div>
+
+            <div class="form-group" id="register-confirm-group">
+              <label for="register-confirm">Confirm Password</label>
+              <input type="password" id="register-confirm" name="confirmPassword" required />
+            </div>
+
+            <div class="form-group form-group--inline" id="register-terms-group">
+              <!-- <input type="checkbox" id="terms" name="terms" required /> -->
+              <!-- <label for="terms">
+                I accept the security protocols and digital governance of Sole Search. Data is encrypted via local vault.
+              </label> -->
+            </div>
+
+            <p class="auth-error-msg" id="register-error"></p>
+
+            <button type="submit" class="btn btn--primary" id="register-submit-btn">Create Account</button>
+
+          </form>
+
+          <p class="auth-switch-link" id="register-switch">
+            Already have an account?
+            <a href="#" id="go-to-login-btn" onclick="showLogin()">Login</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 Sole Search. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./src/scripts/register.js"></script>
+  </body>
+</html>
