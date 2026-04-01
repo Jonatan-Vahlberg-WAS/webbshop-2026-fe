@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hakim Livs</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
   </head>
   <body>
 
@@ -14,7 +20,7 @@
         <!-- <a href="index.html" class="logo">Hakim Livs</a> -->
         <ul class="nav-links">
           <li><a href="products.html">Profil</a></li>
-          <li><a href="cart.html">Karta</a></li>
+          <li><a href="map.html">Karta</a></li>
           <li><a href="register.html">Registera</a></li>
           <li><a href="admin.html">Lägg till växt</a></li>
           <li><a href="">Logga in</a></li>
@@ -22,10 +28,15 @@
       </nav>
     </header>
 
+    
     <!-- HERO (full width) -->
     <section class="hero">
-      <h1>Välkommen till Plot Twist <br> Hitta och byt växter runtom i hela Sverige!</h1>
-      <p>Klicka här för att hitta växter</p>
+      <div id="map">
+        <div class="hero_text">
+          <h1>Välkommen till Plot Twist <br> Hitta och byt växter runtom i hela Sverige!</h1>
+          <p>Klicka här för att hitta växter</p>
+        </div>
+      </div>
     </section>
 
     <!-- MAIN CONTENT -->

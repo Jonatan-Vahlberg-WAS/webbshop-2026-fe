@@ -1,4 +1,6 @@
 import { getProducts } from "../utils/productsApi.js";
+//import map here 
+import { map } from "../utils/map.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
