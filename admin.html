@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,60 +10,130 @@
   <body>
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">Hakim Livs</a>
+        <a href="index.html" class="logo">SOLE SEARCH</a>
         <ul class="nav-links">
           <li><a href="products.html">Products</a></li>
-          <li><a href="cart.html">Cart (0)</a></li>
-          <li><a href="register.html">Register</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
           <li><a href="admin.html">Admin</a></li>
         </ul>
       </nav>
     </header>
 
     <main class="admin-main">
-      <h1>Admin – Create Product</h1>
+      <h1>Admin Dashboard</h1>
 
-      <form id="createProductForm" class="admin-form">
-        <div class="admin-form-row">
-          <label for="name">Name</label>
-          <input type="text" id="name" required />
+      <div class="admin-stats">
+        <div class="stat-display">
+          <p>Total Orders</p>
+          <p></p>
         </div>
-        <div class="admin-form-row">
-          <label for="price">Price</label>
-          <input type="number" id="price" step="0.01" min="0" required />
+        <div class="vl"></div>
+        <div class="stat-display">
+          <p>Total Revenue</p>
+          <p></p>
         </div>
-        <div class="admin-form-row">
-          <label for="stock">Stock</label>
-          <input type="number" id="stock" min="0" required />
+        <div class="vl"></div>
+        <div class="stat-display">
+          <p>Active drops</p>
+          <p></p>
         </div>
-        <div class="admin-form-row">
-          <label for="image">Image URL</label>
-          <input type="url" id="image" required />
+        <div class="vl"></div>
+        <div class="stat-display">
+          <p>Pending Orders</p>
+          <p></p>
         </div>
-        <div class="admin-form-row">
-          <label for="slug">Slug</label>
-          <input type="text" id="slug" required placeholder="e.g. organic-tomatoes" />
-        </div>
-        <button type="submit">Create Product</button>
-      </form>
+      </div>
 
-      <h2>Products</h2>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Slug</th>
-            </tr>
-          </thead>
-          <tbody id="productsTableBody">
-            <tr><td colspan="4">Loading...</td></tr>
-          </tbody>
-        </table>
+      <div class="admin-container">
+        <div class="create-product">
+          <h2>Create Product</h2>
+
+          <form class="create-product-form">
+            <div class="create-product-row">
+              <label for="name">Name</label>
+              <input type="text" id="name" required />
+            </div>
+            <div class="create-product-row">
+              <label for="description">Description</label>
+              <textarea id="description" required></textarea>
+            </div>
+            <div class="create-product-row">
+              <label for="price">Price</label>
+              <input type="number" id="price" step="0.01" min="0" required />
+            </div>
+            <div class="create-product-row">
+              <label for="stock">Stock</label>
+              <input type="number" id="stock" min="0" required />
+            </div>
+            <div class="create-product-row">
+              <label for="image">Image URL</label>
+              <input type="url" id="image" required />
+            </div>
+            <div class="create-product-row">
+              <label for="release-date">Release Date</label>
+              <input type="date" id="release-date" required />
+            </div>
+            <button type="submit">Create Product</button>
+          </form>
+        </div>
+
+        <div class="table-container">
+          <h2>Product List</h2>
+
+          <table class="products admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="table-container">
+          <h2>Customers</h2>
+
+          <table class="user-list admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Orders</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="table-container">
+          <h2>Order List</h2>
+
+          <table class="order-list admin-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Product/s</th>
+                <th>Size/s</th>
+                <th>Price</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 Sole Search. All rights reserved.</p>
+      </div>
+    </footer>
 
     <script type="module" src="./src/scripts/admin.js"></script>
   </body>
