@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700&display=swap");
 
+#map { height: 500px; }
+
+
 :root {
   --font-heading: "Outfit", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
@@ -103,7 +106,7 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Hero section (homepage) - full width, non-contained */
+/* Hero section (homepage) - full width, non-contained
 .hero {
   width: 100%;
   min-height: 70vh;
@@ -121,16 +124,29 @@ body {
   background-size: cover;
   background-position: center;
   color: #fff;
+} */
+
+.hero {
+  position: relative;
 }
 
+.hero_text {
+  position: absolute;
+  float: left;
+  z-index: 1000;
+  background-color: #3d7451;
+}
+
+
 .hero h1 {
+  /* float: left; */
   font-family: var(--font-heading);
   font-size: 3rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.02em;
   color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  /* text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
 }
 
 .hero p {
