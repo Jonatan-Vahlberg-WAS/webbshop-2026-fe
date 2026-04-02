@@ -31,3 +31,17 @@ function validateFields() {
 
   return { name, email, password };
 }
+
+function registerUser() {
+  const data = validateFields();
+  if (!data) return;
+
+  const { name, email, password } = data;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (users.some((u) => u.email === email)) {
+    alert("Det finns redan ett konto med denna email");
+    return;
+  }
+  }
