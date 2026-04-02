@@ -78,4 +78,6 @@ function registerUser() {
     return;
   }
 
+  sessionStorage.setItem("loggedIn", JSON.stringify(existingUser));
+
   }
