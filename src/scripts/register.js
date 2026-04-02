@@ -58,3 +58,19 @@ function registerUser() {
 
   alert("Konto skapat! Du kan nu logga in.");
   }
+
+  
+// Logga in användare
+  function loginUser() {
+  const data = validateFields();
+  if (!data) return;
+
+  const { email, password } = data;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const existingUser = users.find(
+    (u) => u.email === email && u.password === password
+  );
+
+  }
