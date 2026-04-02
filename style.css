@@ -358,11 +358,29 @@ main {
   text-align: center;
 }
 
-.register-form,
-.login-form {
+.register-form {
   padding: 2rem;
+  position: relative;
 }
 
+/* Bilder i form */
+.form-img-top-right {
+  position: absolute;
+  top: -13rem;
+  left: 17rem;
+  width: 16rem;   
+  height: auto;
+  pointer-events: none; 
+}
+
+.form-img-bottom-left {
+  position: absolute;
+  bottom: -8rem;
+  left: -13rem;
+  width: 16rem;
+  height: auto;
+  pointer-events: none;
+}
 .form-group {
   text-align: left;
   margin-bottom: 1.5rem;
