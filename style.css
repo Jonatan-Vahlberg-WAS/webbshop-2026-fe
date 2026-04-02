@@ -45,9 +45,16 @@
 
 body{
   font-family: 'Karla', sans-serif;
+  margin: o;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 h1 {
   font-family: 'Italiana', serif;
+}
+main {
+  flex: 1;
 }
 
 /* PLOT TWIST HEADER */
@@ -164,6 +171,24 @@ h1 {
 .nav-links a:hover {
   color: var(--color-primary);
 } */
+
+/* MAP SECTION */
+.hero-title {
+  font-family: 'Italiana', serif;
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+  
+  margin: 30px 0; /* space above & below */
+
+  background: linear-gradient(90deg, #325B48 0%, #61D18C 77%);
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 
 /* Main Content */
 .main-content {
@@ -387,7 +412,7 @@ h1 {
 }
 
 /* Footer */
-.site-footer {
+/* .site-footer {
   background: var(--color-surface);
   padding: 1.5rem 2rem;
   margin-top: 3rem;
@@ -421,4 +446,55 @@ h1 {
 
 .footer-links a:hover {
   color: var(--color-primary);
+}
+ */
+
+ /* PLOT TWIST FOOTER */
+.plot-footer {
+  background: linear-gradient(90deg, #003D4D 0%, #61D18C 100%);
+  color: white ;
+  padding: 30px 60px ;
+  width: 100%;
+}
+
+/* TOP SECTION (logo + links) */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.plot-footer-logo {
+  font-family: 'Italiana', serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  margin: 0;
+}
+
+.plot-footer-links {
+  display: flex;
+  gap: 50px;
+}
+
+.plot-footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.2s ease;
+}
+
+.plot-footer-links a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.plot-footer-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+}
+
+.plot-footer-bottom p {
+  margin: 0;
+  font-size: 18px;
 }
