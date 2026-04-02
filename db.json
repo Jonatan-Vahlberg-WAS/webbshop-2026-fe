@@ -5,7 +5,7 @@
       "name": "Air Zoom Runner",
       "description": "Lightweight running shoes with breathable mesh.",
       "price": 120.99,
-      "image": "https://source.unsplash.com/300x300/?sneakers,running",
+      "image": "https://placehold.co/400x400",
       "dropDate": "2026-04-05",
       "status": "upcoming"
     },
@@ -14,7 +14,7 @@
       "name": "StreetFlex High",
       "description": "Casual sneakers perfect for daily wear.",
       "price": 89.5,
-      "image": "https://source.unsplash.com/300x300/?sneakers,casual",
+      "image": "https://placehold.co/400x400",
       "dropDate": "2026-03-20",
       "status": "live"
     },
@@ -23,7 +23,7 @@
       "name": "TrailBlazer XT",
       "description": "Rugged trail shoes designed for outdoor adventures.",
       "price": 135.0,
-      "image": "https://source.unsplash.com/300x300/?hiking,shoes",
+      "image": "https://placehold.co/400x400",
       "dropDate": "2026-03-01",
       "status": "sold out"
     }
