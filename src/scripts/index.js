@@ -58,18 +58,37 @@ function createProductCard(product) {
         <div class="product-card__image-placeholder">👟</div>
         </div>`;
 
+  let statusButton; 
+
+  if (product.status === "upcoming") {
+    statusButton = `<p>Drop in: ${product.dropDate}</p>`
+  } else if(product.status === "live") {
+    statusButton = `<button class="status-btn">Add to Cart</button>`
+  } else {
+    statusButton = `<button class="status-btn" disabled>Sold Out</button>`
+  }
+  
+
+
   element.innerHTML = `
     ${imageSection}
     <div class="product-card__body">
       <h3>${product.name}</h3>
       <p class="product-card__price">$${product.price.toFixed(2)}</p>
-      <button class="add-to-cart-btn">Add to Cart</button>
+      ${statusButton}
     </div>
   `;
 
-  element.querySelector(".add-to-cart-btn").addEventListener("click", () => {
-    alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
-  });
+  const btn = element.querySelector(".status-btn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
+    });
+  }
+
+  // element.querySelector(".status-btn").addEventListener("click", () => {
+  //   alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
+  // });
 
   return element;
 }
