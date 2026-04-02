@@ -1,4 +1,4 @@
-import { getProducts } from "../utils/productsApi.js";
+import { getProducts } from "../utils/api.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
@@ -18,6 +18,7 @@ async function loadProducts() {
 
   try {
     const products = await getProducts();
+    console.log(products);
     productsContainer.innerHTML = "";
 
     const toRender = products.length > 0 ? products : TEMP_PRODUCTS;
