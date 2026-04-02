@@ -57,6 +57,7 @@ function createProductCard(product) {
         <span class="status-badge">${product.status}</span>
         <div class="product-card__image-placeholder">👟</div>
         </div>`;
+        // Remove emoji placeholder later
 
   let statusButton; 
 
@@ -67,8 +68,6 @@ function createProductCard(product) {
   } else {
     statusButton = `<button class="status-btn" disabled>Sold Out</button>`
   }
-  
-
 
   element.innerHTML = `
     ${imageSection}
@@ -85,10 +84,6 @@ function createProductCard(product) {
       alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
     });
   }
-
-  // element.querySelector(".status-btn").addEventListener("click", () => {
-  //   alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
-  // });
 
   return element;
 }
