@@ -18,13 +18,16 @@ function initRegister() {
   });
 }
 
-async function handleRegister() {
+//alert för fältvalidering
+function validateFields() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
   if (!name || !email || !password) {
     alert("Alla fält måste fyllas i");
-    return;
+    return false;
   }
+
+  return { name, email, password };
 }
