@@ -32,6 +32,7 @@ function validateFields() {
   return { name, email, password };
 }
 
+// Registrera användare
 function registerUser() {
   const data = validateFields();
   if (!data) return;
