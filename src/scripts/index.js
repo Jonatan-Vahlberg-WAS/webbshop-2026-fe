@@ -65,7 +65,7 @@ function createProductCard(product) {
   if (product.status === "upcoming") {
     statusButton = `<p>Drop in: ${product.dropDate}</p>`
   } else if(product.status === "live") {
-    statusButton = `<button class="status-btn">Add to Cart</button>`
+    statusButton = `<button class="status-btn">Buy Now</button>`
   } else {
     statusButton = `<button class="status-btn" disabled>Sold Out</button>`
   }
@@ -79,12 +79,6 @@ function createProductCard(product) {
     </div>
   `;
 
-  const btn = element.querySelector(".status-btn");
-  if (btn) {
-    btn.addEventListener("click", () => {
-      alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
-    });
-  }
   //Navigates to the product detail page
   element.addEventListener("click", () => goToProduct(product.id));
 
