@@ -2,10 +2,19 @@ document.addEventListener("DOMContentLoaded", initRegister);
 
 function initRegister() {
   const registerForm = document.getElementById("registerForm");
+  const skapaKontoLink = document.querySelector(".skapa-konto");
+  const loginButton = registerForm.querySelector("button[type='submit']");
 
-  registerForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    handleRegister();
+// Logga in
+  loginButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginUser();
+  });
+
+  // Skapa konto
+  skapaKontoLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    registerUser();
   });
 }
 
