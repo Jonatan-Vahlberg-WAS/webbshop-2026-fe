@@ -79,7 +79,7 @@ function registerUser() {
   }
 
   sessionStorage.setItem("loggedIn", JSON.stringify(existingUser));
-  //alert(`Välkommen ${existingUser.name}!`); lägg till den inför profil
+  alert(`Välkommen ${existingUser.name}!`);
   
-  window.location.href = "map.html";//länka till profil sidan när den är klar sen
+  window.location.href = "profil.html";
   }
