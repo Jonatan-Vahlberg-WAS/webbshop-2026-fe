@@ -73,4 +73,9 @@ function registerUser() {
     (u) => u.email === email && u.password === password
   );
 
+  if (!existingUser) {
+    alert("Fel email eller lösenord");
+    return;
+  }
+
   }
