@@ -44,7 +44,7 @@ function registerUser() {
     alert("Det finns redan ett konto med denna email");
     return;
   }
-
+  
   const newUser = {
     id: Date.now(),
     name,
@@ -52,4 +52,8 @@ function registerUser() {
     password,
   };
 
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Konto skapat! Du kan nu logga in.");
   }
