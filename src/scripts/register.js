@@ -9,12 +9,13 @@ function initRegister() {
   });
 }
 
-function handleRegister() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+async function handleRegister() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  // TODO: Call register API when backend is ready
-  console.log("Register:", { name, email });
-  alert("Registration functionality not implemented yet");
+  if (!name || !email || !password) {
+    alert("Alla fält måste fyllas i");
+    return;
+  }
 }
