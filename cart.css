@@ -172,27 +172,7 @@
     flex: 1;
 }
 
-/* Payment Tabs */
-.payment-tabs {
-    display: flex;
-    margin-bottom: 1rem;
-}
 
-.tab {
-    flex: 1;
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border: 1px solid #ccc;
-    background: #fff;
-    cursor: pointer;
-}
-
-.tab.active {
-    background: #333;
-    color: #fff;
-    border-color: #333;
-}
 
 /* Confirm Button */
 .confirm-btn {
@@ -214,4 +194,8 @@
 
 .confirm-btn:hover {
     background: #555;
+}
+
+.confirm-wrap {
+    margin-top: 1.5rem;
 }
