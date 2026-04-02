@@ -12,129 +12,103 @@
 
     <!-- HEADER -->
     <header class="site-header">
-        <a href="index.html" class="logo">SOLE SEARCH</a>
         <nav>
-        <a href="products.html">Products</a>
-        <a href="cart.html">Cart</a>
-        <a href="auth.html">Login</a>
-        <a href="admin.html">Admin</a>
+            <a href="index.html" class="logo">SOLE SEARCH</a>
+            <ul class="nav-links">
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="auth.html">Login</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            </ul>
         </nav>
     </header>
 
-    <!-- MAIN -->
-    <main class="cart-main">
 
-        <div class="cart-heading">
-        <span class="back-link"><a href="products.html">← Continue Shopping</a></span>
-        <h1 class="section-title">Your Cart</h1>
-        </div>
+    <div class="cart-layout"> <!-- Container for left and right panels -->
+        <!-- LEFT PANEL -->
+        <aside class="left-panel">
+            <a class="back-link" href="products.html">← Continue Shopping</a>
 
-        <div class="cart-layout">
-
-        <!-- LEFT: Cart Items -->
-        <section class="cart-items">
-
-            <div class="cart-table-header">
-            <span>Item</span>
-            <span>Size</span>
-            <span>Price</span>
-            <span>Qty</span>
-            <span>Total</span>
-            <span></span>
+            <h1 class="section-title">Your<br>Selection</h1>
+        
+            <div class="product-img">[Shoe Image]</div>
+        
+            <div class="product-row">
+                <span class="product-name">Product Name</span>
+                <span class="product-price">price 943.42 kr</span>
             </div>
-
-            <!-- Item Row -->
-            <div class="cart-row">
-            <div class="cart-item-info">
-                <div class="cart-item-img">[Img]</div>
-                <div>
-                <p class="cart-item-name">AJ1 Retro '85</p>
-                <p class="cart-item-meta">Neutral Grey</p>
-                </div>
+            <p class="product-size">Size: 10 US</p>
+        
+            <div class="order-summary">
+                <div class="summary-row"><span>Subtotal</span><span>850.00 kr</span></div>
+                <!-- <div class="summary-row shipping"><span>Shipping</span><span>$25.00</span></div> skip for now -->
+                <div class="summary-row"><span>Taxes</span><span>68.42 kr</span></div>
             </div>
-            <span class="cart-item-size">11 US</span>
-            <span class="cart-item-price">$850.00</span>
-            <div class="cart-qty">
-                <button class="qty-btn">−</button>
-                <span class="qty-val">1</span>
-                <button class="qty-btn">+</button>
-            </div>
-            <span class="cart-item-total">$price</span>
-            <button class="remove-btn">✕</button>
-            </div>
-
-            <!-- Item Row -->
-            <div class="cart-row">
-            <div class="cart-item-info">
-                <div class="cart-item-img">[Img]</div>
-                <div>
-                <p class="cart-item-name">Dunk Low '77</p>
-                <p class="cart-item-meta">Panda / Black White</p>
-                </div>
-            </div>
-            <span class="cart-item-size">10 US</span>
-            <span class="cart-item-price">$420.00</span>
-            <div class="cart-qty">
-                <button class="qty-btn">−</button>
-                <span class="qty-val">1</span>
-                <button class="qty-btn">+</button>
-            </div>
-            <span class="cart-item-total">$420.00</span>
-            <button class="remove-btn">✕</button>
-            </div>
-
-            <!-- Empty state (hidden by default) -->
-            <div class="cart-empty hidden" id="cart-empty">
-            <p>Your cart is empty.</p>
-            <a href="products.html" class="btn btn--outline">Browse Drops</a>
-            </div>
-
-        </section>
-
-        <!-- RIGHT: Order Summary -->
-        <aside class="cart-summary">
-            <div class="summary-header">Order Summary</div>
-
-            <div class="summary-row">
-            <span>Subtotal</span>
-            <span>$1,270.00</span>
-            </div>
-            <div class="summary-row shipping">
-            <span>Shipping</span>
-            <span>$25.00</span>
-            </div>
-            <div class="summary-row">
-            <span>Taxes (est.)</span>
-            <span>$102.67</span>
-            </div>
-            <div class="summary-row total">
-            <span>Total Due</span>
-            <span>$1,397.67</span>
-            </div>
-
-            <div class="promo-group">
-            <label>Promo Code</label>
-            <div class="promo-input-row">
-                <input type="text" placeholder="ENTER CODE" />
-                <button class="btn btn--outline promo-apply">Apply</button>
-            </div>
-            </div>
-
-            <a href="checkout.html" class="btn btn--primary checkout-btn">
-            Proceed to Checkout →
-            </a>
-
-            <div class="trust-badges">
-            <span>256-bit Encrypted</span>
-            <span>Curated Authenticity</span>
-            <span>Global White Glove Logistics</span>
+        
+            <div class="summary-total">
+                <span>Total Due</span>
+                <span>943.42 kr</span>
             </div>
         </aside>
+    
+        <!-- Main purchase panel -->
+        <main class="right-panel">
+        
+            <!-- Shipping Address -->
+            <div class="section-heading">
+                <h2>Shipping Address</h2>
+            </div>
+        
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Firstname and Lastname" />
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" placeholder="Address" />
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                <label>City</label>
+                <input type="text" placeholder="City" />
+                </div>
+                <div class="form-group">
+                <label>Postal Code</label>
+                <input type="text" placeholder="Postal Code" />
+                </div>
+            </div>
+        
+            <!-- Secure Payment -->
+            <div class="section-heading" style="margin-top: 32px;">
+                <h2>Payment</h2>
+            </div>
+        
+            <div class="payment-tabs">
+                <button class="tab active">Credit Card</button>
+            </div>
+        
+            <div class="form-group card-number-wrap">
+                <label>Card Number</label>
+                <input type="text" placeholder="0000 0000 0000 0000" />
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                <label>Expiry</label>
+                <input type="text" placeholder="MM / YY" />
+                </div>
+                <div class="form-group">
+                <label>CVC</label>
+                <input type="text" placeholder="000" />
+                </div>
+            </div>
+        
+            <button class="confirm-btn">
+                <span>Confirm Purchase</span>
+                <span>→</span>
+            </button>
+        </main>
+    </div>
 
-        </div>
-    </main>
-
-    <!-- FOOTER -->
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-content">
