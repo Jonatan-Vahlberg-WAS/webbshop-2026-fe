@@ -190,25 +190,6 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* Main Content */
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  border-radius: 20px;
-  border-color: #222;
-  border-style: solid;
-  padding: 60px;
-}
-
-.main-content h1 {
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0 0 1.5rem 0;
-  letter-spacing: -0.02em;
-}
-
 /* Hero section (homepage) - full width, non-contained
 .hero {
   width: 100%;
@@ -350,27 +331,41 @@ main {
   font-size: 1.05rem;
 }
 
-/* Register / Login forms */
+/* Logga in / Register */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 5px solid #222;
+  padding: 5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.main-content h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 1.5rem 115px;
+  letter-spacing: -0.02em;
+}
+
+/* Login forms */
 .register-wrapper,
 .login-wrapper {
   max-width: 420px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .register-form,
 .login-form {
-  background: var(--color-surface);
   padding: 2rem;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--color-border);
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1.25rem;
+  text-align: left;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
@@ -380,13 +375,12 @@ main {
 }
 
 .form-group input {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  background-color: #3a7459;
+  background-color: #6D9E74;
 }
 
 .form-group input:focus {
@@ -395,27 +389,45 @@ main {
   box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.15);
 }
 
-.register-form button[type="submit"],
-.login-form button[type="submit"] {
-  width: 100%;
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 0.85rem 1.5rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  background-color: #325B48;
-  border-radius: 20px;
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #F60404;
+  text-decoration: none;
+
 }
 
-.register-form button[type="submit"]:hover,
-.login-form button[type="submit"]:hover {
-  background: var(--color-primary-hover);
+.register-form button[type="submit"] {
+  width: 100%;
+  padding: 16px;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background-color: #325B48;
+  border-radius: 12px;
 }
+
+.register-form button[type="submit"]:hover {
+  background-color: #3d7451;
+}
+
+.skapa-konto {
+  display: block;
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #325B48;
+  text-decoration: none;
+}
+
+.skapa-konto:hover {
+  text-decoration: underline;
+}
+
 
 /* Footer */
 /* .site-footer {
