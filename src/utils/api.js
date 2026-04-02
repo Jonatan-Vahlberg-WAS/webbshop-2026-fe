@@ -24,9 +24,23 @@ export async function getProducts() {
   }
 }
 
+//Get product data from the API for a single product
+export async function getProduct(id) {
+  const url = new URL(`products/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return [];
+  }
+}
+
 //Get variant data from the API
-export async function getVariants() {
+export async function getVariant(productId) {
   const url = new URL("variants", getBaseUrl());
+  url.searchParams.append("productId", productId);
 
   try {
     const response = await axios.get(url);

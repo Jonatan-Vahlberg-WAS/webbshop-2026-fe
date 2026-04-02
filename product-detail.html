@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sole Search</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="product-detail.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav>
+        <a href="index.html" class="logo">SOLE SEARCH</a>
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="auth.html">Login</a></li>
+          <li><a href="admin.html">Admin</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="pd-nav">
+      <button class="go-back">Back</button>
+      <nav class="breadcrumb"></nav>
+    </div>
+
+    <main class="product-detail-main">
+      <div class="image-container">
+        <img src="" alt="" class="pd-image" />
+      </div>
+
+      <div class="detail-container">
+        <p class="pd-release-data">
+          <span class="release-data"></span>
+          <span class="pd-status"></span>
+        </p>
+        <h1 class="pd-name"></h1>
+        <p class="pd-description"></p>
+        <p class="pd-price"></p>
+        <div class="pd-sizes"></div>
+        <div class="pd-buttons">
+          <button class="add-to-card">Add to Cart</button>
+          <button class="add-to-wishlist">Wishlist</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 Sole Search. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- PAGE-SPECIFIC JAVASCRIPT -->
+    <script type="module" src="./src/scripts/product-detail.js"></script>
+  </body>
+</html>
