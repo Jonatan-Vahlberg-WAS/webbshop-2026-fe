@@ -1,4 +1,5 @@
 import { getProducts } from "../utils/api.js";
+import { goToProduct } from "./product-detail.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
@@ -65,6 +66,9 @@ function createProductCard(product) {
       <button class="add-to-cart-btn">Add to Cart</button>
     </div>
   `;
+
+  //Navigates to the product detail page
+  element.addEventListener("click", () => goToProduct(product.id));
 
   element.querySelector(".add-to-cart-btn").addEventListener("click", () => {
     alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
