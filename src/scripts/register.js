@@ -44,4 +44,12 @@ function registerUser() {
     alert("Det finns redan ett konto med denna email");
     return;
   }
+
+  const newUser = {
+    id: Date.now(),
+    name,
+    email,
+    password,
+  };
+
   }
