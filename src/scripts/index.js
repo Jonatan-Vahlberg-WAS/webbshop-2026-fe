@@ -3,12 +3,7 @@ import { goToProduct } from "./product-detail.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
-  { name: "Organic Tomatoes", price: 4.99, image: null },
-  { name: "Fresh Milk", price: 2.49, image: null },
-  { name: "Whole Grain Bread", price: 3.99, image: null },
-  { name: "Free Range Eggs", price: 5.49, image: null },
-  { name: "Bananas", price: 1.29, image: null },
-  { name: "Greek Yogurt", price: 3.79, image: null },
+  {id: 1, name: "Air Zoom Runner", description: "Lightweight running shoes with breathable mesh", price: 120.99, image: "https://source.unsplash.com/300x300/?sneakers,running", dropDate: "2026-04-05", status: "upcoming"}
 ];
 
 document.addEventListener("DOMContentLoaded", loadProducts);
@@ -55,24 +50,45 @@ function createProductCard(product) {
   element.className = "product-card";
 
   const imageSection = product.image
-    ? `<img class="product-card__image" src="${product.image}" alt="${product.name}" loading="lazy" />`
-    : `<div class="product-card__image-placeholder">🥬</div>`;
+    ? `<div class="image-wrapper">
+        <span class="status-badge">${product.status}</span>
+        <img class="product-card__image" src="${product.image}" alt="${product.name}" loading="lazy" />
+        </div>`
+    : `<div class="image-wrapper">
+        <span class="status-badge">${product.status}</span>
+        <div class="product-card__image-placeholder">👟</div>
+        </div>`;
+        // Remove emoji placeholder later
+
+  let statusButton; 
+
+  if (product.status === "upcoming") {
+    statusButton = `<p>Drop in: ${product.dropDate}</p>`
+  } else if(product.status === "live") {
+    statusButton = `<button class="status-btn">Add to Cart</button>`
+  } else {
+    statusButton = `<button class="status-btn" disabled>Sold Out</button>`
+  }
 
   element.innerHTML = `
     ${imageSection}
     <div class="product-card__body">
       <h3>${product.name}</h3>
       <p class="product-card__price">$${product.price.toFixed(2)}</p>
-      <button class="add-to-cart-btn">Add to Cart</button>
+      ${statusButton}
     </div>
   `;
 
+  const btn = element.querySelector(".status-btn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
+    });
+  }
   //Navigates to the product detail page
   element.addEventListener("click", () => goToProduct(product.id));
 
-  element.querySelector(".add-to-cart-btn").addEventListener("click", () => {
-    alert(`Adding ${product.name} to cart\nFunctionality not implemented yet`);
-  });
+ 
 
   return element;
 }
