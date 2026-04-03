@@ -1,70 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Hakim Livs</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="admin.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <nav>
-        <a href="index.html" class="logo">Hakim Livs</a>
-        <ul class="nav-links">
-          <li><a href="profil.html">profil</a></li>
-          <li><a href="map.html">Karta (0)</a></li>
-          <li><a href="addplant.html">Lägg till växt</a></li>
-          <li><a href="login.html">logga in</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <main class="admin-main">
-      <h1>Admin – Create Product</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PLOT TWIST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-      <form id="createProductForm" class="admin-form">
-        <div class="admin-form-row">
-          <label for="name">Name</label>
-          <input type="text" id="name" required />
-        </div>
-        <div class="admin-form-row">
-          <label for="price">Price</label>
-          <input type="number" id="price" step="0.01" min="0" required />
-        </div>
-        <div class="admin-form-row">
-          <label for="stock">Stock</label>
-          <input type="number" id="stock" min="0" required />
-        </div>
-        <div class="admin-form-row">
-          <label for="image">Image URL</label>
-          <input type="url" id="image" required />
-        </div>
-        <div class="admin-form-row">
-          <label for="slug">Slug</label>
-          <input type="text" id="slug" required placeholder="e.g. organic-tomatoes" />
-        </div>
-        <button type="submit">Create Product</button>
-      </form>
+<body>
 
-      <h2>Products</h2>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Slug</th>
-            </tr>
-          </thead>
-          <tbody id="productsTableBody">
-            <tr><td colspan="4">Loading...</td></tr>
-          </tbody>
-        </table>
+    <!-- PLot Twist - HEADER -->
+  <header class="header">
+    <div class="hero">
+      <h1 class="plot-logo">PLOT TWIST</h1>
+      <img src="logo-2.png" alt="plant" class="hero-plant" />
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="#" class="nav-link active">Hem</a>
+        <a href="#" class="nav-link">Karta</a>
+        <a href="#" class="nav-link">Lägg Till</a>
       </div>
-    </main>
 
-    <script type="module" src="./src/scripts/admin.js"></script>
-  </body>
+      <div class="nav-right">
+        <a href="#" class="nav-link">Logga in</a>
+      </div>
+    </nav>
+
+  </header>
+
+  <main class="admin-main">
+    <h1>Admin – Create Product</h1>
+
+    <form id="createProductForm" class="admin-form">
+      <div class="admin-form-row">
+        <label for="name">Name</label>
+        <input type="text" id="name" required />
+      </div>
+      <div class="admin-form-row">
+        <label for="price">Price</label>
+        <input type="number" id="price" step="0.01" min="0" required />
+      </div>
+      <div class="admin-form-row">
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" min="0" required />
+      </div>
+      <div class="admin-form-row">
+        <label for="image">Image URL</label>
+        <input type="url" id="image" required />
+      </div>
+      <div class="admin-form-row">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" required placeholder="e.g. organic-tomatoes" />
+      </div>
+      <button type="submit">Create Product</button>
+    </form>
+
+    <h2>Products</h2>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Slug</th>
+          </tr>
+        </thead>
+        <tbody id="productsTableBody">
+          <tr>
+            <td colspan="4">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+   <!-- PLot Twist - FOOTER -->
+  <footer class="plot-footer">
+
+    <!-- Top section -->
+    <div class="footer-top">
+
+      <!-- Left -->
+      <h2 class="plot-footer-logo">PLOT TWIST</h2>
+
+      <!-- Right -->
+      <div class="plot-footer-links">
+        <a href="#">Om oss</a>
+        <a href="#">Kontakt</a>
+        <a href="#">Privacy Policies</a>
+      </div>
+
+    </div>
+
+    <div class="plot-footer-bottom">
+      <p>© 2026 PLOT TWIST</p>
+    </div>
+
+  </footer>
+
+  <script type="module" src="./src/scripts/admin.js"></script>
+</body>
+
 </html>
