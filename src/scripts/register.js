@@ -1,5 +1,17 @@
 document.addEventListener("DOMContentLoaded", initRegister);
 
+//Shows the register form and hides the login form
+function showRegister() {
+  document.getElementById('login-section').classList.add('hidden')
+  document.getElementById('register-section').classList.remove('hidden')
+}
+
+function showLogin() {
+  document.getElementById('register-section').classList.add('hidden')
+  document.getElementById('login-section').classList.remove('hidden')
+}
+
+// Initializes event listeners for the registration form
 function initRegister() {
   // form submit
   const registerForm = document.getElementById("registerForm");
@@ -20,6 +32,7 @@ function initRegister() {
     .addEventListener("input", checkPasswordRules);
 }
 
+// Checks password rules and updates the UI indicators
 function checkPasswordRules() {
   const password = document.getElementById("register-password").value;
 
@@ -40,7 +53,7 @@ function checkPasswordRules() {
   }
 }
 
-
+// Validates input and registers the user
 async function handleRegister() {
   const name = document.getElementById("register-name").value.trim();
   const email = document.getElementById("register-email").value.trim();
@@ -82,15 +95,18 @@ async function handleRegister() {
       return;
     }
 
-    const response = await axios.post("http://localhost:3000/users", {
+    // Create new user
+    await axios.post("http://localhost:3000/users", {
       name,
       email,
       password,
       isAdmin: false,
     });
 
-    localStorage.setItem("user", JSON.stringify(response.data));
-    window.location.href = "index.html";
+    // After successful registration, show the login form with a success message
+    showLogin()
+    document.getElementById('login-error').textContent = 
+      'Account created! Now you can log in.'
 
   } catch (error) {
     if (error.response?.data?.message) {
