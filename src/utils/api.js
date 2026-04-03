@@ -37,7 +37,20 @@ export async function getProduct(id) {
   }
 }
 
-//Get variant data from the API
+//Get variants data from the API
+export async function getVariants() {
+  const url = new URL("variants", getBaseUrl());
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("API error:", error);
+    return [];
+  }
+}
+
+//Get variant data from the API for a single product
 export async function getVariant(productId) {
   const url = new URL("variants", getBaseUrl());
   url.searchParams.append("productId", productId);
