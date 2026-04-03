@@ -1,42 +1,52 @@
-import { getProducts, createProduct } from "../utils/productsApi.js";
+import { getProducts, getVariants, getUsers, getOrders } from "../utils/api.js";
 
-const form = document.getElementById("createProductForm");
-const tbody = document.getElementById("productsTableBody");
+//Function to view all products
+async function renderProductTable() {
+  const products = await getProducts();
+  const variants = await getVariants();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const price = parseFloat(document.getElementById("price").value);
-  const stock = parseInt(document.getElementById("stock").value, 10);
-  const image = document.getElementById("image").value.trim();
-  const slug = document.getElementById("slug").value.trim();
+  const productList = document.querySelector(".admin-products");
 
-  try {
-    await createProduct({ name, price, stock, image, slug });
-    form.reset();
-    loadProducts();
-  } catch (err) {
-    alert(err.message || "Failed to create product");
-  }
-});
+  variants.forEach((variant) => {
+    const product = products.find(
+      (p) => Number(p.id) === Number(variant.productId),
+    );
 
-async function loadProducts() {
-  tbody.innerHTML = "<tr><td colspan=\"4\">Loading...</td></tr>";
-  try {
-    const products = await getProducts();
-    if (products.length === 0) {
-      tbody.innerHTML = "<tr><td colspan=\"4\">No products yet.</td></tr>";
-      return;
+    const tr = document.createElement("tr");
+    const name = document.createElement("th");
+    const price = document.createElement("th");
+    const size = document.createElement("th");
+    const stock = document.createElement("th");
+    const dropStatus = document.createElement("th");
+    const actions = document.createElement("th");
+
+    name.innerText = product.name;
+    price.innerText = `$${product.price}`;
+    size.innerText = variant.size;
+    stock.innerText = variant.stock;
+    dropStatus.innerText = product.status;
+
+    //Give stock colors depending on stock value
+    if (variant.stock === 0) {
+      stock.style.color = "red";
+    } else if (variant.stock <= 5) {
+      stock.style.color = "orange"; // low stock
+    } else {
+      stock.style.color = "green"; // plenty in stock
     }
-    tbody.innerHTML = products
-      .map(
-        (p) =>
-          `<tr><td>${p.name}</td><td>$${Number(p.price).toFixed(2)}</td><td>${p.stock}</td><td>${p.slug}</td></tr>`
-      )
-      .join("");
-  } catch {
-    tbody.innerHTML = "<tr><td colspan=\"4\">Failed to load products.</td></tr>";
-  }
+
+    const edit = document.createElement("button");
+    edit.innerText = "Edit";
+    actions.append(edit);
+
+    tr.append(name, price, size, stock, dropStatus, actions);
+    productList.append(tr);
+  });
 }
 
-document.addEventListener("DOMContentLoaded", loadProducts);
+//To run all functions when the page loads
+function onPageLoad() {
+  renderProductTable();
+}
+
+onPageLoad();
