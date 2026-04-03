@@ -21,6 +21,7 @@ function showTempProducts(productsContainer) {
   });
 }
 
+// Fetch products from API, fallback to temp data if unavailable 
 async function loadProducts() {
   const productsContainer = document.getElementById("products");
   productsContainer.innerHTML = "<p>Loading products...</p>";
@@ -51,36 +52,64 @@ function createProductCard(product) {
   const element = document.createElement("div");
   element.className = "product-card";
 
-  const imageSection = product.image
-    ? `<div class="image-wrapper">
-        <span class="status-badge">${product.status}</span>
-        <img class="product-card__image" src="${product.image}" alt="${product.name}" loading="lazy" />
-        </div>`
-    : `<div class="image-wrapper">
-        <span class="status-badge">${product.status}</span>
-        <div class="product-card__image-placeholder">👟</div>
-        </div>`;
-        // Remove emoji placeholder later
+  const imageSection = document.createElement("div");
+  imageSection.className = "image-wrapper";
 
-  let statusButton; 
+  const badge = document.createElement("span");
+  badge.className = "status-badge";
+  badge.textContent = product.status;
 
-  if (product.status === "upcoming") {
-    statusButton = `<p>Drop in: ${product.dropDate}</p>`
-  } else if(product.status === "live") {
-    statusButton = `<button class="status-btn">Buy Now</button>`
+  imageSection.appendChild(badge);
+
+  if (product.image) {
+    const image = document.createElement("img");
+    image.className = "product-card__image";
+    image.src = product.image;
+    image.alt = product.name;
+    image.loading = "lazy";
+
+    imageSection.appendChild(image);
+    
   } else {
-    statusButton = `<button class="status-btn" disabled>Sold Out</button>`
+    const image = document.createElement("div");
+    image.className = "product-card__image-placeholder";
+    image.textContent = "👟";
+
+    imageSection.appendChild(image);
   }
 
-  //Update price from $ to kr later?
-  element.innerHTML = `
-    ${imageSection}
-    <div class="product-card__body">
-      <h3>${product.name}</h3>
-      <p class="product-card__price">$${product.price.toFixed(2)}</p>
-      ${statusButton}
-    </div>
-  `;
+  
+  let statusElement; 
+
+  if (product.status === "upcoming") {
+    statusElement = document.createElement("p");
+    statusElement.className = "drop-timer"; 
+    statusElement.textContent = `Drop in: ${product.dropDate}`; //TODO: Replace with countdown timer
+  } else if(product.status === "live") {
+    statusElement = document.createElement("button");
+    statusElement.className = "status-btn";
+    statusElement.textContent = `Buy Now`;
+  } else {
+    statusElement= document.createElement("button");
+    statusElement.className = "status-btn";
+    statusElement.disabled = true;
+    statusElement.textContent = `Sold Out`;
+  }
+
+  const productCard = document.createElement("div");
+  productCard.className = "product-card__body";
+
+  const h3 = document.createElement("h3");
+  h3.textContent = product.name;
+  const p = document.createElement("p");
+  p.className = "product-card__price";
+  p.textContent = `$${product.price.toFixed(2)}`;
+  productCard.appendChild(h3);
+  productCard.appendChild(p);
+  productCard.appendChild(statusElement);
+
+  element.appendChild(imageSection);
+  element.appendChild(productCard);
 
   //Navigates to the product detail page
   element.addEventListener("click", () => goToProduct(product.id));
