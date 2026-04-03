@@ -3,10 +3,23 @@ import { goToProduct } from "./product-detail.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
-  {id: 1, name: "Air Zoom Runner", description: "Lightweight running shoes with breathable mesh", price: 120.99, image: "https://source.unsplash.com/300x300/?sneakers,running", dropDate: "2026-04-05", status: "upcoming"}
+  { id: 1, name: "Air Zoom Runner", description: "Lightweight running shoes with breathable mesh.", price: 120.99, image: "https://placehold.co/400x400", dropDate: "2026-04-05", status: "upcoming" },
+  { id: 2, name: "StreetFlex High", description: "Casual sneakers perfect for daily wear.", price: 89.5, image: "https://placehold.co/400x400", dropDate: "2026-03-20", status: "live" },
+  { id: 3, name: "TrailBlazer XT", description: "Rugged trail shoes designed for outdoor adventures.", price: 135.0, image: "https://placehold.co/400x400", dropDate: "2026-03-01", status: "sold out" }
 ];
 
 document.addEventListener("DOMContentLoaded", loadProducts);
+
+function showTempProducts(productsContainer) {
+  productsContainer.dataset.temp = "true";
+  const notice = document.createElement("p");
+  notice.className = "temp-notice";
+  notice.textContent = "Showing demo products (backend unavailable)";
+  productsContainer.appendChild(notice);
+  TEMP_PRODUCTS.forEach((product) => {
+    productsContainer.appendChild(createProductCard(product));
+  });
+}
 
 async function loadProducts() {
   const productsContainer = document.getElementById("products");
@@ -17,30 +30,19 @@ async function loadProducts() {
     console.log(products);
     productsContainer.innerHTML = "";
 
-    const toRender = products.length > 0 ? products : TEMP_PRODUCTS;
     if (products.length === 0) {
-      productsContainer.dataset.temp = "true";
-      const notice = document.createElement("p");
-      notice.className = "temp-notice";
-      notice.textContent = "Showing demo products (backend unavailable)";
-      productsContainer.appendChild(notice);
+      showTempProducts(productsContainer);
+    } else {
+      products.forEach((product) => {
+        const card = createProductCard(product);
+        productsContainer.appendChild(card);
+      }); 
     }
 
-    toRender.forEach((product) => {
-      const productCard = createProductCard(product);
-      productsContainer.appendChild(productCard);
-    });
   } catch (error) {
     console.error("Error fetching products:", error);
     productsContainer.innerHTML = "";
-    productsContainer.dataset.temp = "true";
-    const notice = document.createElement("p");
-    notice.className = "temp-notice";
-    notice.textContent = "Showing demo products (backend unavailable)";
-    productsContainer.appendChild(notice);
-    TEMP_PRODUCTS.forEach((product) => {
-      productsContainer.appendChild(createProductCard(product));
-    });
+    showTempProducts(productsContainer);
   }
 }
 
@@ -70,6 +72,7 @@ function createProductCard(product) {
     statusButton = `<button class="status-btn" disabled>Sold Out</button>`
   }
 
+  //Update price from $ to kr later?
   element.innerHTML = `
     ${imageSection}
     <div class="product-card__body">
@@ -81,8 +84,6 @@ function createProductCard(product) {
 
   //Navigates to the product detail page
   element.addEventListener("click", () => goToProduct(product.id));
-
- 
 
   return element;
 }
