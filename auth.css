@@ -165,3 +165,51 @@
     color: #333;
     font-weight: 600;
 }
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrap input {
+    flex: 1;
+}
+
+.toggle-pw {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 0.25rem;
+    color: #666;
+}
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrap input {
+    flex: 1;
+    padding-right: 2rem;
+}
+
+.toggle-pw {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666;
+    padding: 0 0.25rem;
+}
+
+.pw-requirements li {
+    color: red;
+    font-size: 0.75rem;
+}
