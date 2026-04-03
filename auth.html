@@ -49,6 +49,7 @@
             <div class="form-group" id="login-password-group">
               <label for="login-password">Password</label>
               <input type="password" id="login-password" name="password" required />
+              <button type="button" class="toggle-pw" id="toggle-login-password">👀</button>
             </div>
 
 <!-- skip this for now will implement later if we have time-->
@@ -96,9 +97,14 @@
 
             <div class="form-group" id="register-password-group">
               <label for="register-password">Password</label>
-              <input type="password" id="register-password" name="password" required />
-              <class="pw-requirements" id="pw-requirements">
-                <li id="req-length">Minimum 8 characters</li> 
+              <div class="input-wrap">
+                <input type="password" id="register-password" name="password" required />
+                <button type="button" class="toggle-pw" id="toggle-register-password">👀
+
+                </button>
+              </div>
+              <ul class="pw-requirements" id="pw-requirements">
+                <li id="req-length">Minimum 8 characters</li>
                 <li id="req-upper">At least one capital letter</li>
                 <li id="req-number">At least one number</li>
                 <li id="req-special">At least one special character (! @ # $ % & *)</li>
@@ -107,14 +113,10 @@
 
             <div class="form-group" id="register-confirm-group">
               <label for="register-confirm">Confirm Password</label>
-              <input type="password" id="register-confirm" name="confirmPassword" required />
-            </div>
-
-            <div class="form-group form-group--inline" id="register-terms-group">
-              <!-- <input type="checkbox" id="terms" name="terms" required /> -->
-              <!-- <label for="terms">
-                I accept the security protocols and digital governance of Sole Search. Data is encrypted via local vault.
-              </label> -->
+              <div class="input-wrap">
+                <input type="password" id="register-confirm" name="confirmPassword" required />
+                <button type="button" class="toggle-pw" id="toggle-register-confirm">👀</button>
+              </div>
             </div>
 
             <p class="auth-error-msg" id="register-error"></p>
@@ -125,7 +127,7 @@
 
           <p class="auth-switch-link" id="register-switch">
             Already have an account?
-            <a href="#" id="go-to-login-btn" onclick="showLogin()">Login</a>
+            <a href="auth.html" id="go-to-login-btn" onclick="showLogin()">Login</a>
           </p>
         </div>
       </section>
