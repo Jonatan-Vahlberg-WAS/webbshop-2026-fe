@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register - Hakim Livs</title>
+    <title>Logga in</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -13,21 +13,26 @@
       <nav>
         <a href="index.html" class="logo">Hakim Livs</a>
         <ul class="nav-links">
-          <li><a href="products.html">Products</a></li>
-          <li><a href="cart.html">Cart (0)</a></li>
-          <li><a href="register.html">Register</a></li>
-          <li><a href="admin.html">Admin</a></li>
+          <li><a href="profil.html">Profil</a></li>
+          <li><a href="map.html">Karta</a></li>
+          <li><a href="addplant.html">Lägg till växt</a></li>
+          <li><a href="login.html">Logga in</a></li>
+
         </ul>
       </nav>
     </header>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-      <h1>Register</h1>
+      <h1>Logga in</h1>
       <div id="register-container" class="register-wrapper">
         <form id="registerForm" class="register-form">
+          
+          <img src="logo-2.png" class="form-img-top-right">
+          <img src="logo-2.png" class="form-img-bottom-left">
+
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Namn</label>
             <input type="text" id="name" required />
           </div>
           <div class="form-group">
@@ -35,10 +40,12 @@
             <input type="email" id="email" required />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Lösenord</label>
             <input type="password" id="password" required />
           </div>
-          <button type="submit">Register</button>
+          <a class="forgot-password" href="#">Glömt lösenord?</a>
+          <button type="submit">Logga in</button>
+          <a class="skapa-konto" href="#">Skapa konto</a>
         </form>
       </div>
     </main>
@@ -55,6 +62,6 @@
       </div>
     </footer>
 
-    <script type="module" src="./src/scripts/register.js"></script>
+    <script type="module" src="./src/scripts/login.js"></script>
   </body>
 </html>
