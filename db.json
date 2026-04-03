@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Air Zoom Runner",
       "description": "Lightweight running shoes with breathable mesh.",
       "price": 120.99,
@@ -10,7 +10,7 @@
       "status": "upcoming"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "StreetFlex High",
       "description": "Casual sneakers perfect for daily wear.",
       "price": 89.5,
@@ -19,93 +19,49 @@
       "status": "live"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "TrailBlazer XT",
       "description": "Rugged trail shoes designed for outdoor adventures.",
-      "price": 135,
+      "price": 135.0,
       "image": "https://placehold.co/400x400",
       "dropDate": "2026-03-01",
       "status": "sold out"
     }
   ],
   "variants": [
-    {
-      "id": "1",
-      "productId": 1,
-      "size": 8,
-      "stock": 10
-    },
-    {
-      "id": "2",
-      "productId": 1,
-      "size": 9,
-      "stock": 15
-    },
-    {
-      "id": "3",
-      "productId": 2,
-      "size": 8,
-      "stock": 5
-    },
-    {
-      "id": "4",
-      "productId": 2,
-      "size": 10,
-      "stock": 8
-    },
-    {
-      "id": "5",
-      "productId": 3,
-      "size": 9,
-      "stock": 0
-    },
-    {
-      "id": "6",
-      "productId": 3,
-      "size": 10,
-      "stock": 0
-    }
+    { "id": 1, "productId": 1, "size": 8, "stock": 10 },
+    { "id": 2, "productId": 1, "size": 9, "stock": 15 },
+    { "id": 3, "productId": 2, "size": 8, "stock": 5 },
+    { "id": 4, "productId": 2, "size": 10, "stock": 8 },
+    { "id": 5, "productId": 3, "size": 9, "stock": 0 },
+    { "id": 6, "productId": 3, "size": 10, "stock": 0 }
   ],
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Alice Johnson",
       "email": "alice@example.com",
       "password": "alice123",
       "isAdmin": true
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Bob Smith",
       "email": "bob@example.com",
       "password": "bob123",
       "isAdmin": false
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Charlie Lee",
       "email": "charlie@example.com",
       "password": "charlie123",
-      "isAdmin": false
-    },
-    {
-      "id": "3276",
-      "name": "์Nana Vava",
-      "email": "nana.vava@hotmail.com",
-      "password": "123456@N",
-      "isAdmin": false
-    },
-    {
-      "id": "dfa9",
-      "name": "Love St",
-      "email": "love.st@hotmail.com",
-      "password": "Love1234@",
       "isAdmin": false
     }
   ],
   "orders": [
     {
-      "id": "1",
+      "id": 1,
       "userId": 2,
       "productId": 2,
       "variantId": 3,
@@ -114,7 +70,7 @@
       "createdAt": "2026-03-21T14:35:00Z"
     },
     {
-      "id": "2",
+      "id": 2,
       "userId": 3,
       "productId": 2,
       "variantId": 4,
@@ -123,7 +79,7 @@
       "createdAt": "2026-03-22T10:20:00Z"
     },
     {
-      "id": "3",
+      "id": 3,
       "userId": 2,
       "productId": 3,
       "variantId": 5,
