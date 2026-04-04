@@ -109,23 +109,6 @@ function isAdmin() {
     return user ? user.isAdmin : false
 }
 
-// navbar update function to show/hide links based on login status and role
-function updateNavbar() {
-    const user      = getCurrentUser()
-    const loginLink = document.getElementById('nav-login')
-    const adminLink = document.getElementById('nav-admin')
-
-    if (user) {
-        // logged in — แสดง email แทน username
-        if (loginLink) loginLink.style.display = 'none'
-        if (adminLink) adminLink.style.display = user.isAdmin ? 'inline' : 'none'
-    } else {
-        // not logged in
-        if (loginLink) loginLink.style.display = 'inline'
-        if (adminLink) adminLink.style.display = 'none'
-    }
-}
-
 // toggle password visibility function for both login and register forms
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId)
@@ -135,5 +118,23 @@ function togglePassword(inputId, btn) {
     } else {
         input.type = 'password'
         btn.textContent = '👀'
+    }
+}
+
+// after successful login or logout, call updateNavbar to refresh the links (for permanent navbar, will remove it after user profile is implemented)
+function updateNavbar() {
+    const user      = getCurrentUser()
+    const loginLink = document.getElementById('nav-login')
+    const adminLink = document.getElementById('nav-admin')
+    const logoutBtn = document.getElementById('nav-logout')
+
+    if (user) {
+        if (loginLink) loginLink.style.display = 'none'
+        if (logoutBtn) logoutBtn.style.display = 'inline'
+        if (adminLink) adminLink.style.display = user.isAdmin ? 'inline' : 'none'
+    } else {
+        if (loginLink) loginLink.style.display = 'inline'
+        if (logoutBtn) logoutBtn.style.display = 'none'
+        if (adminLink) adminLink.style.display = 'none'
     }
 }
