@@ -127,14 +127,19 @@ function updateNavbar() {
     const loginLink = document.getElementById('nav-login')
     const adminLink = document.getElementById('nav-admin')
     const logoutBtn = document.getElementById('nav-logout')
+    const navStatus = document.getElementById('nav-status')
 
     if (user) {
         if (loginLink) loginLink.style.display = 'none'
         if (logoutBtn) logoutBtn.style.display = 'inline'
+        if (navStatus) navStatus.style.display = 'inline'
+        // Show admin link only for admin users
         if (adminLink) adminLink.style.display = user.isAdmin ? 'inline' : 'none'
     } else {
         if (loginLink) loginLink.style.display = 'inline'
         if (logoutBtn) logoutBtn.style.display = 'none'
+        // Admin link should be hidden for non-logged in users, but we also want to make sure it's hidden when a user logs out
         if (adminLink) adminLink.style.display = 'none'
+        if (navStatus) navStatus.style.display = 'none'
     }
 }
