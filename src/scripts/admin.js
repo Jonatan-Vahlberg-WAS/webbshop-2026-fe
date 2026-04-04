@@ -16,7 +16,7 @@ async function fetchData() {
 }
 
 //Function to view all products
-async function renderProductTable(products, variants) {
+function renderProductTable(products, variants) {
   const productList = document.querySelector(".admin-products-tbody");
 
   variants.forEach((variant) => {
@@ -57,7 +57,7 @@ async function renderProductTable(products, variants) {
 }
 
 //function to view all users
-async function renderUserTable(users, orders) {
+function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
 
   users.forEach((user) => {
@@ -87,7 +87,7 @@ async function renderUserTable(users, orders) {
 }
 
 //function to view all orders
-async function renderOrderTable(products, variants, users, orders) {
+function renderOrderTable(products, variants, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
   orders.forEach((order) => {
@@ -134,6 +134,35 @@ async function renderOrderTable(products, variants, users, orders) {
   });
 }
 
+//Function that shows stats
+function renderStats(products, orders) {
+  const VAT_RATE = 0.25;
+  const netRevenue = orders.reduce((sum, order) => {
+    const product = products.find(
+      (p) => Number(p.id) === Number(order.productId),
+    );
+
+    return sum + Number(product.price) / (1 + VAT_RATE);
+  }, 0);
+  const activeProducts = products.filter((p) => {
+    return p.status === "live";
+  });
+  const shipped = orders.filter((o) => o.status === "shipped");
+  const pending = orders.filter((o) => o.status === "pending");
+
+  const totalRevenue = document.querySelector(".stat-revenue");
+  const activeDrops = document.querySelector(".stat-active-drops");
+  const totalOrders = document.querySelector(".stat-total-orders");
+  const shippedOrders = document.querySelector(".stat-shipped-orders");
+  const pendingOrders = document.querySelector(".stat-pending-orders");
+
+  totalRevenue.innerText = netRevenue;
+  activeDrops.innerText = activeProducts.length;
+  totalOrders.innerText = orders.length;
+  shippedOrders.innerText = shipped.length;
+  pendingOrders.innerText = pending.length;
+}
+
 //Fetches all data and uses them as parameters for the render functions and runs render functions when the page loads
 async function onPageLoad() {
   const { products, variants, users, orders } = await fetchData();
@@ -141,6 +170,7 @@ async function onPageLoad() {
   renderProductTable(products, variants);
   renderUserTable(users, orders);
   renderOrderTable(products, variants, users, orders);
+  renderStats(products, orders);
 }
 
 onPageLoad();
