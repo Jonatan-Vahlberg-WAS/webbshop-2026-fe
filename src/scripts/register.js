@@ -1,4 +1,7 @@
-document.addEventListener("DOMContentLoaded", initRegister);
+document.addEventListener('DOMContentLoaded', () => {
+  initRegister()
+  initLogin()      // from auth.js
+})
 
 //Shows the register form and hides the login form
 function showRegister() {
