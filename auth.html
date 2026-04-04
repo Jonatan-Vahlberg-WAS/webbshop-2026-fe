@@ -55,8 +55,11 @@
 
             <div class="form-group" id="login-password-group">
               <label for="login-password">Password</label>
-              <input type="password" id="login-password" name="password" required />
-              <button type="button" class="toggle-pw" id="toggle-login-password">👀</button>
+              <div class="input-wrap">
+                <input type="password" id="login-password" name="password"
+                  autocomplete="current-password" required />
+                <button type="button" class="toggle-pw" id="toggle-login-password">Show</button>
+              </div>
             </div>
 
 <!-- skip this for now will implement later if we have time-->
@@ -106,9 +109,7 @@
               <label for="register-password">Password</label>
               <div class="input-wrap">
                 <input type="password" id="register-password" name="password" required />
-                <button type="button" class="toggle-pw" id="toggle-register-password">👀
-
-                </button>
+                <button type="button" class="toggle-pw" id="toggle-register-password">Show</button>
               </div>
               <ul class="pw-requirements" id="pw-requirements">
                 <li id="req-length">Minimum 8 characters</li>
@@ -122,7 +123,7 @@
               <label for="register-confirm">Confirm Password</label>
               <div class="input-wrap">
                 <input type="password" id="register-confirm" name="confirmPassword" required />
-                <button type="button" class="toggle-pw" id="toggle-register-confirm">👀</button>
+                <button type="button" class="toggle-pw" id="toggle-register-confirm">Show</button>
               </div>
             </div>
 
