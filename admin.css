@@ -92,3 +92,15 @@
 .admin-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+.stat-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-display p {
+  margin: 0;
+}
