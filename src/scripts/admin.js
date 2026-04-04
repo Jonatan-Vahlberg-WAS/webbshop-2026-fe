@@ -1,10 +1,22 @@
 import { getProducts, getVariants, getUsers, getOrders } from "../utils/api.js";
 
-//Function to view all products
-async function renderProductTable() {
+//Function that fetches all data, instead of having to fetch data in each render function
+async function fetchData() {
   const products = await getProducts();
   const variants = await getVariants();
+  const users = await getUsers();
+  const orders = await getOrders();
 
+  return {
+    products,
+    variants,
+    users,
+    orders,
+  };
+}
+
+//Function to view all products
+async function renderProductTable(products, variants) {
   const productList = document.querySelector(".admin-products-tbody");
 
   variants.forEach((variant) => {
@@ -43,10 +55,9 @@ async function renderProductTable() {
     productList.append(tr);
   });
 }
-async function renderUserTable() {
-  const users = await getUsers();
-  const orders = await getOrders();
 
+//function to view all users
+async function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
 
   users.forEach((user) => {
@@ -75,10 +86,61 @@ async function renderUserTable() {
   });
 }
 
-//To run all functions when the page loads
-function onPageLoad() {
-  renderProductTable();
-  renderUserTable();
+//function to view all orders
+async function renderOrderTable(products, variants, users, orders) {
+  const orderList = document.querySelector(".admin-order-tbody");
+
+  orders.forEach((order) => {
+    const orderProduct = products.find(
+      (p) => Number(p.id) === Number(order.productId),
+    );
+    const orderSize = variants.find(
+      (v) => Number(v.id) === Number(order.variantId),
+    );
+    const orderUser = users.find((u) => Number(u.id) === Number(order.userId));
+
+    const tr = document.createElement("tr");
+    const orderId = document.createElement("th");
+    const userName = document.createElement("th");
+    const productName = document.createElement("th");
+    const productSize = document.createElement("th");
+    const price = document.createElement("th");
+    const status = document.createElement("th");
+    const Actions = document.createElement("th");
+
+    orderId.innerText = order.id;
+    userName.innerText = orderUser.name;
+    productName.innerText = orderProduct.name;
+    productSize.innerText = orderSize.size;
+    price.innerText = `$${orderProduct.price}`;
+    status.innerText = order.status;
+
+    const updateStatusBtn = document.createElement("button");
+    updateStatusBtn.innerText = "Update Status";
+    const refundBtn = document.createElement("button");
+    refundBtn.innerText = "Refund";
+    Actions.append(updateStatusBtn, refundBtn);
+
+    tr.append(
+      orderId,
+      userName,
+      productName,
+      productSize,
+      price,
+      status,
+      Actions,
+    );
+    orderList.append(tr);
+  });
+}
+
+//Fetches all data and uses them as parameters for the render functions and runs render functions when the page loads
+async function onPageLoad() {
+  const { products, variants, users, orders } = await fetchData();
+
+  renderProductTable(products, variants);
+  renderUserTable(users, orders);
+  renderOrderTable(products, variants, users, orders);
 }
 
 onPageLoad();
