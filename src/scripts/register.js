@@ -1,4 +1,7 @@
-document.addEventListener("DOMContentLoaded", initRegister);
+document.addEventListener('DOMContentLoaded', () => {
+  initRegister()
+  initLogin()      // from auth.js
+})
 
 //Shows the register form and hides the login form
 function showRegister() {
@@ -121,9 +124,9 @@ function togglePassword(inputId, btn) {
   const input = document.getElementById(inputId);
   if (input.type === "password") {
     input.type = "text";
-    btn.textContent = "🙈";
+    btn.textContent = "Hide";
   } else {
     input.type = "password";
-    btn.textContent = "👀";
+    btn.textContent = "Show";
   }
 }

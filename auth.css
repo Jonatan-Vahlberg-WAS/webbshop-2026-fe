@@ -1,7 +1,6 @@
-/* Auth – simple, matches admin style */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* AUTH LAYOUT */
