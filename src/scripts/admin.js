@@ -20,9 +20,7 @@ function renderProductTable(products, variants) {
   const productList = document.querySelector(".admin-products-tbody");
 
   variants.forEach((variant) => {
-    const product = products.find(
-      (p) => Number(p.id) === Number(variant.productId),
-    );
+    const product = products.find((p) => p._id === variant.productId);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -61,9 +59,7 @@ function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
 
   users.forEach((user) => {
-    const userOrders = orders.filter(
-      (o) => Number(o.userId) === Number(user.id),
-    );
+    const userOrders = orders.filter((o) => o.userId === user._id);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -91,13 +87,9 @@ function renderOrderTable(products, variants, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
   orders.forEach((order) => {
-    const orderProduct = products.find(
-      (p) => Number(p.id) === Number(order.productId),
-    );
-    const orderSize = variants.find(
-      (v) => Number(v.id) === Number(order.variantId),
-    );
-    const orderUser = users.find((u) => Number(u.id) === Number(order.userId));
+    const orderProduct = products.find((p) => p._id === order.productId);
+    const orderSize = variants.find((v) => v._id === order.variantId);
+    const orderUser = users.find((u) => u._id === order.userId);
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");
@@ -108,7 +100,7 @@ function renderOrderTable(products, variants, users, orders) {
     const status = document.createElement("th");
     const Actions = document.createElement("th");
 
-    orderId.innerText = order.id;
+    orderId.innerText = order._id;
     userName.innerText = orderUser.name;
     productName.innerText = orderProduct.name;
     productSize.innerText = orderSize.size;
@@ -138,9 +130,7 @@ function renderOrderTable(products, variants, users, orders) {
 function renderStats(products, orders) {
   const VAT_RATE = 0.25;
   const netRevenue = orders.reduce((sum, order) => {
-    const product = products.find(
-      (p) => Number(p.id) === Number(order.productId),
-    );
+    const product = products.find((p) => p._id === order.productId);
 
     return sum + Number(product.price) / (1 + VAT_RATE);
   }, 0);

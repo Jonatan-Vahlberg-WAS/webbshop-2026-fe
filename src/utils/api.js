@@ -33,7 +33,7 @@ export async function getProduct(id) {
     return response.data;
   } catch (error) {
     console.error("Error fetching product:", error);
-    return [];
+    return null;
   }
 }
 
@@ -60,7 +60,7 @@ export async function getVariant(productId) {
     return response.data;
   } catch (error) {
     console.error("API error:", error);
-    return [];
+    return null;
   }
 }
 

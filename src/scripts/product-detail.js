@@ -1,4 +1,4 @@
-import { getProduct, getVariant } from "../utils/api.js";
+import { getProduct, getVariants } from "../utils/api.js";
 
 //Takes you to the product detail page and adding the product Id as a param
 export function goToProduct(productId) {
@@ -8,11 +8,12 @@ export function goToProduct(productId) {
 export async function renderProductDetail() {
   //get the id from the params
   const params = new URLSearchParams(window.location.search);
-  const productId = Number(params.get("id"));
+  const productId = params.get("id");
 
   try {
     const product = await getProduct(productId);
-    const variants = await getVariant(productId);
+    const allVariants = await getVariants();
+    const variants = allVariants.filter((v) => v.productId === productId);
 
     //render all product information
     const image = document.querySelector(".pd-image");
@@ -38,10 +39,9 @@ export async function renderProductDetail() {
         button.disabled = true;
       }
       sizes.append(button);
-
-      //run breadcrumb function
-      renderBreadcrumbs(product);
     });
+    //run breadcrumb function
+    renderBreadcrumbs(product);
   } catch (error) {
     console.error(error);
   }
