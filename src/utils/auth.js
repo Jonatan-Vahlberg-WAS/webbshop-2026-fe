@@ -121,25 +121,32 @@ function togglePassword(inputId, btn) {
     }
 }
 
-// after successful login or logout, call updateNavbar to refresh the links (for permanent navbar, will remove it after user profile is implemented)
+// after successful login or logout, call updateNavbar to refresh the links and buttons in the navbar based on the user's login status and role
 function updateNavbar() {
     const user      = getCurrentUser()
     const loginLink = document.getElementById('nav-login')
     const adminLink = document.getElementById('nav-admin')
     const logoutBtn = document.getElementById('nav-logout')
-    const navStatus = document.getElementById('nav-status')
 
-    if (user) {
-        if (loginLink) loginLink.style.display = 'none'
-        if (logoutBtn) logoutBtn.style.display = 'inline'
-        if (navStatus) navStatus.style.display = 'inline'
-        // Show admin link only for admin users
-        if (adminLink) adminLink.style.display = user.isAdmin ? 'inline' : 'none'
+    const adminLi  = adminLink ? adminLink.parentElement : null
+    const logoutLi = logoutBtn ? logoutBtn.parentElement : null
+
+    if (user && user.isAdmin) {
+        // admin
+        if (loginLink) { loginLink.textContent = 'Profile'; loginLink.href = 'profile.html' }
+        if (adminLi)   adminLi.style.display  = 'list-item'
+        if (logoutLi)  logoutLi.style.display = 'list-item'
+
+    } else if (user) {
+        // regular user
+        if (loginLink) { loginLink.textContent = 'Profile'; loginLink.href = 'profile.html' }
+        if (adminLi)   adminLi.style.display  = 'none'
+        if (logoutLi)  logoutLi.style.display = 'list-item'
+
     } else {
-        if (loginLink) loginLink.style.display = 'inline'
-        if (logoutBtn) logoutBtn.style.display = 'none'
-        // Admin link should be hidden for non-logged in users, but we also want to make sure it's hidden when a user logs out
-        if (adminLink) adminLink.style.display = 'none'
-        if (navStatus) navStatus.style.display = 'none'
+        // not logged in
+        if (loginLink) { loginLink.textContent = 'Login'; loginLink.href = 'auth.html' }
+        if (adminLi)   adminLi.style.display  = 'none'
+        if (logoutLi)  logoutLi.style.display = 'none'
     }
 }
