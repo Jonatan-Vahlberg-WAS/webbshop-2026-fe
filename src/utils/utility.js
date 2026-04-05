@@ -13,3 +13,15 @@ export function formatDateISO(isoString) {
 
   return `${day}-${month}-${year}, ${hours}:${minutes} ${ampm}`;
 }
+
+//Temporary code to generate objectIDs to mimick mongodb _id
+export function generateObjectId() {
+  const hexChars = "0123456789abcdef";
+  let objectId = "";
+
+  for (let i = 0; i < 24; i++) {
+    objectId += hexChars[Math.floor(Math.random() * 16)];
+  }
+
+  return objectId;
+}

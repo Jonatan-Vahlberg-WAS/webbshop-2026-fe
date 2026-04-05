@@ -1,4 +1,5 @@
 import { getProducts, getVariants, getUsers, getOrders } from "../utils/api.js";
+import { generateObjectId } from "../utils/utility.js";
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
