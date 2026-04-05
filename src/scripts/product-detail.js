@@ -1,4 +1,5 @@
 import { getProduct, getVariants } from "../utils/api.js";
+import { formatDateISO } from "../utils/utility.js";
 
 //Takes you to the product detail page and adding the product Id as a param
 export function goToProduct(productId) {
@@ -20,7 +21,8 @@ export async function renderProductDetail() {
     image.src = product.image;
     image.alt = product.name;
     const releaseDate = document.querySelector(".release-data");
-    releaseDate.textContent = `Release Date: ${product.dropDate}`;
+    const date = formatDateISO(product.dropDate);
+    releaseDate.textContent = `Release Date: ${date}`;
     const status = document.querySelector(".pd-status");
     status.textContent = product.status;
     const name = document.querySelector(".pd-name");
