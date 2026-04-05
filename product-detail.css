@@ -14,9 +14,8 @@
   flex-direction: column;
 }
 
-.pd-release-data {
-  display: flex;
-  justify-content: space-between;
+.pd-release-data span {
+  display: block;
 }
 
 .pd-sizes {
