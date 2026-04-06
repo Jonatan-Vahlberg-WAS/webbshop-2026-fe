@@ -4,7 +4,6 @@ import {
   getUsers,
   getOrders,
   addProduct,
-  addVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
