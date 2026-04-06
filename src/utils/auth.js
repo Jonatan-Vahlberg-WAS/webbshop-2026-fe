@@ -1,7 +1,7 @@
-const BASE_URL = 'http://localhost:3000'
+import { loginUser } from "../utils/api.js"
 
 // init login form
-function initLogin() {
+export function initLogin() {
     const loginForm = document.getElementById('loginForm')
     if (!loginForm) return
 
@@ -35,22 +35,16 @@ async function handleLogin() {
     btn.textContent = 'Signing in...'
 
     try {
-    // ── db.json version ── will check for matching email and password in the users array
-    const response = await axios.get(
-    `${BASE_URL}/users?email=${email}&password=${password}`
-    )
+    const users = await loginUser(email, password)
 
-    if (response.data.length === 0) {
+    if (users.length === 0) {
         errorMsg.textContent = 'Invalid email or password.'
         btn.disabled = false
         btn.textContent = 'Sign In'
         return
     }
 
-        const user = response.data[0]
-
-    // store token and user in localStorage
-    // db.json doesn't have JWT — have to generate token with user id
+    const user = users[0]
     const fakeToken = 'mock-token-' + user.id
     localStorage.setItem('token', fakeToken)
     localStorage.setItem('user', JSON.stringify({
@@ -60,57 +54,43 @@ async function handleLogin() {
         isAdmin: user.isAdmin
     }))
 
-     // redirect by role
     if (user.isAdmin) {
         window.location.href = 'admin.html'
     } else {
         window.location.href = 'index.html'
     }
 
-    // ── when backend is ready, we will use this instead ──
-    // const response = await axios.post(`${BASE_URL}/auth/login`, {
-    //   email,
-    //   password
-    // })
-    // localStorage.setItem('token', response.data.token)
-    // localStorage.setItem('user', JSON.stringify(response.data.user))
-    // if (response.data.user.isAdmin) {
-    //   window.location.href = 'admin.html'
-    // } else {
-    //   window.location.href = 'index.html'
-    // }
-
     } catch (error) {
-    errorMsg.textContent = 'Login failed. Please try again.'
-    btn.disabled = false
-    btn.textContent = 'Login'
-}
+        errorMsg.textContent = 'Login failed. Please try again.'
+        btn.disabled = false
+        btn.textContent = 'Login'
+    }
 }
 
 // Logout function — clear localStorage and redirect to home page
-function logoutUser() {
+export function logoutUser() {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     window.location.href = 'index.html'
 }
 
 // session management functions for checking login status and user role
-function getCurrentUser() {
+export function getCurrentUser() {
     const user = localStorage.getItem('user')
     return user ? JSON.parse(user) : null
 }
 
-function isLoggedIn() {
+export function isLoggedIn() {
     return !!localStorage.getItem('token')
 }
 
-function isAdmin() {
+export function isAdmin() {
     const user = getCurrentUser()
     return user ? user.isAdmin : false
 }
 
 // toggle password visibility function for both login and register forms
-function togglePassword(inputId, btn) {
+export function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId)
     if (input.type === 'password') {
         input.type = 'text'
@@ -121,25 +101,41 @@ function togglePassword(inputId, btn) {
     }
 }
 
-// after successful login or logout, call updateNavbar to refresh the links (for permanent navbar, will remove it after user profile is implemented)
-function updateNavbar() {
+// after successful login or logout, call updateNavbar to refresh the links and buttons in the navbar based on the user's login status and role
+export function updateNavbar() {
     const user      = getCurrentUser()
     const loginLink = document.getElementById('nav-login')
     const adminLink = document.getElementById('nav-admin')
     const logoutBtn = document.getElementById('nav-logout')
-    const navStatus = document.getElementById('nav-status')
 
-    if (user) {
-        if (loginLink) loginLink.style.display = 'none'
-        if (logoutBtn) logoutBtn.style.display = 'inline'
-        if (navStatus) navStatus.style.display = 'inline'
-        // Show admin link only for admin users
-        if (adminLink) adminLink.style.display = user.isAdmin ? 'inline' : 'none'
+    const adminLi  = adminLink ? adminLink.parentElement : null
+    const logoutLi = logoutBtn ? logoutBtn.parentElement : null
+
+    if (user && user.isAdmin) {
+        // admin
+        if (loginLink) { loginLink.textContent = 'Profile'; loginLink.href = 'profile.html' }
+        if (adminLi)   adminLi.style.display  = 'list-item'
+        if (logoutLi)  logoutLi.style.display = 'list-item'
+
+    } else if (user) {
+        // regular user
+        if (loginLink) { loginLink.textContent = 'Profile'; loginLink.href = 'profile.html' }
+        if (adminLi)   adminLi.style.display  = 'none'
+        if (logoutLi)  logoutLi.style.display = 'list-item'
+
     } else {
-        if (loginLink) loginLink.style.display = 'inline'
-        if (logoutBtn) logoutBtn.style.display = 'none'
-        // Admin link should be hidden for non-logged in users, but we also want to make sure it's hidden when a user logs out
-        if (adminLink) adminLink.style.display = 'none'
-        if (navStatus) navStatus.style.display = 'none'
+        // not logged in
+        if (loginLink) { loginLink.textContent = 'Login'; loginLink.href = 'auth.html' }
+        if (adminLi)   adminLi.style.display  = 'none'
+        if (logoutLi)  logoutLi.style.display = 'none'
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateNavbar()
+
+    const logoutBtn = document.getElementById('nav-logout')
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logoutUser)
+    }
+})

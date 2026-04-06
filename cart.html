@@ -15,18 +15,11 @@
         <nav>
             <a href="index.html" class="logo">SOLE SEARCH</a>
             <ul class="nav-links">
-            <li><a href="products.html">Products</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="auth.html" id="nav-login">Login</a></li>
-            <li><span id="nav-status" style="display:none">Profile</span></li> <!-- span for now because we haven't implemented user profile yet, will replace it with link to profile page when it's done -->
-            <li><a href="admin.html" id="nav-admin" style="display:none">Admin</a></li>
-
-            <!-- logout button -->
-            <li>
-            <button id="nav-logout" onclick="logoutUser()" style="display:none">
-            Logout
-            </button>
-            </li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="auth.html" id="nav-login">Login</a></li>
+                <li><a href="admin.html" id="nav-admin">Admin</a></li>
+                <li><button id="nav-logout">Logout</button></li>
             </ul>
         </nav>
     </header>
@@ -127,10 +120,7 @@
     </footer>
 
     <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
-    <script src="./src/utils/auth.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', updateNavbar)
-    </script>
+    <script type="module" src="./src/utils/auth.js"></script>
 
     <script type="module" src="./src/scripts/index.js"></script>
 
