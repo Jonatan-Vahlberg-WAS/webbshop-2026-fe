@@ -15,8 +15,15 @@
         <ul class="nav-links">
           <li><a href="products.html">Products</a></li>
           <li><a href="cart.html">Cart</a></li>
-          <li><a href="auth.html">Login</a></li>
-          <li><a href="admin.html">Admin</a></li>
+          <li><a href="auth.html" id="nav-login">Login</a></li>
+          <li><a href="admin.html" id="nav-admin" style="display:none">Admin</a></li>
+
+          <!-- logout button -->
+          <li>
+          <button id="nav-logout" onclick="logoutUser()" style="display:none">
+          Logout
+          </button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -26,23 +33,28 @@
 
       <div class="admin-stats">
         <div class="stat-display">
-          <p>Total Orders</p>
-          <p></p>
-        </div>
-        <div class="vl"></div>
-        <div class="stat-display">
           <p>Total Revenue</p>
-          <p></p>
+          <p class="stat-revenue"></p>
         </div>
         <div class="vl"></div>
         <div class="stat-display">
           <p>Active drops</p>
-          <p></p>
+          <p class="stat-active-drops"></p>
+        </div>
+        <div class="vl"></div>
+        <div class="stat-display">
+          <p>Total Orders</p>
+          <p class="stat-total-orders"></p>
+        </div>
+        <div class="vl"></div>
+        <div class="stat-display">
+          <p>Shipped Orders</p>
+          <p class="stat-shipped-orders"></p>
         </div>
         <div class="vl"></div>
         <div class="stat-display">
           <p>Pending Orders</p>
-          <p></p>
+          <p class="stat-pending-orders"></p>
         </div>
       </div>
 
@@ -93,7 +105,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody class="admin-products-tbody"></tbody>
           </table>
         </div>
 
@@ -104,11 +116,12 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Orders</th>
+                <th>Email</th>
+                <th>No. of Orders</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody class="admin-user-tbody"></tbody>
           </table>
         </div>
 
@@ -118,14 +131,16 @@
           <table class="admin-order-list admin-table">
             <thead>
               <tr>
+                <th>Order Id</th>
                 <th>Customer</th>
-                <th>Product/s</th>
-                <th>Size/s</th>
+                <th>Product</th>
+                <th>Size</th>
                 <th>Price</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody class="admin-order-tbody"></tbody>
           </table>
         </div>
       </div>
@@ -137,6 +152,12 @@
         <p>&copy; 2026 Sole Search. All rights reserved.</p>
       </div>
     </footer>
+
+    <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
+    <script src="./src/utils/auth.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', updateNavbar)
+    </script>
 
     <script type="module" src="./src/scripts/admin.js"></script>
   </body>

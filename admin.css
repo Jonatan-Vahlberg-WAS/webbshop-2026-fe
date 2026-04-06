@@ -1,6 +1,6 @@
 /* Admin – simple white, tables, forms */
 .admin-main {
-  max-width: 80%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   background: #fff;
@@ -91,4 +91,16 @@
 
 .admin-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.stat-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-display p {
+  margin: 0;
 }
