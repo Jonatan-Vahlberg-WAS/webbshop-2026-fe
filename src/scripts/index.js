@@ -1,5 +1,6 @@
 import { getProducts } from "../utils/api.js";
 import { goToProduct } from "./product-detail.js";
+import { formatDateISO } from "../utils/utility.js";
 
 // TEMP: Default products for rendering when backend is unavailable
 const TEMP_PRODUCTS = [
@@ -62,6 +63,9 @@ async function loadProducts() {
         const card = createProductCard(product);
         productsContainer.appendChild(card);
       });
+
+      const nextDrop = getNextDrop(products);
+      renderHero(nextDrop);
     }
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -105,7 +109,7 @@ function createProductCard(product) {
   if (product.status === "upcoming") {
     statusElement = document.createElement("p");
     statusElement.className = "drop-timer";
-    statusElement.textContent = `Drop in: ${product.dropDate}`; //TODO: Replace with countdown timer
+    statusElement.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer
   } else if (product.status === "live") {
     statusElement = document.createElement("button");
     statusElement.className = "status-btn";
@@ -136,4 +140,27 @@ function createProductCard(product) {
   element.addEventListener("click", () => goToProduct(product.id));
 
   return element;
+}
+
+function renderHero(product) {
+  const heroProductImage = document.getElementById("hero-product-image");
+  const heroProductName = document.getElementById("hero-product-name");
+  const heroProductTimer = document.getElementById("hero-product-timer");
+  const heroBtn = document.getElementById("hero-btn");
+
+  heroProductImage.src = product.image;
+  heroProductName.textContent = product.name;
+  heroProductTimer.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer 
+  
+  heroBtn.addEventListener("click", () => goToProduct(product.id));
+
+}
+
+function getNextDrop(products) {
+  let upcomingDrops = products.filter((product) => product.status === "upcoming");
+
+  let nextDrop = upcomingDrops.sort((a, b) => new Date(a.dropDate) - new Date(b.dropDate))[0];
+
+  return nextDrop;
+
 }
