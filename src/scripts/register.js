@@ -1,3 +1,6 @@
+import { registerUser } from "../utils/api.js" 
+import { initLogin, togglePassword } from "../utils/auth.js" 
+
 document.addEventListener('DOMContentLoaded', () => {
   initRegister()
   initLogin()      // from auth.js
@@ -92,41 +95,11 @@ async function handleRegister() {
   errorMsg.textContent = "";
 
   try {
-    const existing = await axios.get(`http://localhost:3000/users?email=${email}`);
-    if (existing.data.length > 0) {
-      errorMsg.textContent = "Email already exists.";
-      return;
-    }
-
-    // Create new user
-    await axios.post("http://localhost:3000/users", {
-      name,
-      email,
-      password,
-      isAdmin: false,
-    });
-
-    // After successful registration, show the login form with a success message
+    await registerUser(name, email, password)
     showLogin()
-    document.getElementById('login-error').textContent = 
-      'Account created! Now you can log in.'
+    document.getElementById('login-error').textContent = 'Account created! Now you can log in.'
 
   } catch (error) {
-    if (error.response?.data?.message) {
-      errorMsg.textContent = error.response.data.message;
-    } else {
-      errorMsg.textContent = "Registration failed. Please try again.";
-    }
-  }
-}
-
-function togglePassword(inputId, btn) {
-  const input = document.getElementById(inputId);
-  if (input.type === "password") {
-    input.type = "text";
-    btn.textContent = "Hide";
-  } else {
-    input.type = "password";
-    btn.textContent = "Show";
+    errorMsg.textContent = error.message || "Registration failed. Please try again."
   }
 }

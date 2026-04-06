@@ -102,3 +102,46 @@ export async function addProduct(product) {
     return null;
   }
 }
+
+// Register new user
+export async function registerUser(name, email, password) {
+  const url = new URL("users", getBaseUrl()).toString()
+
+  // check if email already exists
+  const checkUrl = new URL("users", getBaseUrl())
+  checkUrl.searchParams.append("email", email)
+
+  try {
+    const existing = await axios.get(checkUrl.toString())
+    if (existing.data.length > 0) {
+      throw new Error("Email already exists.")
+    }
+
+    const response = await axios.post(url, {
+      name,
+      email,
+      password,
+      isAdmin: false,
+    })
+    return response.data
+
+  } catch (error) {
+    throw error
+  }
+}
+
+// Login user
+export async function loginUser(email, password) {
+  const url = new URL("users", getBaseUrl())
+  url.searchParams.append("email", email)
+  url.searchParams.append("password", password)
+
+  try {
+    const response = await axios.get(url.toString())
+    return response.data
+
+  } catch (error) {
+    console.error("Login error:", error)
+    throw error
+  }
+}

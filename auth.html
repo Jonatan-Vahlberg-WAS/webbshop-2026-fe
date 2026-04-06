@@ -18,7 +18,7 @@
           <li><a href="cart.html">Cart</a></li>
           <li><a href="auth.html" id="nav-login">Login</a></li>
           <li><a href="admin.html" id="nav-admin">Admin</a></li>
-          <li><button id="nav-logout" onclick="logoutUser()">Logout</button></li>
+          <li><button id="nav-logout">Logout</button></li>
         </ul>
       </nav>
     </header>
@@ -142,11 +142,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./src/utils/auth.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', updateNavbar)
-    </script>
-    <script src="./src/scripts/register.js"></script>
+    <script type="module" src="./src/utils/auth.js"></script>
+    <script type="module" src="./src/scripts/register.js"></script>
 
   </body>
 </html>

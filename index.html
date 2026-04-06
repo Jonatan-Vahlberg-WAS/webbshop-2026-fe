@@ -17,7 +17,7 @@
           <li><a href="cart.html">Cart</a></li>
           <li><a href="auth.html" id="nav-login">Login</a></li>
           <li><a href="admin.html" id="nav-admin">Admin</a></li>
-          <li><button id="nav-logout" onclick="logoutUser()">Logout</button></li>
+          <li><button id="nav-logout">Logout</button></li>
         </ul>
       </nav>
     </header>
@@ -82,11 +82,7 @@
     </footer>
 
     <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
-    <script src="./src/utils/auth.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', updateNavbar)
-    </script>
-
+    <script type="module" src="./src/utils/auth.js"></script>
     <!-- PAGE-SPECIFIC JAVASCRIPT -->
     <script type="module" src="./src/scripts/index.js"></script>
   </body>
