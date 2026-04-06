@@ -1,4 +1,11 @@
-import { getProducts, getVariants, getUsers, getOrders } from "../utils/api.js";
+import {
+  getProducts,
+  getVariants,
+  getUsers,
+  getOrders,
+  addProduct,
+  addVariant,
+} from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
 //Function that fetches all data, instead of having to fetch data in each render function
@@ -165,3 +172,83 @@ async function onPageLoad() {
 }
 
 onPageLoad();
+
+//Function that creates a product
+function createProduct() {
+  const name = document.querySelector("#name");
+  const description = document.querySelector("#description");
+  const price = document.querySelector("#price");
+  const imageURL = document.querySelector("#image");
+  const releaseDate = document.querySelector("#release-date");
+  const id = generateObjectId();
+
+  //Validation to make none of these are empty
+  let emptyFields = [];
+  let otherErrors = [];
+
+  if (!name.value.trim()) {
+    emptyFields.push("Name");
+    name.style.border = "1px solid red";
+  }
+  if (!description.value.trim()) {
+    emptyFields.push("Description");
+    description.style.border = "1px solid red";
+  }
+  if (!price.value) {
+    emptyFields.push("Price");
+    price.style.border = "1px solid red";
+  }
+  if (!imageURL.value.trim()) {
+    emptyFields.push("Image URL");
+    imageURL.style.border = "1px solid red";
+  }
+  if (!releaseDate.value) {
+    emptyFields.push("Release Date & Time");
+    releaseDate.style.border = "1px solid red";
+  }
+
+  if (price.value && Number(price.value) < 0) {
+    otherErrors.push("Price must be positive");
+    price.style.border = "1px solid red";
+  }
+
+  // Combine messages
+  let messages = [];
+  if (emptyFields.length > 0) {
+    messages.push(
+      `${emptyFields.join(" & ")} ${emptyFields.length === 1 ? "field is" : "fields are"} empty`,
+    );
+  }
+  messages = messages.concat(otherErrors);
+
+  // Show error
+  if (messages.length > 0) {
+    const errorMsg = document.querySelector(".product-error-message");
+    errorMsg.classList.add("product-error-msg");
+    errorMsg.innerText = messages.join(" & ");
+    return;
+  }
+
+  const product = {
+    //Could no have the id and _id to be similar because db.json kept creating ids and overwriting my id variable.
+    _id: id,
+    name: name.value,
+    description: description.value,
+    price: Number(price.value),
+    image: imageURL.value,
+    dropDate: new Date(releaseDate.value).toISOString(),
+    status: "upcoming",
+    createdAt: new Date().toISOString(),
+    //this will need to be changed if the product is ever edited
+    updatedAt: new Date().toISOString(),
+    __v: 0,
+  };
+
+  addProduct(product);
+}
+
+const createProductBtn = document.querySelector("#create-product-btn");
+
+createProductBtn.addEventListener("click", () => {
+  createProduct();
+});
