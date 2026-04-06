@@ -26,6 +26,12 @@ function initRegister() {
     handleRegister();
   });
 
+  document.getElementById("go-to-register-btn")
+    .addEventListener("click", showRegister)
+
+  document.getElementById("go-to-login-btn")
+    .addEventListener("click", showLogin)
+
   // toggle password buttons
   document.getElementById("toggle-register-password")
     .addEventListener("click", () => togglePassword("register-password", document.getElementById("toggle-register-password")));
