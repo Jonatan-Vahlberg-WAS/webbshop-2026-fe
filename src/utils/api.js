@@ -3,7 +3,7 @@
 //   if (window.location.hostname.includes("localhost") && false) {
 //     return "http://localhost:3000/";
 //   }
-//   return "https://webbshop-2026-be.vercel.app//";
+//   return "https://webbshop-2026-be.vercel.app/";
 // }
 
 //Temp: Base URL is fake data

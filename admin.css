@@ -34,8 +34,10 @@
   margin-bottom: 1rem;
 }
 
-.create-produt-row {
-  margin-bottom: 1rem;
+.hl {
+  border-bottom: 1px solid black;
+  width: 100%;
+  margin: 10px 0;
 }
 
 .create-product-form label {
@@ -103,4 +105,8 @@
 
 .stat-display p {
   margin: 0;
+}
+
+.product-error-msg {
+  color: red;
 }
