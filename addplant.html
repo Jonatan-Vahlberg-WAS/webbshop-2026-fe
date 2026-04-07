@@ -37,25 +37,25 @@
   <main>
     <section class="add-plant-container">
 
-      <form class="add-plant-form">
+      <form id="plantForm" class="add-plant-form">
         <h2>Lägg till din växt</h2>
 
         <!-- NAME -->
         <div class="form-group">
           <label for="plantName">Namn</label>
-          <input type="text" id="plantName" placeholder="Ex: Monstera" required />
+          <input id="plantName" type="text" id="plantName" placeholder="Ex: Monstera" required />
         </div>
 
         <!-- IMAGE -->
         <div class="form-group">
           <label for="plantImage">Bild (URL)</label>
-          <input type="text" id="plantImage" placeholder="Klistra in bildlänk" required />
+          <input id="plantImage" type="text" id="plantImage" placeholder="Klistra in bildlänk" required />
         </div>
 
         <!-- LOCATION -->
         <div class="form-group">
           <label for="plantLocation">Plats</label>
-          <input type="text" id="plantLocation" placeholder="Ex: Stockholm" required />
+          <input id="plantLocation" type="text" id="plantLocation" placeholder="Ex: Stockholm" required />
         </div>
 
         <!-- LIGHT -->
@@ -98,7 +98,8 @@
 
   </footer>
 
-  <script type="module" src="./src/scripts/admin.js"></script>
+  <!-- <script type="module" src="./src/scripts/admin.js"></script> -->
+  <script type="module" src="./src/scripts/addplant.js"></script>
 </body>
 
 </html>
