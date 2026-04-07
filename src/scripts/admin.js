@@ -80,7 +80,9 @@ function renderProductTable(products, variants) {
 function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
 
-  users.forEach((user) => {
+  const onlyUsers = users.filter((u) => u.isAdmin === false);
+
+  onlyUsers.forEach((user) => {
     const userOrders = orders.filter((o) => o.userId === user._id);
 
     const tr = document.createElement("tr");
