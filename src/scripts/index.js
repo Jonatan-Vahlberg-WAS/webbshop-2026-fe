@@ -4,6 +4,10 @@ import { formatDateISO } from "../utils/utility.js";
 
 document.addEventListener("DOMContentLoaded", loadProducts);
 
+function getLatestDrops(products) {
+  return products.filter((product) => product.status === "live" || product.status === "upcoming");
+}
+
 // Fetch products from API, fallback to temp data if unavailable
 async function loadProducts() {
   const productsContainer = document.getElementById("products");
@@ -14,15 +18,22 @@ async function loadProducts() {
     console.log(products);
     productsContainer.innerHTML = "";
 
-    products.forEach((product) => {
-      const card = createProductCard(product);
-      productsContainer.appendChild(card);
-    });
-
     const nextDrop = getNextDrop(products);
     const heroImage = document.getElementById("hero-product-image");
     const heroName = document.getElementById("hero-product-name");
     const heroTimer = document.getElementById("hero-product-timer");
+
+    let toRender;
+    if (heroImage) {
+      toRender = getLatestDrops(products);
+    } else {
+      toRender = products;
+    }
+
+    toRender.forEach((product) => {
+      const card = createProductCard(product);
+      productsContainer.appendChild(card);
+    });
 
     if (nextDrop && heroImage) {
       renderHero(nextDrop);
@@ -34,10 +45,6 @@ async function loadProducts() {
     console.error("Error fetching products:", error);
     productsContainer.innerHTML = "<p>Could not load products. Please try again later</p>";
   }
-}
-
-function getLatestDrops(products) {
-  return products.filter((product) => product.status === "live" || product.status === "upcoming");
 }
 
 // Function to create an individual product card
