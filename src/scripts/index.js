@@ -2,49 +2,7 @@ import { getProducts } from "../utils/api.js";
 import { goToProduct } from "./product-detail.js";
 import { formatDateISO } from "../utils/utility.js";
 
-// TEMP: Default products for rendering when backend is unavailable
-const TEMP_PRODUCTS = [
-  {
-    id: 1,
-    name: "Air Zoom Runner",
-    description: "Lightweight running shoes with breathable mesh.",
-    price: 120.99,
-    image: "https://placehold.co/400x400",
-    dropDate: "2026-04-05",
-    status: "upcoming",
-  },
-  {
-    id: 2,
-    name: "StreetFlex High",
-    description: "Casual sneakers perfect for daily wear.",
-    price: 89.5,
-    image: "https://placehold.co/400x400",
-    dropDate: "2026-03-20",
-    status: "live",
-  },
-  {
-    id: 3,
-    name: "TrailBlazer XT",
-    description: "Rugged trail shoes designed for outdoor adventures.",
-    price: 135.0,
-    image: "https://placehold.co/400x400",
-    dropDate: "2026-03-01",
-    status: "sold out",
-  },
-];
-
 document.addEventListener("DOMContentLoaded", loadProducts);
-
-function showTempProducts(productsContainer) {
-  productsContainer.dataset.temp = "true";
-  const notice = document.createElement("p");
-  notice.className = "temp-notice";
-  notice.textContent = "Showing demo products (backend unavailable)";
-  productsContainer.appendChild(notice);
-  TEMP_PRODUCTS.forEach((product) => {
-    productsContainer.appendChild(createProductCard(product));
-  });
-}
 
 // Fetch products from API, fallback to temp data if unavailable
 async function loadProducts() {
@@ -56,22 +14,30 @@ async function loadProducts() {
     console.log(products);
     productsContainer.innerHTML = "";
 
-    if (products.length === 0) {
-      showTempProducts(productsContainer);
-    } else {
-      products.forEach((product) => {
-        const card = createProductCard(product);
-        productsContainer.appendChild(card);
-      });
+    products.forEach((product) => {
+      const card = createProductCard(product);
+      productsContainer.appendChild(card);
+    });
 
-      const nextDrop = getNextDrop(products);
+    const nextDrop = getNextDrop(products);
+    const heroImage = document.getElementById("hero-product-image");
+    const heroName = document.getElementById("hero-product-name");
+    const heroTimer = document.getElementById("hero-product-timer");
+
+    if (nextDrop && heroImage) {
       renderHero(nextDrop);
+    } else if (heroImage) {
+        heroName.textContent = "No upcoming drops";
+        heroTimer.textContent = "Check back soon!";
     }
   } catch (error) {
     console.error("Error fetching products:", error);
-    productsContainer.innerHTML = "";
-    showTempProducts(productsContainer);
+    productsContainer.innerHTML = "<p>Could not load products. Please try again later</p>";
   }
+}
+
+function getLatestDrops(products) {
+  return products.filter((product) => product.status === "live" || product.status === "upcoming");
 }
 
 // Function to create an individual product card
