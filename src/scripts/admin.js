@@ -306,6 +306,10 @@ async function createVariant() {
     otherErrors.push("Stock must be positive");
     stock.style.border = "1px solid red";
   }
+  if (Number(stock.value) === 0) {
+    otherErrors.push("Stock cannot be 0");
+    stock.style.border = "1px solid red";
+  }
 
   //Check if size already exists
   const sizeExists = variants.some(
