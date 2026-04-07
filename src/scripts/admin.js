@@ -170,7 +170,7 @@ function renderStats(products, orders) {
   const shippedOrders = document.querySelector(".stat-shipped-orders");
   const pendingOrders = document.querySelector(".stat-pending-orders");
 
-  totalRevenue.innerText = netRevenue;
+  totalRevenue.innerText = `$ ${netRevenue}`;
   activeDrops.innerText = activeProducts.length;
   totalOrders.innerText = orders.length;
   shippedOrders.innerText = shipped.length;
