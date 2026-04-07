@@ -27,7 +27,16 @@ async function fetchData() {
 function renderProductTable(products, variants) {
   const productList = document.querySelector(".admin-products-tbody");
 
-  variants.forEach((variant) => {
+  productList.innerHTML = "";
+
+  const sortedVariants = [...variants].sort((a, b) => {
+    const productA = products.find((p) => p._id === a.productId);
+    const productB = products.find((p) => p._id === b.productId);
+
+    return productA.name.localeCompare(productB.name);
+  });
+
+  sortedVariants.forEach((variant) => {
     const product = products.find((p) => p._id === variant.productId);
 
     const tr = document.createElement("tr");
@@ -268,11 +277,13 @@ function renderProductSelect(products) {
 }
 
 //Function to create variant
-function createVariant() {
+async function createVariant() {
   const size = document.querySelector("#size");
   const stock = document.querySelector("#stock");
   const productSelect = document.querySelector("#choose-product");
   const id = generateObjectId();
+
+  const variants = await getVariants();
 
   //Validation to make sure none of the inputs are empty/wrong
   let emptyFields = [];
@@ -294,6 +305,18 @@ function createVariant() {
   if (stock.value && Number(stock.value) < 0) {
     otherErrors.push("Stock must be positive");
     stock.style.border = "1px solid red";
+  }
+
+  //Check if size already exists
+  const sizeExists = variants.some(
+    (v) =>
+      v.productId === productSelect.value &&
+      Number(v.size) === Number(size.value),
+  );
+
+  if (sizeExists) {
+    otherErrors.push("This size already exists for the selected product");
+    size.style.border = "1px solid red";
   }
 
   // Combine messages
@@ -318,6 +341,10 @@ function createVariant() {
     productId: productSelect.value,
     size: size.value,
     stock: stock.value,
+    createdAt: new Date().toISOString(),
+    //this will need to be changed if the product is ever edited
+    updatedAt: new Date().toISOString(),
+    __v: 0,
   };
 
   addVariant(variant);
