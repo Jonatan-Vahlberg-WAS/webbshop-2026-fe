@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sole Search</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="products.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <!-- HEADER -->
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">SOLE SEARCH</a>
+        <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
         <ul class="nav-links">
           <li><a href="products.html" class="active">Products</a></li>
           <li><a href="cart.html" id="nav-cart">Cart</a></li>
@@ -24,9 +25,19 @@
 
     <!-- MAIN CONTENT -->
     <main class="products-main">
-      <h1>Products</h1>
+      <div class="products-page-header">
+        <h1>All Products</h1>
+        <div class="products-controls">
+          <div class="search-wrap">
+            <input type="text" id="product-search" placeholder="Archive_Search" autocomplete="off" />
+            <button type="button" aria-label="Search">Search</button>
+          </div>
+        </div>
+      </div>
       <div id="products"></div>
-      <button class="btn" id="load-drops">Load more drops</button>
+      <div class="load-more-wrap">
+        <button class="btn" id="load-drops"><span>Load more drops</span></button>
+      </div>
     </main>
 
     <!-- FOOTER -->

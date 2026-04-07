@@ -31,21 +31,28 @@ body {
   background-color: var(--color-surface);
   padding: var(--spacing-md);
   border-bottom: 5px solid var(--color-text-dark);
+    border-bottom: 5px solid var(--color-text-dark);
+  position: sticky;   
+  top: 0;           
+  z-index: 100; 
 }
 
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
+  margin-left: auto;   
   gap: var(--spacing-md);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  left: auto;
+  transform: none;
+  padding-right: 0; 
 }
 
 .nav-links a {
@@ -60,16 +67,23 @@ nav {
   border-bottom: 5px solid var(--color-accent-secondary);
 }
 
-/* #nav-logout {
-  display: none;
-} */
-
-.logo {
-  text-decoration: none;
-  color: var(--color-text-dark);
-  font-weight: 1000;
-  font-size: 1.25rem;
+/* logout button in navbar */
+#nav-logout {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 2px solid var(--color-text-dark);
+  background: transparent;
+  color: var(--color-text-dark);
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+#nav-logout:hover {
+  background: var(--color-accent);
+  color: var(--color-text-dark);
 }
 
 .logo {
@@ -78,7 +92,15 @@ nav {
   font-weight: 1000;
   font-size: 2rem;
   text-transform: uppercase;
+  font-style: italic;
 }
+
+.logo-search {
+  background: #DEED00;
+  padding: 0 8px 2px 6px;
+  font-style: italic;
+}
+
 
 .site-footer {
   background-color: var(--color-surface);
