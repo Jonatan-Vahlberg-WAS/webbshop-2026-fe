@@ -33,7 +33,12 @@ function renderProductTable(products, variants) {
     const productA = products.find((p) => p._id === a.productId);
     const productB = products.find((p) => p._id === b.productId);
 
-    return productA.name.localeCompare(productB.name);
+    //Compare product names first
+    const nameCompare = productA.name.localeCompare(productB.name);
+    if (nameCompare !== 0) return nameCompare;
+
+    //If names are the same, sort by size ascending
+    return Number(a.size) - Number(b.size);
   });
 
   sortedVariants.forEach((variant) => {
