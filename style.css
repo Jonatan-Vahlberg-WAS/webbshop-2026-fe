@@ -322,9 +322,9 @@ button[type="submit"]:hover {
   max-width: 1200px;
   margin: 4rem auto;
   border-radius: 20px;
-  border: 5px solid #222;
+  border: 1px solid black;
   padding: 5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .main-content h1 {
@@ -352,18 +352,18 @@ button[type="submit"]:hover {
 /* Bilder i form */
 .form-img-top-right {
   position: absolute;
-  top: -12rem;
-  left: 13rem;
-  width: 15rem;   
+  top: -9.55rem;
+  left: -5.6rem;
+  width: 11rem;   
   height: auto;
   pointer-events: none; 
 }
 
 .form-img-bottom-left {
   position: absolute;
-  bottom: -9rem;
-  left: -12rem;
-  width: 15rem;
+  bottom: -5.3rem;
+  left: 12.75rem;
+  width: 11rem;
   height: auto;
   pointer-events: none;
 }
