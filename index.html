@@ -41,16 +41,20 @@
     <!-- TICKER-->
     <section class="ticker-section">
       <div class="ticker">
-        <span>NEW DROPS ARE COMING SOON · NEW DROPS ARE COMING SOON · NEW DROPS ARE COMING SOON</span>
+        <!-- Repeated for seamless loop -->
+          <span id="loop-text">LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · </span>
+          <span aria-hidden="true">LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · </span>
       </div>
     </section>
 
     <!-- PRODUCTS-->
     <section class="products">
-      <h2>Latest Drops</h2>
-      <div id="products"></div>
-      <a href="products.html" class="btn btn--primary">Check products</a>
-    </section>
+        <div class="products-header">
+          <h2>Latest Drops</h2>
+        </div>
+        <div id="products"></div>
+        <a href="products.html" class="btn btn--primary">Check all products</a>
+      </section>
 
     <!--EDITORIAL-->
     <section class="editorial-section">
@@ -58,20 +62,31 @@
         <div class="inner-editorial-left">
         <h2>THE DEATH OF THE RETAIL LINE</h2>
         <p>The game has changed. Sole Search is where sneaker culture meets the future of shopping — fast drops, real access, and a community built for those who live and breathe kicks. We're not just a store, we're a movement. Find your next grail before it's gone.</p>
-        </div>
+        <a href="#" class="editorial-read-more">Read full expose</a>
+      </div>
         <div class="inner-editorial-right">
-          <img src="https://placehold.co/400" alt ="Sole Search company editorial image">
+          <img src="https://placehold.co/600x380/1a1a1a/444444" alt="Sole Search editorial image" />
+          <div class="grit-archive">
+              <p class="grit-archive-title">The Grit Archive — Also in this issue</p>
+              <ul class="grit-archive-links">
+                <li>10 Grails You Missed</li>
+                <li>The Anatomy of Hype</li>
+                <li>Becoming a Run Bum</li>
+              </ul>
+            </div>
         </div>
       </div>
     </section>
 
     <!-- NEWSLETTER-->
     <section class="newsletter-section">
-      <h2>Never miss a drop!</h2>
-      <p>Sign up for our newsletter and get exclusive news about upcoming drops, discount codes, and more directly to your inbox!</p>
-      <label for="email">Enter your email:</label>
-      <input type="email" id="email" name="email">
-      <button class="btn btn--primary" type="submit">Sign up</button>
+      <h2>Never miss <br>a single drop!</h2>
+      <p>Join the culture. Get exclusive news about upcoming drops, discount codes, and editor picks — straight to your inbox.</p>
+      
+      <div class="newsletter-form">
+          <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
+          <button class="btn btn--primary" type="button">Subscribe</button>
+      </div>
     </section>
   </main>
 
