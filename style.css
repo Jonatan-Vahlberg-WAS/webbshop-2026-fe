@@ -320,7 +320,7 @@ button[type="submit"]:hover {
 /* Logga in / Register */
 .main-content {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 4rem auto;
   border-radius: 20px;
   border: 5px solid #222;
   padding: 5rem;
@@ -332,7 +332,7 @@ button[type="submit"]:hover {
   font-size: 2rem;
   font-weight: 600;
   color: var(--color-text);
-  margin: 0 0 1.5rem 115px;
+  margin: 0 0 1.5rem 90px;
   letter-spacing: -0.02em;
 }
 
@@ -352,18 +352,18 @@ button[type="submit"]:hover {
 /* Bilder i form */
 .form-img-top-right {
   position: absolute;
-  top: -13rem;
-  left: 17rem;
-  width: 16rem;   
+  top: -12rem;
+  left: 13rem;
+  width: 15rem;   
   height: auto;
   pointer-events: none; 
 }
 
 .form-img-bottom-left {
   position: absolute;
-  bottom: -8rem;
-  left: -13rem;
-  width: 16rem;
+  bottom: -9rem;
+  left: -12rem;
+  width: 15rem;
   height: auto;
   pointer-events: none;
 }
