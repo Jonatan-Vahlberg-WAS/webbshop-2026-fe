@@ -384,7 +384,8 @@
     font-weight: 800;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-primary, #DEED00);
+    color: #DEED00 !important;
+    -webkit-text-fill-color: #DEED00 !important;
     text-decoration: none;
     transition: gap 0.2s ease;
 }
