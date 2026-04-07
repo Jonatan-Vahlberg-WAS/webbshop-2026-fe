@@ -360,3 +360,22 @@ const addVariantBtn = document.querySelector("#create-variant-btn");
 addVariantBtn.addEventListener("click", () => {
   createVariant();
 });
+
+//For tabs rendering
+const tabButtons = document.querySelectorAll(".tabs button");
+const tabContents = document.querySelectorAll(".tab-content");
+
+tabButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    //Remove active class from all tabs
+    tabContents.forEach((tab) => tab.classList.remove("active"));
+
+    //Add active class to the selected tab
+    const targetTab = document.getElementById(btn.dataset.tab);
+    targetTab.classList.add("active");
+
+    //Mark button as active
+    tabButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
