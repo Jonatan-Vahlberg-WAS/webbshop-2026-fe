@@ -1,6 +1,6 @@
 /* Admin – simple white, tables, forms */
 .admin-main {
-  max-width: 100%;
+  max-width: 80%;
   margin: 0 auto;
   padding: 2rem;
   background: #fff;
@@ -12,6 +12,7 @@
   gap: 10px;
   height: 100px;
   border: 1px solid black;
+  margin-bottom: 10px;
 }
 
 .admin-stats .vl {
@@ -19,19 +20,15 @@
   height: 100%;
 }
 
-.admin-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 20px;
-  margin-top: 20px;
-}
-
 .create-product {
   padding: 1.5rem;
   background: #fff;
   border: 1px solid #ddd;
   margin-bottom: 1rem;
+}
+
+.create-product h2 {
+  margin-top: 0;
 }
 
 .hl {
@@ -109,4 +106,53 @@
 
 .product-error-msg {
   color: red;
+}
+
+.tab-content {
+  display: none !important;
+}
+
+.tab-content.active {
+  display: block !important;
+}
+
+.tabs button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+  border-radius: 4px 4px 0 0;
+}
+
+.tabs button:hover {
+  background: #e0e0e0;
+}
+
+.tabs button.active {
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+#products-create-render.active {
+  display: flex !important;
+  flex-direction: row;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+#products-create-render.active > .create-product {
+  flex: 0 0 35%;
+  min-width: 250px;
+}
+
+#products-create-render.active > .table-container {
+  flex: 1;
+  min-width: 0;
 }
