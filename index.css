@@ -1,0 +1,51 @@
+/*HERO*/
+
+.hero {
+    background-color: var(--color-surface);
+    display: flex;
+    padding: var(--spacing-xl);
+    min-height: 60vh;
+}
+
+.hero-product {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#hero-product-image {
+    width: 40%;
+    object-fit: cover;
+    transform: rotate(5deg);
+}
+
+.hero-product-info h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.hero-product-info p {
+  font-size: 2rem;
+  margin: var(--spacing-sm) 0;
+}
+
+.btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 2rem;
+}
+
+/*TICKER*/
+
+.ticker-section {
+    background-color: var(--color-primary);
+    padding: var(--spacing-sm) 0;
+    overflow: hidden;
+}
+
+.ticker-span {
+    color: var(--color-surface);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
