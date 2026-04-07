@@ -78,11 +78,13 @@
               <label for="release-date">Release Date & Time</label>
               <input type="datetime-local" id="release-date" required />
             </div>
-            <p class="product-error-message"></p>
             <button type="button" id="create-product-btn">
               Create Product
             </button>
           </form>
+
+          <p class="product-error-message"></p>
+
           <div class="hl"></div>
           <form class="create-product-form">
             <label>
@@ -98,8 +100,10 @@
               <label for="stock">Stock</label>
               <input type="number" id="stock" min="0" required />
             </div>
-            <button type="button">Add Variant</button>
+            <button type="button" id="create-variant-btn">Add Variant</button>
           </form>
+
+          <p class="variant-error-message"></p>
         </div>
 
         <div class="table-container">

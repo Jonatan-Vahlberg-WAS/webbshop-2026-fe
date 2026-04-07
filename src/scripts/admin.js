@@ -4,6 +4,7 @@ import {
   getUsers,
   getOrders,
   addProduct,
+  addVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -168,6 +169,7 @@ async function onPageLoad() {
   renderUserTable(users, orders);
   renderOrderTable(products, variants, users, orders);
   renderStats(products, orders);
+  renderProductSelect(products);
 }
 
 onPageLoad();
@@ -181,7 +183,7 @@ function createProduct() {
   const releaseDate = document.querySelector("#release-date");
   const id = generateObjectId();
 
-  //Validation to make none of these are empty
+  //Validation to make sure none of the inputs are empty/wrong
   let emptyFields = [];
   let otherErrors = [];
 
@@ -246,8 +248,84 @@ function createProduct() {
   addProduct(product);
 }
 
+//button event listener for create product
 const createProductBtn = document.querySelector("#create-product-btn");
 
 createProductBtn.addEventListener("click", () => {
   createProduct();
+});
+
+//Render all products so admin can choose which product to add variants to
+function renderProductSelect(products) {
+  const productSelect = document.querySelector("#choose-product");
+
+  products.forEach((product) => {
+    const option = document.createElement("option");
+    option.value = product._id;
+    option.innerText = product.name;
+    productSelect.append(option);
+  });
+}
+
+//Function to create variant
+function createVariant() {
+  const size = document.querySelector("#size");
+  const stock = document.querySelector("#stock");
+  const productSelect = document.querySelector("#choose-product");
+  const id = generateObjectId();
+
+  //Validation to make sure none of the inputs are empty/wrong
+  let emptyFields = [];
+  let otherErrors = [];
+
+  if (!size.value) {
+    emptyFields.push("Size");
+    size.style.border = "1px solid red";
+  }
+  if (!stock.value) {
+    emptyFields.push("Stock");
+    stock.style.border = "1px solid red";
+  }
+
+  if (size.value && Number(size.value) < 0) {
+    otherErrors.push("Size must be positive");
+    size.style.border = "1px solid red";
+  }
+  if (stock.value && Number(stock.value) < 0) {
+    otherErrors.push("Stock must be positive");
+    stock.style.border = "1px solid red";
+  }
+
+  // Combine messages
+  let messages = [];
+  if (emptyFields.length > 0) {
+    messages.push(
+      `${emptyFields.join(" & ")} ${emptyFields.length === 1 ? "field is" : "fields are"} empty`,
+    );
+  }
+  messages = messages.concat(otherErrors);
+
+  // Show error
+  if (messages.length > 0) {
+    const errorMsg = document.querySelector(".variant-error-message");
+    errorMsg.classList.add("product-error-msg");
+    errorMsg.innerText = messages.join(" & ");
+    return;
+  }
+
+  const variant = {
+    _id: id,
+    productId: productSelect.value,
+    size: size.value,
+    stock: stock.value,
+  };
+
+  addVariant(variant);
+}
+
+//Create Variant button listener
+const addVariantBtn = document.querySelector("#create-variant-btn");
+
+addVariantBtn.addEventListener("click", () => {
+  createVariant();
 });
