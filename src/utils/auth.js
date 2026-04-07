@@ -107,13 +107,17 @@ export function updateNavbar() {
     const loginLink = document.getElementById('nav-login')
     const adminLink = document.getElementById('nav-admin')
     const logoutBtn = document.getElementById('nav-logout')
+    const cartLink  = document.getElementById('nav-cart') // hide cart link for admin users
 
+    const loginLi  = loginLink ? loginLink.parentElement : null
     const adminLi  = adminLink ? adminLink.parentElement : null
     const logoutLi = logoutBtn ? logoutBtn.parentElement : null
+    const cartLi   = cartLink ? cartLink.parentElement : null
 
     if (user && user.isAdmin) {
         // admin
-        if (loginLink) { loginLink.textContent = 'Profile'; loginLink.href = 'profile.html' }
+        if (loginLi)   loginLi.style.display   = 'none'      // hide login link for admin
+        if (cartLi)    cartLi.style.display    = 'none'     // hide cart link for admin
         if (adminLi)   adminLi.style.display  = 'list-item'
         if (logoutLi)  logoutLi.style.display = 'list-item'
 

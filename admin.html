@@ -14,7 +14,7 @@
         <a href="index.html" class="logo">SOLE SEARCH</a>
         <ul class="nav-links">
           <li><a href="products.html">Products</a></li>
-          <li><a href="cart.html">Cart</a></li>
+          <li><a href="cart.html" id="nav-cart">Cart</a></li>
           <li><a href="auth.html" id="nav-login">Login</a></li>
           <li><a href="admin.html" id="nav-admin">Admin</a></li>
           <li><button id="nav-logout">Logout</button></li>
@@ -53,106 +53,123 @@
       </div>
 
       <div class="admin-container">
-        <div class="create-product">
-          <h2>Create Product</h2>
+        <div class="tabs">
+          <button data-tab="products-create-render">Products</button>
+          <button data-tab="users-render">Users</button>
+          <button data-tab="orders-render">Orders</button>
+        </div>
 
-          <form class="create-product-form">
-            <div class="create-product-row">
-              <label for="name">Name</label>
-              <input type="text" id="name" required />
-            </div>
-            <div class="create-product-row">
-              <label for="description">Description</label>
-              <textarea id="description" required></textarea>
-            </div>
-            <div class="create-product-row">
-              <label for="price">Price</label>
-              <input type="number" id="price" step="0.01" min="0" required />
-            </div>
+        <div id="products-create-render" class="tab-content active">
+          <div class="create-product">
+            <h2>Create Product</h2>
 
-            <div class="create-product-row">
-              <label for="image">Image URL</label>
-              <input type="url" id="image" required />
-            </div>
-            <div class="create-product-row">
-              <label for="release-date">Release Date & Time</label>
-              <input type="datetime-local" id="release-date" required />
-            </div>
+            <form class="create-product-form">
+              <div class="create-product-row">
+                <label for="name">Name</label>
+                <input type="text" id="name" required />
+              </div>
+              <div class="create-product-row">
+                <label for="description">Description</label>
+                <textarea id="description" required></textarea>
+              </div>
+              <div class="create-product-row">
+                <label for="price">Price</label>
+                <input type="number" id="price" step="0.01" min="0" required />
+              </div>
+
+              <div class="create-product-row">
+                <label for="image">Image URL</label>
+                <input type="url" id="image" required />
+              </div>
+              <div class="create-product-row">
+                <label for="release-date">Release Date & Time</label>
+                <input type="datetime-local" id="release-date" required />
+              </div>
+              <button type="button" id="create-product-btn">
+                Create Product
+              </button>
+            </form>
+
             <p class="product-error-message"></p>
-            <button type="button" id="create-product-btn">
-              Create Product
-            </button>
-          </form>
-          <div class="hl"></div>
-          <form class="create-product-form">
-            <label>
-              Product
-              <select name="" id="choose-product"></select>
-            </label>
 
-            <div class="create-product-row">
-              <label for="size">Size</label>
-              <input type="number" id="size" min="0" required />
-            </div>
-            <div class="create-product-row">
-              <label for="stock">Stock</label>
-              <input type="number" id="stock" min="0" required />
-            </div>
-            <button type="button">Add Variant</button>
-          </form>
+            <div class="hl"></div>
+
+            <form class="create-product-form">
+              <label>
+                Product
+                <select name="" id="choose-product"></select>
+              </label>
+
+              <div class="create-product-row">
+                <label for="size">Size</label>
+                <input type="number" id="size" min="0" required />
+              </div>
+              <div class="create-product-row">
+                <label for="stock">Stock</label>
+                <input type="number" id="stock" min="0" required />
+              </div>
+              <button type="button" id="create-variant-btn">Add Variant</button>
+            </form>
+
+            <p class="variant-error-message"></p>
+          </div>
+
+          <div class="table-container">
+            <h2>Product List</h2>
+
+            <table class="admin-products admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Size</th>
+                  <th>Stock</th>
+                  <th>Drop-Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="admin-products-tbody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="table-container">
-          <h2>Product List</h2>
+        <div id="users-render" class="tab-content">
+          <div class="table-container">
+            <h2>Customers</h2>
 
-          <table class="admin-products admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Size</th>
-                <th>Stock</th>
-                <th>Drop-Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="admin-products-tbody"></tbody>
-          </table>
+            <table class="admin-user-list admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>No. of Orders</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="admin-user-tbody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="table-container">
-          <h2>Customers</h2>
+        <div id="orders-render" class="tab-content">
+          <div class="table-container">
+            <h2>Order List</h2>
 
-          <table class="admin-user-list admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>No. of Orders</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="admin-user-tbody"></tbody>
-          </table>
-        </div>
-
-        <div class="table-container">
-          <h2>Order List</h2>
-
-          <table class="admin-order-list admin-table">
-            <thead>
-              <tr>
-                <th>Order Id</th>
-                <th>Customer</th>
-                <th>Product</th>
-                <th>Size</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="admin-order-tbody"></tbody>
-          </table>
+            <table class="admin-order-list admin-table">
+              <thead>
+                <tr>
+                  <th>Order Id</th>
+                  <th>Customer</th>
+                  <th>Product</th>
+                  <th>Size</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="admin-order-tbody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
