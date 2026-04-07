@@ -1,7 +1,7 @@
 export let map = L.map('map');
 map.setView([59.325441, 18.071614], 13);
 
-map.addControl(new L.Control.FullScreen());
+/* map.addControl(new L.Control.FullScreen()); */
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -35,15 +35,15 @@ function success(pos) {
         map.removeLayer(circle);
     }
 
-    marker = L.marker([lat, lng]).addTo(map);
-    circle = L.circle([lat, lng], {
+    /* marker = L.marker([lat, lng]).addTo(map); */
+    /* circle = L.circle([lat, lng], {
         radius: accuracy,
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
-    }).addTo(map);
+    }).addTo(map); */
 
-    if(!zoomed) {
+    if(!zoomed && circle) {
         zoomed = map.fitBounds(circle.getBounds());
     } 
 
