@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700&display=swap");
 
-#map { height: 500px; }
+#map { 
+  height: 500px; 
+}
 
+/* .expandMap {
+  height: 1000px;
+} */
 
 /* :root {
   --font-heading: "Italiana", system-ui, sans-serif;
@@ -42,10 +47,15 @@
   font-family: var(--font-body);
   color: var(--color-text);
 } */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 
 body{
   font-family: 'Karla', sans-serif;
-  margin: o;
+  margin: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -53,9 +63,31 @@ body{
 h1 {
   font-family: 'Italiana', serif;
 }
-main {
+/* .main-content,
+.map-hero {
+  min-height: 60vh;
   flex: 1;
 }
+ */
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  padding: 50px 20px;
+}
+/* .main-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+
+  padding: 40px;
+  margin: 0 auto;
+  max-width: 500px;
+}  */
+
+
 
 /* PLOT TWIST HEADER */
 /* Header */
@@ -121,56 +153,6 @@ main {
 .nav-link:hover {
   color: #61D18C;
 }
-/* .site-header {
-  background: var(--color-surface);
-  padding: 1rem 2rem;
-  box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.site-header nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.logo {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  text-decoration: none;
-  letter-spacing: -0.02em;
-  transition: color 0.2s ease;
-}
-
-.logo:hover {
-  color: var(--color-primary-hover);
-}
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-} */
-
-/* .nav-links a {
-  text-decoration: none;
-  color: var(--color-text);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: var(--color-primary);
-} */
 
 /* MAP SECTION */
 .hero-title {
@@ -190,55 +172,59 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* Hero section (homepage) - full width, non-contained
-.hero {
-  width: 100%;
-  min-height: 70vh;
+/* Lägg Till - sida */
+.add-plant-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 5rem 2rem;
-  background-image: linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.4)
-    ),
-    url("public/hakim.png");
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-} */
-
-/* .hero {
-  position: relative;
+  padding: 60px 20px;
 }
 
-.hero_text {
-  position: absolute;
-  float: left;
-  z-index: 1000;
+.add-plant-form {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #333;
+}
+
+.add-plant-form h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #7da37d;
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 20px;
+  border: none;
+  background: #2d5a3d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+button[type="submit"]:hover {
   background-color: #3d7451;
 }
-
-
-.hero h1 {
-  /* float: left; */
-  /* font-family: var(--font-heading);
-  font-size: 3rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.02em;
-  color: #fff; */
-  /* text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
-/* } */
-
-/* .hero p {
-  margin: 0;
-  font-size: 1.35rem;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-} */ 
 
 /* Products grid */
 #products {
@@ -334,7 +320,7 @@ main {
 /* Logga in / Register */
 .main-content {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 4rem auto;
   border-radius: 20px;
   border: 5px solid #222;
   padding: 5rem;
@@ -346,7 +332,7 @@ main {
   font-size: 2rem;
   font-weight: 600;
   color: var(--color-text);
-  margin: 0 0 1.5rem 115px;
+  margin: 0 0 1.5rem 90px;
   letter-spacing: -0.02em;
 }
 
@@ -366,18 +352,18 @@ main {
 /* Bilder i form */
 .form-img-top-right {
   position: absolute;
-  top: -13rem;
-  left: 17rem;
-  width: 16rem;   
+  top: -12rem;
+  left: 13rem;
+  width: 15rem;   
   height: auto;
   pointer-events: none; 
 }
 
 .form-img-bottom-left {
   position: absolute;
-  bottom: -8rem;
-  left: -13rem;
-  width: 16rem;
+  bottom: -9rem;
+  left: -12rem;
+  width: 15rem;
   height: auto;
   pointer-events: none;
 }
@@ -445,45 +431,6 @@ main {
 .skapa-konto:hover {
   text-decoration: underline;
 }
-
-
-/* Footer */
-/* .site-footer {
-  background: var(--color-surface);
-  padding: 1.5rem 2rem;
-  margin-top: 3rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.footer-content p {
-  margin: 0 0 0.75rem 0;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: var(--color-primary);
-}
- */
 
  /* PLOT TWIST FOOTER */
 .plot-footer {

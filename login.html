@@ -1,67 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Logga in</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
 
-    <!-- HEADER -->
-    <header class="site-header">
-      <nav>
-        <a href="index.html" class="logo">Hakim Livs</a>
-        <ul class="nav-links">
-          <li><a href="profil.html">Profil</a></li>
-          <li><a href="map.html">Karta</a></li>
-          <li><a href="addplant.html">Lägg till växt</a></li>
-          <li><a href="login.html">Logga in</a></li>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logga in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-        </ul>
-      </nav>
-    </header>
+<body>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-      <h1>Logga in</h1>
-      <div id="register-container" class="register-wrapper">
-        <form id="registerForm" class="register-form">
-          
-          <img src="logo-2.png" class="form-img-top-right">
-          <img src="logo-2.png" class="form-img-bottom-left">
 
-          <div class="form-group">
-            <label for="name">Namn</label>
-            <input type="text" id="name" required />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Lösenord</label>
-            <input type="password" id="password" required />
-          </div>
-          <a class="forgot-password" href="#">Glömt lösenord?</a>
-          <button type="submit">Logga in</button>
-          <a class="skapa-konto" href="#">Skapa konto</a>
-        </form>
+  <!-- PLot Twist - HEADER -->
+  <header class="header">
+    <div class="hero">
+      <h1 class="plot-logo">PLOT TWIST</h1>
+      <img src="logo-2.png" alt="plant" class="hero-plant" />
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html" class="nav-link active">Hem</a>
+        <a href="map.html" class="nav-link">Karta</a>
+        <a href="addplant.html" class="nav-link">Lägg Till</a>
       </div>
-    </main>
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="footer-content">
-        <p>&copy; 2024 Hakim Livs. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-          <a href="/terms">Terms</a>
+      <div class="nav-right">
+        <a href="login.html" class="nav-link">Logga in</a>
+      </div>
+    </nav>
+
+  </header>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <h1>Logga in</h1>
+    <div id="register-container" class="register-wrapper">
+      <form id="registerForm" class="register-form">
+
+        <img src="logo-2.png" class="form-img-top-right">
+        <img src="logo-2.png" class="form-img-bottom-left">
+
+        <div class="form-group">
+          <label for="name">Namn</label>
+          <input type="text" id="name" required />
         </div>
-      </div>
-    </footer>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Lösenord</label>
+          <input type="password" id="password" required />
+        </div>
+        <a class="forgot-password" href="#">Glömt lösenord?</a>
+        <button type="submit">Logga in</button>
+        <a class="skapa-konto" href="#">Skapa konto</a>
+      </form>
+    </div>
+  </main>
 
-    <script type="module" src="./src/scripts/login.js"></script>
-  </body>
+  <!-- FOOTER -->
+  <footer class="plot-footer">
+
+    <!-- Top section -->
+    <div class="footer-top">
+
+      <!-- Left -->
+      <h2 class="plot-footer-logo">PLOT TWIST</h2>
+
+      <!-- Right -->
+      <div class="plot-footer-links">
+        <a href="#">Om oss</a>
+        <a href="#">Kontakt</a>
+        <a href="#">Privacy Policies</a>
+      </div>
+
+    </div>
+
+    <div class="plot-footer-bottom">
+      <p>© 2026 PLOT TWIST</p>
+    </div>
+
+  </footer>
+
+  <script type="module" src="./src/scripts/login.js"></script>
+</body>
+
 </html>
