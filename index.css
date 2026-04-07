@@ -21,19 +21,29 @@
 }
 
 .hero-product-info h1 {
-  font-size: 4rem;
-  font-weight: 900;
-  text-transform: uppercase;
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+/* Hero headline gradient */
+#hero-product-name {
+    background: linear-gradient(135deg, #000 0%, #5D6300 45%, #DEED00 75%, #000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+    font-weight: 900;
 }
 
 .hero-product-info p {
-  font-size: 2rem;
-  margin: var(--spacing-sm) 0;
+    font-size: 2rem;
+    margin: var(--spacing-sm) 0;
 }
 
 .btn {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: 2rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 2rem;
 }
 
 /*TICKER*/
