@@ -1,6 +1,8 @@
 export let map = L.map('map');
 map.setView([59.325441, 18.071614], 13);
 
+map.addControl(new L.Control.FullScreen());
+
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
