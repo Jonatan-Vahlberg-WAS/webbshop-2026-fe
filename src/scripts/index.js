@@ -1,11 +1,13 @@
 import { getProducts } from "../utils/api.js";
 import { goToProduct } from "./product-detail.js";
-import { formatDateISO } from "../utils/utility.js";
+import { formatDateISO, countdownTimer } from "../utils/utility.js";
 
 document.addEventListener("DOMContentLoaded", loadProducts);
 
 function getLatestDrops(products) {
-  return products.filter((product) => product.status === "live" || product.status === "upcoming");
+  return products.filter(
+    (product) => product.status === "live" || product.status === "upcoming",
+  );
 }
 
 // Fetch products from API, fallback to temp data if unavailable
@@ -38,12 +40,13 @@ async function loadProducts() {
     if (nextDrop && heroImage) {
       renderHero(nextDrop);
     } else if (heroImage) {
-        heroName.textContent = "No upcoming drops";
-        heroTimer.textContent = "Check back soon!";
+      heroName.textContent = "No upcoming drops";
+      heroTimer.textContent = "Check back soon!";
     }
   } catch (error) {
     console.error("Error fetching products:", error);
-    productsContainer.innerHTML = "<p>Could not load products. Please try again later</p>";
+    productsContainer.innerHTML =
+      "<p>Could not load products. Please try again later</p>";
   }
 }
 
@@ -82,7 +85,8 @@ function createProductCard(product) {
   if (product.status === "upcoming") {
     statusElement = document.createElement("p");
     statusElement.className = "drop-timer";
-    statusElement.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer
+    //Add timer to product card
+    countdownTimer(product.dropDate, statusElement);
   } else if (product.status === "live") {
     statusElement = document.createElement("button");
     statusElement.className = "status-btn";
@@ -123,17 +127,19 @@ function renderHero(product) {
 
   heroProductImage.src = product.image;
   heroProductName.textContent = product.name;
-  heroProductTimer.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer 
-  
-  heroBtn.addEventListener("click", () => goToProduct(product.id));
+  heroProductTimer.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer
 
+  heroBtn.addEventListener("click", () => goToProduct(product.id));
 }
 
 function getNextDrop(products) {
-  let upcomingDrops = products.filter((product) => product.status === "upcoming");
+  let upcomingDrops = products.filter(
+    (product) => product.status === "upcoming",
+  );
 
-  let nextDrop = upcomingDrops.sort((a, b) => new Date(a.dropDate) - new Date(b.dropDate))[0];
+  let nextDrop = upcomingDrops.sort(
+    (a, b) => new Date(a.dropDate) - new Date(b.dropDate),
+  )[0];
 
   return nextDrop;
-
 }

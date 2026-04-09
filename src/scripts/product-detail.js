@@ -24,7 +24,6 @@ export async function renderProductDetail() {
     //Timer
     const timer = document.querySelector(".pd-timer");
     countdownTimer(product.dropDate, timer);
-    console.log(product.dropDate);
 
     const releaseDate = document.querySelector(".release-data");
     const date = formatDateISO(product.dropDate);
