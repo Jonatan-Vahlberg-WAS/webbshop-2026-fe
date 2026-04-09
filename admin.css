@@ -338,3 +338,7 @@
   color: var(--color-text-light);
   box-shadow: 2px 2px 0 var(--color-accent);
 }
+
+.admin-products-tbody th button {
+  margin-bottom: 4px;
+}

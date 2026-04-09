@@ -5,9 +5,11 @@ import {
   getOrders,
   addProduct,
   addVariant,
+  updateProduct,
+  updateVariant 
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
-import { updateProduct } from "../utils/api.js";
+
 
 let editingProductId = null; 
 let cancelEditBtn = document.createElement("button");
@@ -22,12 +24,7 @@ async function fetchData() {
   const users = await getUsers();
   const orders = await getOrders();
 
-  return {
-    products,
-    variants,
-    users,
-    orders,
-  };
+  return { products, variants, users, orders };
 }
 
 //Function to view all products
@@ -40,11 +37,9 @@ function renderProductTable(products, variants) {
     const productA = products.find((p) => p._id === a.productId);
     const productB = products.find((p) => p._id === b.productId);
 
-    //Compare product names first
     const nameCompare = productA.name.localeCompare(productB.name);
     if (nameCompare !== 0) return nameCompare;
 
-    //If names are the same, sort by size ascending
     return Number(a.size) - Number(b.size);
   });
 
@@ -62,40 +57,84 @@ function renderProductTable(products, variants) {
     name.innerText = product.name;
     price.innerText = `$${product.price}`;
     size.innerText = variant.size;
-    stock.innerText = variant.stock;
     dropStatus.innerText = product.status;
 
-    //Give stock colors depending on stock value
-    if (variant.stock === 0) {
-      stock.style.color = "red";
-    } else if (variant.stock <= 5) {
-      stock.style.color = "orange"; // low stock
-    } else {
-      stock.style.color = "green"; // plenty in stock
-    }
+    // Stock color helper
+    const getStockColor = (value) => {
+      if (value === 0) return "red";
+      else if (value <= 5) return "orange";
+      else return "green";
+    };
 
+    // Stock แสดงเป็น text ก่อน
+    const stockText = document.createElement("span");
+    stockText.innerText = variant.stock;
+    stockText.style.color = getStockColor(variant.stock);
+    stock.appendChild(stockText);
+
+    // ปุ่ม Update stock
+    const updateStockBtn = document.createElement("button");
+    updateStockBtn.innerText = "Update Stock";
+    updateStockBtn.style.backgroundColor = "#DEED00";
+    updateStockBtn.style.color = "black";
+
+    let stockInput = null;
+
+    updateStockBtn.addEventListener("click", async () => {
+
+      if (updateStockBtn.innerText.toLowerCase() === "update stock") {
+        stockInput = document.createElement("input");
+        stockInput.type = "number";
+        stockInput.min = "0";
+        stockInput.value = parseInt(stockText.innerText);
+        stockInput.style.width = "80px";
+
+        stock.replaceChild(stockInput, stockText);
+        updateStockBtn.innerText = "Save Stock";
+
+      } else {
+        const newStock = parseInt(stockInput.value);
+
+        if (isNaN(newStock) || newStock < 0) {
+          alert("Stock must be a non-negative number");
+          return;
+        }
+
+        await updateVariant(variant.id, { stock: newStock });
+
+        stockText.innerText = newStock;
+        stockText.style.color = getStockColor(newStock);
+        stock.replaceChild(stockText, stockInput);
+        updateStockBtn.innerText = "Update Stock";
+      }
+    });
+
+    // Edit product button
     const editBtn = document.createElement("button");
-    editBtn.innerText = "Edit";
-    actions.append(editBtn);
+    editBtn.innerText = "Edit Product";
+    editBtn.style.backgroundColor = "black";
+    editBtn.style.color = "white";
 
     editBtn.addEventListener("click", () => {
-    const formTitle = document.querySelector(".create-product h2");
+      const formTitle = document.querySelector(".create-product h2");
 
-    editingProductId = product._id;
+      editingProductId = product._id;
 
-    document.querySelector("#name").value = product.name;
-    document.querySelector("#description").value = product.description;
-    document.querySelector("#price").value = product.price;
-    document.querySelector("#image").value = product.image;
-    cancelEditBtn.style.display = "inline-block";
+      document.querySelector("#name").value = product.name;
+      document.querySelector("#description").value = product.description;
+      document.querySelector("#price").value = product.price;
+      document.querySelector("#image").value = product.image;
+      cancelEditBtn.style.display = "inline-block";
 
-    const date = new Date(product.dropDate);
-    document.querySelector("#release-date").value =
-      date.toISOString().slice(0, 16);
+      const date = new Date(product.dropDate);
+      document.querySelector("#release-date").value =
+        date.toISOString().slice(0, 16);
 
-    formTitle.innerText = "Edit Product";
-    document.querySelector("#create-product-btn").innerText = "Update Product";
-});
+      formTitle.innerText = "Edit Product";
+      document.querySelector("#create-product-btn").innerText = "Update Product";
+    });
+
+    actions.append(editBtn, updateStockBtn);
 
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
@@ -163,15 +202,7 @@ function renderOrderTable(products, variants, users, orders) {
     refundBtn.innerText = "Refund";
     Actions.append(updateStatusBtn, refundBtn);
 
-    tr.append(
-      orderId,
-      userName,
-      productName,
-      productSize,
-      price,
-      status,
-      Actions,
-    );
+    tr.append(orderId, userName, productName, productSize, price, status, Actions);
     orderList.append(tr);
   });
 }
@@ -181,12 +212,9 @@ function renderStats(products, orders) {
   const VAT_RATE = 0.25;
   const netRevenue = orders.reduce((sum, order) => {
     const product = products.find((p) => p._id === order.productId);
-
     return sum + Number(product.price) / (1 + VAT_RATE);
   }, 0);
-  const activeProducts = products.filter((p) => {
-    return p.status === "live";
-  });
+  const activeProducts = products.filter((p) => p.status === "live");
   const shipped = orders.filter((o) => o.status === "shipped");
   const pending = orders.filter((o) => o.status === "pending");
 
@@ -203,7 +231,7 @@ function renderStats(products, orders) {
   pendingOrders.innerText = pending.length;
 }
 
-//Fetches all data and uses them as parameters for the render functions and runs render functions when the page loads
+//Fetches all data and runs render functions when the page loads
 async function onPageLoad() {
   const { products, variants, users, orders } = await fetchData();
 
@@ -232,7 +260,6 @@ async function createProduct() {
   const releaseDate = document.querySelector("#release-date");
   const id = generateObjectId();
 
-  //Validation to make sure none of the inputs are empty/wrong
   let emptyFields = [];
   let otherErrors = [];
 
@@ -262,7 +289,6 @@ async function createProduct() {
     price.style.border = "1px solid red";
   }
 
-  // Combine messages
   let messages = [];
   if (emptyFields.length > 0) {
     messages.push(
@@ -271,7 +297,6 @@ async function createProduct() {
   }
   messages = messages.concat(otherErrors);
 
-  // Show error
   if (messages.length > 0) {
     const errorMsg = document.querySelector(".product-error-message");
     errorMsg.classList.add("product-error-msg");
@@ -280,8 +305,6 @@ async function createProduct() {
   }
 
   const product = {
-
-    //Could no have the id and _id to be similar because db.json kept creating ids and overwriting my id variable.
     _id: id,
     name: name.value,
     description: description.value,
@@ -290,7 +313,6 @@ async function createProduct() {
     dropDate: new Date(releaseDate.value).toISOString(),
     status: "upcoming",
     createdAt: new Date().toISOString(),
-    //this will need to be changed if the product is ever edited
     updatedAt: new Date().toISOString(),
     __v: 0,
   };
@@ -337,7 +359,7 @@ async function editProduct() {
   }
 
   const product = {
-    ...existingProduct, // keep unchanged fields
+    ...existingProduct,
     name: name.value,
     description: description.value,
     price: Number(price.value),
@@ -350,7 +372,6 @@ async function editProduct() {
 
   editingProductId = null;
 
-  // reset UI
   document.querySelector(".create-product h2").innerText = "Create Product";
   document.querySelector("#create-product-btn").innerText = "Create Product";
 
@@ -369,7 +390,6 @@ async function handleProductSubmit() {
 createProductBtn.addEventListener("click", () => {
   handleProductSubmit();
 });
-
 
 //Render all products so admin can choose which product to add variants to
 function renderProductSelect(products) {
@@ -392,7 +412,6 @@ async function createVariant() {
 
   const variants = await getVariants();
 
-  //Validation to make sure none of the inputs are empty/wrong
   let emptyFields = [];
   let otherErrors = [];
 
@@ -418,7 +437,6 @@ async function createVariant() {
     stock.style.border = "1px solid red";
   }
 
-  //Check if size already exists
   const sizeExists = variants.some(
     (v) =>
       v.productId === productSelect.value &&
@@ -430,7 +448,6 @@ async function createVariant() {
     size.style.border = "1px solid red";
   }
 
-  // Combine messages
   let messages = [];
   if (emptyFields.length > 0) {
     messages.push(
@@ -439,7 +456,6 @@ async function createVariant() {
   }
   messages = messages.concat(otherErrors);
 
-  // Show error
   if (messages.length > 0) {
     const errorMsg = document.querySelector(".variant-error-message");
     errorMsg.classList.add("product-error-msg");
@@ -453,7 +469,6 @@ async function createVariant() {
     size: size.value,
     stock: stock.value,
     createdAt: new Date().toISOString(),
-    //this will need to be changed if the product is ever edited
     updatedAt: new Date().toISOString(),
     __v: 0,
   };
@@ -474,38 +489,12 @@ const tabContents = document.querySelectorAll(".tab-content");
 
 tabButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    //Remove active class from all tabs
     tabContents.forEach((tab) => tab.classList.remove("active"));
 
-    //Add active class to the selected tab
     const targetTab = document.getElementById(btn.dataset.tab);
     targetTab.classList.add("active");
 
-    //Mark button as active
     tabButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
   });
 });
-
-editBtn.addEventListener("click", () => {
-  const formTitle = document.querySelector(".create-product h2");
-
-  // change mode to edit
-  editingProductId = product._id;
-
-  // form
-  document.querySelector("#name").value = product.name;
-  document.querySelector("#description").value = product.description;
-  document.querySelector("#price").value = product.price;
-  document.querySelector("#image").value = product.image;
-
-  // change date to be compatible with input
-  const date = new Date(product.dropDate);
-  document.querySelector("#release-date").value =
-    date.toISOString().slice(0, 16);
-
-  // change UI
-  formTitle.innerText = "Edit Product";
-  document.querySelector("#create-product-btn").innerText = "Update Product";
-});
-
