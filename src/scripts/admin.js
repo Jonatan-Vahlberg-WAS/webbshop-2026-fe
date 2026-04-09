@@ -296,6 +296,7 @@ async function createProduct() {
   };
 
   await addProduct(product);
+  alert("Product created! Please add at least one size & stock.");
   
   await onPageLoad();
   document.querySelector(".create-product-form").reset();
