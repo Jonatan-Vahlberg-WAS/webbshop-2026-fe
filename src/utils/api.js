@@ -103,6 +103,19 @@ export async function addProduct(product) {
   }
 }
 
+//Update product data in the API
+export async function updateProduct(product) {
+  const url = new URL(`products/${product._id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.put(url, product);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return null;
+  }
+}
+
 //Create variant data in the API
 export async function addVariant(variant) {
   const url = new URL("variants", getBaseUrl()).toString();
