@@ -1,5 +1,5 @@
 import { getProduct, getVariants } from "../utils/api.js";
-import { formatDateISO } from "../utils/utility.js";
+import { formatDateISO, countdownTimer } from "../utils/utility.js";
 
 //Takes you to the product detail page and adding the product Id as a param
 export function goToProduct(productId) {
@@ -20,6 +20,12 @@ export async function renderProductDetail() {
     const image = document.querySelector(".pd-image");
     image.src = product.image;
     image.alt = product.name;
+
+    //Timer
+    const timer = document.querySelector(".pd-timer");
+    countdownTimer(product.dropDate, timer);
+    console.log(product.dropDate);
+
     const releaseDate = document.querySelector(".release-data");
     const date = formatDateISO(product.dropDate);
     releaseDate.textContent = `Release Date: ${date}`;
