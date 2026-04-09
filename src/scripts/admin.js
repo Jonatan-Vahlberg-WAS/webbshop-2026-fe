@@ -280,6 +280,7 @@ async function createProduct() {
   }
 
   const product = {
+
     //Could no have the id and _id to be similar because db.json kept creating ids and overwriting my id variable.
     _id: id,
     name: name.value,
@@ -303,10 +304,6 @@ async function createProduct() {
 //button event listener for create product
 const createProductBtn = document.querySelector("#create-product-btn");
 
-createProductBtn.addEventListener("click", () => {
-  createProduct();
-});
-
 function cancelEdit() {
   editingProductId = null;
 
@@ -328,6 +325,10 @@ async function editProduct() {
 
   if (!editingProductId) return;
 
+  const products = await getProducts();
+  const existingProduct = products.find(p => p._id === editingProductId);
+  if (!existingProduct) return;
+
   if (!name.value.trim() || !price.value) {
     const errorMsg = document.querySelector(".product-error-message");
     errorMsg.innerText = "Name and Price are required";
@@ -335,7 +336,7 @@ async function editProduct() {
   }
 
   const product = {
-    _id: editingProductId,
+    ...existingProduct, // keep unchanged fields
     name: name.value,
     description: description.value,
     price: Number(price.value),
