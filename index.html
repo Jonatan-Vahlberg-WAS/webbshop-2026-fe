@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sole Search</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="index.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <!-- HEADER -->
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
+        <a href="index.html" class="logo"
+          >SOLE_<span class="logo-search">SEARCH</span></a
+        >
         <ul class="nav-links">
           <li><a href="products.html">Products</a></li>
           <li><a href="cart.html" id="nav-cart">Cart</a></li>
@@ -23,32 +25,39 @@
       </nav>
     </header>
 
-
-  <main class="main-content">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-product">
-        <div class="hero-product-info">
-          <h1 id="hero-product-name">Upcoming Drop</h1>
-          <p id="hero-product-timer">Drop in: --:--:--</p>
-          <!-- Placeholder for timer -->
-          <button id ="hero-btn" class="btn btn--accent">Shop the drop</button>
+    <main class="main-content">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-product">
+          <div class="hero-product-info">
+            <h1 id="hero-product-name">Upcoming Drop</h1>
+            <p id="hero-product-timer"></p>
+            <!-- Placeholder for timer -->
+            <button id="hero-btn" class="btn btn--accent">Shop the drop</button>
+          </div>
+          <img id="hero-product-image" src="" alt="Upcoming sneaker drop" />
         </div>
-        <img id="hero-product-image" src="" alt="Upcoming sneaker drop" />
-      </div>
-    </section>
+      </section>
 
-    <!-- TICKER-->
-    <section class="ticker-section">
-      <div class="ticker">
-        <!-- Repeated for seamless loop -->
-          <span id="loop-text">LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · </span>
-          <span aria-hidden="true">LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE SEARCH EDITORS PICK · </span>
-      </div>
-    </section>
+      <!-- TICKER-->
+      <section class="ticker-section">
+        <div class="ticker">
+          <!-- Repeated for seamless loop -->
+          <span id="loop-text"
+            >LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE
+            SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE
+            SALE LIVE · SOLE SEARCH EDITORS PICK ·
+          </span>
+          <span aria-hidden="true"
+            >LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE SALE LIVE · SOLE
+            SEARCH EDITORS PICK · LATEST ARRIVALS · NEW DROPS AT NOON · ARCHIVE
+            SALE LIVE · SOLE SEARCH EDITORS PICK ·
+          </span>
+        </div>
+      </section>
 
-    <!-- PRODUCTS-->
-    <section class="products">
+      <!-- PRODUCTS-->
+      <section class="products">
         <div class="products-header">
           <h2>Latest Drops</h2>
         </div>
@@ -56,39 +65,56 @@
         <a href="products.html" class="btn btn--primary">Check all products</a>
       </section>
 
-    <!--EDITORIAL-->
-    <section class="editorial-section">
-      <div class="inner-editorial">
-        <div class="inner-editorial-left">
-        <h2>THE DEATH OF THE RETAIL LINE</h2>
-        <p>The game has changed. Sole Search is where sneaker culture meets the future of shopping — fast drops, real access, and a community built for those who live and breathe kicks. We're not just a store, we're a movement. Find your next grail before it's gone.</p>
-        <a href="#" class="editorial-read-more">Read full expose</a>
-      </div>
-        <div class="inner-editorial-right">
-          <img src="https://placehold.co/600x380/1a1a1a/444444" alt="Sole Search editorial image" />
-          <div class="grit-archive">
-              <p class="grit-archive-title">The Grit Archive — Also in this issue</p>
+      <!--EDITORIAL-->
+      <section class="editorial-section">
+        <div class="inner-editorial">
+          <div class="inner-editorial-left">
+            <h2>THE DEATH OF THE RETAIL LINE</h2>
+            <p>
+              The game has changed. Sole Search is where sneaker culture meets
+              the future of shopping — fast drops, real access, and a community
+              built for those who live and breathe kicks. We're not just a
+              store, we're a movement. Find your next grail before it's gone.
+            </p>
+            <a href="#" class="editorial-read-more">Read full expose</a>
+          </div>
+          <div class="inner-editorial-right">
+            <img
+              src="https://placehold.co/600x380/1a1a1a/444444"
+              alt="Sole Search editorial image" />
+            <div class="grit-archive">
+              <p class="grit-archive-title">
+                The Grit Archive — Also in this issue
+              </p>
               <ul class="grit-archive-links">
                 <li>10 Grails You Missed</li>
                 <li>The Anatomy of Hype</li>
                 <li>Becoming a Run Bum</li>
               </ul>
             </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- NEWSLETTER-->
-    <section class="newsletter-section">
-      <h2>Never miss <br>a single drop!</h2>
-      <p>Join the culture. Get exclusive news about upcoming drops, discount codes, and editor picks — straight to your inbox.</p>
-      
-      <div class="newsletter-form">
-          <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
+      <!-- NEWSLETTER-->
+      <section class="newsletter-section">
+        <h2>Never miss <br />a single drop!</h2>
+        <p>
+          Join the culture. Get exclusive news about upcoming drops, discount
+          codes, and editor picks — straight to your inbox.
+        </p>
+
+        <div class="newsletter-form">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="your@email.com"
+            autocomplete="email" />
           <button class="btn btn--primary" type="button">Subscribe</button>
-      </div>
-    </section>
-  </main>
+        </div>
+      </section>
+    </main>
 
     <!-- FOOTER -->
     <footer class="site-footer">
