@@ -127,7 +127,8 @@ function renderHero(product) {
 
   heroProductImage.src = product.image;
   heroProductName.textContent = product.name;
-  heroProductTimer.textContent = `Drop in: ${formatDateISO(product.dropDate)}`; //TODO: Replace with countdown timer
+  //Hero Timer
+  countdownTimer(product.dropDate, heroProductTimer);
 
   heroBtn.addEventListener("click", () => goToProduct(product.id));
 }
