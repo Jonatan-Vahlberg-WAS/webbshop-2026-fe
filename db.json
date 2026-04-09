@@ -38,19 +38,6 @@
       "createdAt": "2026-02-25T10:00:00.000Z",
       "updatedAt": "2026-03-01T10:00:00.000Z",
       "__v": 0
-    },
-    {
-      "id": "b6b6",
-      "_id": "7413dd58c650ec93407cdfe1",
-      "name": "Test Sneaker",
-      "description": "Test",
-      "price": 120,
-      "image": "https://placehold.co/400",
-      "dropDate": "2026-04-06T20:42:00.000Z",
-      "status": "upcoming",
-      "createdAt": "2026-04-06T14:43:27.436Z",
-      "updatedAt": "2026-04-06T14:43:27.436Z",
-      "__v": 0
     }
   ],
   "variants": [
