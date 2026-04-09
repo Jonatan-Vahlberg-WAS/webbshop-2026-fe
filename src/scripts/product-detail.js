@@ -1,5 +1,5 @@
 import { getProduct, getVariants } from "../utils/api.js";
-import { formatDateISO, countdownTimer } from "../utils/utility.js";
+import { formatDateISO, countdownTimer, addToCart } from "../utils/utility.js";
 
 //Takes you to the product detail page and adding the product Id as a param
 export function goToProduct(productId) {
@@ -15,6 +15,9 @@ export async function renderProductDetail() {
     const product = await getProduct(productId);
     const allVariants = await getVariants();
     const variants = allVariants.filter((v) => v.productId === productId);
+
+    //run breadcrumb function
+    renderBreadcrumbs(product);
 
     //render all product information
     const image = document.querySelector(".pd-image");
@@ -39,16 +42,14 @@ export async function renderProductDetail() {
     const sizes = document.querySelector(".pd-sizes");
     console.log(variants);
 
-    variants.forEach((object) => {
+    variants.forEach((v) => {
       const button = document.createElement("button");
       button.innerText = object.size;
-      if (object.stock === 0) {
+      if (v.stock === 0) {
         button.disabled = true;
       }
       sizes.append(button);
     });
-    //run breadcrumb function
-    renderBreadcrumbs(product);
   } catch (error) {
     console.error(error);
   }

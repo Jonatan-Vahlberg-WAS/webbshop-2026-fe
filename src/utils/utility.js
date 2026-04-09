@@ -1,3 +1,5 @@
+import { getCurrentUser, isLoggedIn } from "./auth";
+
 export function formatDateISO(isoString) {
   const date = new Date(isoString);
 
@@ -65,7 +67,7 @@ export function renderTimer(timeLeft, timerContainer) {
   timerContainer.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s left`;
 }
 
-//This function ticks each second, the actual timer
+//Starts a countdown timer that updates the container every second until the release date.
 export function countdownTimer(releaseDate, container) {
   function tick() {
     const timeLeft = getTimeLeft(releaseDate);
@@ -81,4 +83,26 @@ export function countdownTimer(releaseDate, container) {
   }
 
   tick(); // start immediately
+}
+
+//Adds product to cart
+export function addToCart(productId, size) {
+  if (!isLoggedIn()) {
+    window.location.href = "auth.html";
+    return;
+  } else {
+    const user = getCurrentUser();
+    if (!user) return;
+    console.log(user);
+
+    const cartItem = {
+      userId: user._id,
+      productId,
+      size,
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    cart.push(cartItem);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 }
