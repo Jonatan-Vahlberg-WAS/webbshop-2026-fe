@@ -90,6 +90,38 @@ export async function getOrders() {
   }
 }
 
+// Get user's personal orders from the API
+
+//Temp version
+export async function getMyOrders(userId) {
+  const url = new URL("orders", getBaseUrl());
+  url.searchParams.append("userId", userId);
+
+    try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("API error:", error);
+    return [];
+  }
+}
+
+// TODO: Use version below when backend is ready 
+
+// export async function getMyOrders(token) {
+//   const url = new URL("orders/me", getBaseUrl());
+
+//   try {
+//     const response = await axios.get(url, {
+//       headers: {Authorization: `Bearer ${token}`}
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("API error:", error);
+//     return [];
+//   }
+// }
+
 //Create product data in the API
 export async function addProduct(product) {
   const url = new URL("products", getBaseUrl()).toString();
