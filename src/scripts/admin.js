@@ -87,7 +87,7 @@ function renderProductTable(products, variants) {
         stockInput.type = "number";
         stockInput.min = "0";
         stockInput.value = parseInt(stockText.innerText);
-        stockInput.style.width = "80px";
+        stockInput.style.width = "100px";
 
         stock.replaceChild(stockInput, stockText);
         updateStockBtn.innerText = "Save Stock";
