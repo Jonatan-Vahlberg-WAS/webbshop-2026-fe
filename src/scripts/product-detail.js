@@ -1,6 +1,8 @@
 import { getProduct, getVariants } from "../utils/api.js";
 import { formatDateISO, countdownTimer, addToCart } from "../utils/utility.js";
 
+let selectedSize = null;
+
 //Takes you to the product detail page and adding the product Id as a param
 export function goToProduct(productId) {
   window.location.href = `product-detail.html?id=${productId}`;
@@ -40,15 +42,79 @@ export async function renderProductDetail() {
     const price = document.querySelector(".pd-price");
     price.textContent = `$${product.price}`;
     const sizes = document.querySelector(".pd-sizes");
-    console.log(variants);
+    const addToCartBtn = document.querySelector(".add-to-cart");
+    //Add to cart button starts disabled
+    addToCartBtn.disabled = true;
 
+    // Helper to update Add to Cart button state
+    function updateAddToCartState() {
+      const activeSizeSelected = !!document.querySelector(
+        ".pd-sizes button.active",
+      );
+      const anyStockAvailable = Array.from(sizes.children).some(
+        (btn) => !btn.disabled,
+      );
+      const productIsLive = product.status.toLowerCase() === "live";
+
+      // Button is enabled only if all three conditions are true
+      addToCartBtn.disabled = !(
+        activeSizeSelected &&
+        anyStockAvailable &&
+        productIsLive
+      );
+    }
+
+    //Create a button for each size
     variants.forEach((v) => {
       const button = document.createElement("button");
-      button.innerText = object.size;
+      button.innerText = v.size;
       if (v.stock === 0) {
         button.disabled = true;
       }
+
+      //A button press saves the size that is pressed, becomes active visually so user knows which button is pressed, if another button is pressed, active is removed from all other buttons.
+      button.addEventListener("click", () => {
+        selectedSize = v.size;
+
+        Array.from(sizes.children).forEach((btn) =>
+          btn.classList.remove("active"),
+        );
+        button.classList.add("active");
+
+        // Update Add to Cart state whenever a size is clicked
+        updateAddToCartState();
+
+        //Erases error/success message
+        const message = document.querySelector(".cart-message");
+        message.innerText = "";
+      });
+
       sizes.append(button);
+    });
+
+    updateAddToCartState();
+
+    addToCartBtn.addEventListener("click", () => {
+      //Runs add to cart function with arguments product Id and size
+      const result = addToCart(product.id, selectedSize);
+
+      //Error & Success messaging/actions
+      if (!result.success) {
+        switch (result.error) {
+          case "not_logged_in":
+            window.location.href = "auth.html";
+            break;
+          case "duplicate_size":
+            const message = document.querySelector(".cart-message");
+            message.textContent = "You can only add one of each size!";
+            message.style.color = "red";
+            break;
+        }
+      } else {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "Item added to cart!";
+        message.style.color = "green";
+      }
     });
   } catch (error) {
     console.error(error);

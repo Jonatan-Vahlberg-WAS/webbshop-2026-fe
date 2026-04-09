@@ -1,4 +1,4 @@
-import { getCurrentUser, isLoggedIn } from "./auth";
+import { getCurrentUser, isLoggedIn } from "../utils/auth.js";
 
 export function formatDateISO(isoString) {
   const date = new Date(isoString);
@@ -88,21 +88,32 @@ export function countdownTimer(releaseDate, container) {
 //Adds product to cart
 export function addToCart(productId, size) {
   if (!isLoggedIn()) {
-    window.location.href = "auth.html";
-    return;
+    return { success: false, error: "not_logged_in" };
   } else {
     const user = getCurrentUser();
     if (!user) return;
-    console.log(user);
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    // Check if this product & size already exist for the current user
+    const exists = cart.some(
+      (item) =>
+        item.userId === user.id &&
+        item.productId === productId &&
+        item.size === size,
+    );
+
+    if (exists) {
+      return { success: false, error: "duplicate_size" };
+    }
 
     const cartItem = {
-      userId: user._id,
+      userId: user.id,
       productId,
       size,
     };
 
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(cartItem);
     localStorage.setItem("cart", JSON.stringify(cart));
+    return { success: true, cartItem };
   }
 }
