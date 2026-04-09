@@ -14,17 +14,14 @@
       "__v": 0
     },
     {
-      "id": "661000000000000000000002",
       "_id": "661000000000000000000002",
       "name": "StreetFlex High",
       "description": "Casual sneakers perfect for daily wear.",
       "price": 89.5,
       "image": "https://placehold.co/400x400",
-      "dropDate": "2026-03-20T00:00:00.000Z",
-      "status": "live",
-      "createdAt": "2026-03-18T10:00:00.000Z",
-      "updatedAt": "2026-03-20T10:00:00.000Z",
-      "__v": 0
+      "dropDate": "2026-04-24T09:00:00.000Z",
+      "updatedAt": "2026-04-09T14:21:19.278Z",
+      "id": "661000000000000000000002"
     },
     {
       "id": "661000000000000000000003",
@@ -37,6 +34,84 @@
       "status": "sold out",
       "createdAt": "2026-02-25T10:00:00.000Z",
       "updatedAt": "2026-03-01T10:00:00.000Z",
+      "__v": 0
+    },
+    {
+      "id": "b6b6",
+      "_id": "7413dd58c650ec93407cdfe1",
+      "name": "Test Sneaker",
+      "description": "Test",
+      "price": 120,
+      "image": "https://placehold.co/400",
+      "dropDate": "2026-04-06T20:42:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-06T14:43:27.436Z",
+      "updatedAt": "2026-04-06T14:43:27.436Z",
+      "__v": 0
+    },
+    {
+      "id": "0520",
+      "_id": "5dd86e1f44b2b3042739e315",
+      "name": "StreetFlex High",
+      "description": "Casual sneakers perfect for daily wear.",
+      "price": 1200,
+      "image": "https://placehold.co/400x400",
+      "dropDate": "2026-03-19T23:00:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-09T14:06:14.575Z",
+      "updatedAt": "2026-04-09T14:06:14.575Z",
+      "__v": 0
+    },
+    {
+      "id": "9278",
+      "_id": "edc18a6c686220b0cfd75fae",
+      "name": "StreetFlex High",
+      "description": "Casual sneakers perfect for daily wear.",
+      "price": 1200,
+      "image": "https://placehold.co/400x400",
+      "dropDate": "2026-03-19T23:00:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-09T14:06:16.765Z",
+      "updatedAt": "2026-04-09T14:06:16.765Z",
+      "__v": 0
+    },
+    {
+      "id": "8123",
+      "_id": "019c20945aa21bab67577690",
+      "name": "StreetFlex High",
+      "description": "Casual sneakers perfect for daily wear.",
+      "price": 1200,
+      "image": "https://placehold.co/400x400",
+      "dropDate": "2026-03-19T23:00:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-09T14:06:21.568Z",
+      "updatedAt": "2026-04-09T14:06:21.568Z",
+      "__v": 0
+    },
+    {
+      "id": "cad4",
+      "_id": "714d7262afac1a4b9bea89a8",
+      "name": "StreetFlex High",
+      "description": "Casual sneakers perfect for daily wear.",
+      "price": 189.5,
+      "image": "https://placehold.co/400x400",
+      "dropDate": "2026-03-19T23:00:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-09T14:20:30.876Z",
+      "updatedAt": "2026-04-09T14:20:30.876Z",
+      "__v": 0
+    },
+    {
+      "id": "3c8d",
+      "_id": "e5fe973c34b5d4c449e46006",
+      "name": "StreetFlex High",
+      "description": "Casual sneakers perfect for daily wear.",
+      "price": 89.5,
+      "image": "https://placehold.co/400x400",
+      "dropDate": "2026-04-24T09:00:00.000Z",
+      "status": "upcoming",
+      "createdAt": "2026-04-09T14:21:19.276Z",
+      "updatedAt": "2026-04-09T14:21:19.276Z",
       "__v": 0
     }
   ],

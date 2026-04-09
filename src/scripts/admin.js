@@ -7,6 +7,13 @@ import {
   addVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
+import { updateProduct } from "../utils/api.js";
+
+let editingProductId = null; 
+let cancelEditBtn = document.createElement("button");
+cancelEditBtn.innerText = "Cancel";
+cancelEditBtn.type = "button";
+cancelEditBtn.style.display = "none";
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
@@ -70,6 +77,25 @@ function renderProductTable(products, variants) {
     const editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
     actions.append(editBtn);
+
+    editBtn.addEventListener("click", () => {
+    const formTitle = document.querySelector(".create-product h2");
+
+    editingProductId = product._id;
+
+    document.querySelector("#name").value = product.name;
+    document.querySelector("#description").value = product.description;
+    document.querySelector("#price").value = product.price;
+    document.querySelector("#image").value = product.image;
+    cancelEditBtn.style.display = "inline-block";
+
+    const date = new Date(product.dropDate);
+    document.querySelector("#release-date").value =
+      date.toISOString().slice(0, 16);
+
+    formTitle.innerText = "Edit Product";
+    document.querySelector("#create-product-btn").innerText = "Update Product";
+});
 
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
@@ -186,12 +212,19 @@ async function onPageLoad() {
   renderOrderTable(products, variants, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
+
+  const form = document.querySelector(".create-product-form");
+  form.append(cancelEditBtn);
+  cancelEditBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    cancelEdit();
+  });
 }
 
 onPageLoad();
 
-//Function that creates a product
-function createProduct() {
+// Function that creates a product
+async function createProduct() {
   const name = document.querySelector("#name");
   const description = document.querySelector("#description");
   const price = document.querySelector("#price");
@@ -261,7 +294,10 @@ function createProduct() {
     __v: 0,
   };
 
-  addProduct(product);
+  await addProduct(product);
+  
+  await onPageLoad();
+  document.querySelector(".create-product-form").reset();
 }
 
 //button event listener for create product
@@ -270,6 +306,68 @@ const createProductBtn = document.querySelector("#create-product-btn");
 createProductBtn.addEventListener("click", () => {
   createProduct();
 });
+
+function cancelEdit() {
+  editingProductId = null;
+
+  document.querySelector(".create-product-form").reset();
+
+  document.querySelector(".create-product h2").innerText = "Create Product";
+  document.querySelector("#create-product-btn").innerText = "Create Product";
+
+  cancelEditBtn.style.display = "none";
+}
+
+//edit product function
+async function editProduct() {
+  const name = document.querySelector("#name");
+  const description = document.querySelector("#description");
+  const price = document.querySelector("#price");
+  const imageURL = document.querySelector("#image");
+  const releaseDate = document.querySelector("#release-date");
+
+  if (!editingProductId) return;
+
+  if (!name.value.trim() || !price.value) {
+    const errorMsg = document.querySelector(".product-error-message");
+    errorMsg.innerText = "Name and Price are required";
+    return;
+  }
+
+  const product = {
+    _id: editingProductId,
+    name: name.value,
+    description: description.value,
+    price: Number(price.value),
+    image: imageURL.value,
+    dropDate: new Date(releaseDate.value).toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  await updateProduct(product);
+
+  editingProductId = null;
+
+  // reset UI
+  document.querySelector(".create-product h2").innerText = "Create Product";
+  document.querySelector("#create-product-btn").innerText = "Create Product";
+
+  await onPageLoad();
+  document.querySelector(".create-product-form").reset();
+}
+
+async function handleProductSubmit() {
+  if (editingProductId) {
+    await editProduct();
+  } else {
+    await createProduct();
+  }
+}
+
+createProductBtn.addEventListener("click", () => {
+  handleProductSubmit();
+});
+
 
 //Render all products so admin can choose which product to add variants to
 function renderProductSelect(products) {
@@ -386,3 +484,26 @@ tabButtons.forEach((btn) => {
     btn.classList.add("active");
   });
 });
+
+editBtn.addEventListener("click", () => {
+  const formTitle = document.querySelector(".create-product h2");
+
+  // change mode to edit
+  editingProductId = product._id;
+
+  // form
+  document.querySelector("#name").value = product.name;
+  document.querySelector("#description").value = product.description;
+  document.querySelector("#price").value = product.price;
+  document.querySelector("#image").value = product.image;
+
+  // change date to be compatible with input
+  const date = new Date(product.dropDate);
+  document.querySelector("#release-date").value =
+    date.toISOString().slice(0, 16);
+
+  // change UI
+  formTitle.innerText = "Edit Product";
+  document.querySelector("#create-product-btn").innerText = "Update Product";
+});
+
