@@ -66,13 +66,13 @@ function renderProductTable(products, variants) {
       else return "green";
     };
 
-    // Stock แสดงเป็น text ก่อน
+    // Stock span with text color
     const stockText = document.createElement("span");
     stockText.innerText = variant.stock;
     stockText.style.color = getStockColor(variant.stock);
     stock.appendChild(stockText);
 
-    // ปุ่ม Update stock
+    // btn Update stock
     const updateStockBtn = document.createElement("button");
     updateStockBtn.innerText = "Update Stock";
     updateStockBtn.style.backgroundColor = "#DEED00";
