@@ -20,6 +20,8 @@
       "price": 89.5,
       "image": "https://placehold.co/400x400",
       "dropDate": "2026-04-24T09:00:00.000Z",
+      "status": "live",
+      "createdAt": "2026-02-25T10:00:00.000Z",
       "updatedAt": "2026-04-09T14:21:19.278Z",
       "id": "661000000000000000000002"
     },
@@ -118,6 +120,12 @@
       "email": "bob@example.com",
       "password": "Bob@1234",
       "isAdmin": false,
+      "address": {
+        "street": "742 Maple Avenue",
+        "postal_code": "10012",
+        "city": "New York",
+        "country": "USA"
+      },
       "createdAt": "2026-03-02T08:00:00.000Z",
       "updatedAt": "2026-03-02T08:00:00.000Z",
       "__v": 0
