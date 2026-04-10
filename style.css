@@ -492,3 +492,21 @@ button[type="submit"]:hover {
   width: 20px;
   height: 20px;
 }
+
+.profile-dropdown {
+  position: absolute;
+  top: 27px;
+  right: -7px;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  width: 180px;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.profile-dropdown p {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+}
