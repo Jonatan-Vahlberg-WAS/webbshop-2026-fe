@@ -481,3 +481,14 @@ button[type="submit"]:hover {
   margin: 0;
   font-size: 18px;
 }
+
+/* --- PROFILIKON + DROPDOWN --- */
+.profile-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 20px;
+  height: 20px;
+}

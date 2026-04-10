@@ -19,4 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem("loggedIn");
     window.location.href = "index.html";
   });
+    // Visa profil-ikon när man är inloggad
+const profileIconContainer = document.getElementById("profile-icon-container");
+const profileDropdown = document.getElementById("profile-dropdown");
+const profileIcon = document.getElementById("profile-icon");
+
+profileIconContainer.style.display = "block";
 });
