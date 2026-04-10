@@ -43,18 +43,29 @@
   </nav>
 
   </header>
+    <h1 id="welcome-text">Välkommen!</h1>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
-    <h1 id="welcome-text">Välkommen!</h1>
+    
+    <div class="profile-tabs">
+      <div class="tab-btn active" data-tab="user-plants">Mina växter</div>
+      <div class="tab-btn" data-tab="user-trades">Förfrågningar</div>
+      <div class="tab-btn" data-tab="user-history">Historik</div>
+    </div>
+
+    <section id="user-plants" class="tab-content active">
+      <div id="plant-list" class="list-container"></div>
+    </section>
+
+    <section id="user-trades" class="tab-content">
+      <p>Inga förfrågningar att visa.</p>    
+    </section>
+
+    <section id="user-history" class="tab-content">
+      <p>Ingen historik att visa.</p>   
+    </section>
   </main>
-
-
-
-
-
-
-
 
 
   <!-- PLot Twist - FOOTER -->
