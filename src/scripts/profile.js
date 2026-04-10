@@ -25,4 +25,9 @@ const profileDropdown = document.getElementById("profile-dropdown");
 const profileIcon = document.getElementById("profile-icon");
 
 profileIconContainer.style.display = "block";
+
+// Användardata
+document.getElementById("dd-name").textContent = user.name;
+document.getElementById("dd-email").textContent = user.email;
+
 });
