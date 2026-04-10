@@ -1,33 +1,54 @@
+import { getBaseUrl } from "../utils/api.js";
+
 const form = document.getElementById("plantForm");
 
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  // get values
-  const name = document.getElementById("plantName").value;
-  const image = document.getElementById("plantImage").value;
-  const location = document.getElementById("plantLocation").value;
-  const light = document.getElementById("lightLevel").value;
+  const BASE_URL = getBaseUrl();
 
-  // create object
+  // get values
+  const plantName = document.getElementById("plantName").value;
+  const imageUrl = document.getElementById("plantImage").value;
+  const light = Number(document.getElementById("lightLevel").value);
+
+  // 👉 TEMP: fixed Stockholm coordinates
+  const coordinates = [59.33, 18.06];
+
   const newPlant = {
-    name,
-    image,
-    location,
-    light
+    plantName,
+    description: "", // optional for now
+    light,
+    water: 1, // default (backend expects it)
+    imageUrl,
+    coordinates,
+    meetingTime: new Date().toISOString(),
+    available: true
   };
 
-  // get existing plants
-  const plants = JSON.parse(localStorage.getItem("plants")) || [];
+  console.log("Sending plant:", newPlant);
 
-  // add new plant
-  plants.push(newPlant);
+  try {
+    const res = await fetch(BASE_URL + "plants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newPlant)
+    });
+    
+    console.log("STATUS:", res.status);
 
-  // save back
-  localStorage.setItem("plants", JSON.stringify(plants));
+    const data = await res.json();
+    console.log("RESPONSE:", data);
 
-  console.log("Saved plant:", newPlant);
+    // reset form
+    form.reset();
 
-  // reset form
-  form.reset();
+    // optional: redirect to map
+    /* window.location.href = "/map.html"; */
+
+  } catch (error) {
+    console.error("Error saving plant:", error);
+  }
 });

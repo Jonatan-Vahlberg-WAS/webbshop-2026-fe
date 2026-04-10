@@ -15,12 +15,16 @@
   return "https://plottwistgrupp11.vercel.app/"; 
 }
  */
-export function getBaseUrl() {
+/* export function getBaseUrl() {
   const host = window.location.hostname;
 
   if (host === "localhost" || host === "127.0.0.1") {
     return "http://localhost:3000/";
   }
 
+  return "https://plottwistgrupp11.vercel.app/";
+} */
+
+  export function getBaseUrl() {
   return "https://plottwistgrupp11.vercel.app/";
 }
