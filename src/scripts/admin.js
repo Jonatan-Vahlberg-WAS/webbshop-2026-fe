@@ -133,8 +133,36 @@ function renderProductTable(products, variants) {
       formTitle.innerText = "Edit Product";
       document.querySelector("#create-product-btn").innerText = "Update Product";
     });
+    
+    const statusBtn = document.createElement("button");
+    if (product.status === "upcoming") {
+      statusBtn.innerText = "Go Live";
+      statusBtn.style.backgroundColor = "green";
+      statusBtn.style.color = "white";
 
-    actions.append(editBtn, updateStockBtn);
+      statusBtn.addEventListener("click", async () => {
+        await updateProduct({ ...product, status: "live" });
+        await onPageLoad();
+      });
+
+      actions.append(editBtn, updateStockBtn, statusBtn);
+
+    } else if (product.status === "live") {
+      statusBtn.innerText = "Mark Sold Out";
+      statusBtn.style.backgroundColor = "orange";
+      statusBtn.style.color = "white";
+
+      statusBtn.addEventListener("click", async () => {
+        await updateProduct({ ...product, status: "sold out" });
+        await onPageLoad();
+      });
+
+      actions.append(editBtn, updateStockBtn, statusBtn);
+
+    } else {
+      // sold out — no button
+      actions.append(editBtn, updateStockBtn);
+    }
 
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
