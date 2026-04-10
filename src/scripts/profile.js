@@ -42,5 +42,21 @@ document.addEventListener("click", (e) => {
     profileDropdown.style.display = "none";
   }
 });
+  // placeholder-data
+  const placeholder = {
+    plants: [
+      { name: "Monstera", location: "Göteborg" },
+      { name: "Aloe Vera", location: "Borås" }
+    ]
+  };
+
+  // Växter
+  document.getElementById("plant-list").innerHTML =
+    placeholder.plants.map(p => `
+      <div class="list-item">
+        <strong>${p.name}</strong>
+        <p>Plats: ${p.location}</p>
+      </div>
+    `).join("");
 
 });

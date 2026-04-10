@@ -555,3 +555,12 @@ button[type="submit"]:hover {
   background-color: #003D4D;
 }
 
+
+/* Content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
