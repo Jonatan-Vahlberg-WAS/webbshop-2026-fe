@@ -511,6 +511,23 @@ button[type="submit"]:hover {
   font-size: 14px;
 }
 
+/* --- PROFILE --- */
+.main-content-profile {
+    max-width: 1200px;
+    margin: 4rem auto;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    background-color: #A2BF8F;
+}
+
+#welcome-text {
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
 /* --- PROFILE TABS --- */
 .profile-tabs {
   display: flex;
@@ -579,14 +596,4 @@ button[type="submit"]:hover {
   padding: 15px;
   background: #A2BF8F;
   border: 2px solid white;
-}
-
-.main-content-profile {
-    max-width: 1200px;
-    margin: 4rem auto;
-    border-radius: 20px;
-    border: 1px solid black;
-    padding: 5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    background-color: #A2BF8F;
 }
