@@ -161,6 +161,16 @@ export async function addVariant(variant) {
   }
 }
 
+//Update variant data in the API
+export async function updateVariant(id, data) {
+  const response = await fetch(`http://localhost:3000/variants/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
 // Register new user
 export async function registerUser(name, email, password) {
   const url = new URL("users", getBaseUrl()).toString();

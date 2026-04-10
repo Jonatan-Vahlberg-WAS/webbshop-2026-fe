@@ -1,113 +1,123 @@
-/* Admin – simple white, tables, forms */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+
+/* ── Admin layout ── */
 .admin-main {
-  max-width: 80%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  background: #fff;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
+  background: transparent;
 }
 
+.admin-main > h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: -0.5px;
+  margin-bottom: var(--spacing-lg);
+  border-left: 6px solid var(--color-accent);
+  padding-left: var(--spacing-md);
+}
+
+/* ── Stats bar ── */
 .admin-stats {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 10px;
-  height: 100px;
-  border: 1px solid black;
-  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 3px solid var(--color-text-dark);
+  margin-bottom: var(--spacing-lg);
+  height: auto;
 }
 
 .admin-stats .vl {
-  border-right: 1px solid black;
-  height: 100%;
-}
-
-.create-product {
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #ddd;
-  margin-bottom: 1rem;
-}
-
-.create-product h2 {
-  margin-top: 0;
-}
-
-.hl {
-  border-bottom: 1px solid black;
-  width: 100%;
-  margin: 10px 0;
-}
-
-.create-product-form label {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-}
-
-.create-product-form input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-}
-
-.create-product-form #description {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-}
-
-.create-product-form button {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #333;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.table-container {
-  border: 1px solid #ddd;
-  overflow-x: auto;
-  padding: 10px;
-}
-
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-}
-
-.admin-table th,
-.admin-table td {
-  padding: 0.5rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.admin-table th {
-  background: #f9f9f9;
-  font-weight: 600;
-}
-
-.admin-table tbody tr:last-child td {
-  border-bottom: none;
+  display: none;
 }
 
 .stat-display {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 5px;
+  align-items: flex-start;
+  gap: 4px;
+  padding: var(--spacing-md) var(--spacing-md);
+  border-right: 3px solid var(--color-text-dark);
+  transition: background 0.15s;
 }
 
-.stat-display p {
+.stat-display:last-child {
+  border-right: none;
+}
+
+.stat-display:hover {
+  background: var(--color-accent);
+}
+
+.stat-display p:first-child {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  opacity: 0.5;
   margin: 0;
 }
 
-.product-error-msg {
-  color: red;
+.stat-display p:last-child {
+  font-size: 1.75rem;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1;
 }
 
+/* ── Admin container ── */
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--color-text-dark);
+}
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  border-bottom: 3px solid var(--color-text-dark);
+  background: var(--color-surface);
+}
+
+.tabs button {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-right: 3px solid var(--color-text-dark);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  box-shadow: none;
+}
+
+.tabs button:last-child {
+  border-right: none;
+}
+
+.tabs button:hover {
+  background: var(--color-accent);
+  color: var(--color-text-dark);
+}
+
+.tabs button.active {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  font-weight: 700;
+  box-shadow: none;
+}
+
+/* ── Tab content ── */
 .tab-content {
   display: none !important;
 }
@@ -116,43 +126,219 @@
   display: block !important;
 }
 
-.tabs button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background: #f0f0f0;
-  color: #333;
-  cursor: pointer;
-  font-weight: 500;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-  border-radius: 4px 4px 0 0;
-}
-
-.tabs button:hover {
-  background: #e0e0e0;
-}
-
-.tabs button.active {
-  background: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-
 #products-create-render.active {
-  display: flex !important;
-  flex-direction: row;
+  display: grid !important;
+  grid-template-columns: 320px 1fr;
+  align-items: start;
+}
+
+/* ── Create Product panel ── */
+.create-product {
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border-right: 3px solid var(--color-text-dark);
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.create-product h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 var(--spacing-md);
+  color: var(--color-text-dark);
+  opacity: 0.5;
+}
+
+.hl {
+  border: none;
+  border-top: 3px solid var(--color-text-dark);
   width: 100%;
-  gap: 1.5rem;
+  margin: var(--spacing-md) 0;
 }
 
-#products-create-render.active > .create-product {
-  flex: 0 0 35%;
-  min-width: 250px;
+.create-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
-#products-create-render.active > .table-container {
-  flex: 1;
-  min-width: 0;
+.create-product-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.create-product-form label,
+.create-product-form > label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  margin-bottom: 0;
+}
+
+.create-product-form input,
+.create-product-form textarea,
+.create-product-form select {
+  width: 100%;
+  padding: 8px 10px;
+  background: #fff;
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  color: var(--color-text-dark);
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.create-product-form input:focus,
+.create-product-form textarea:focus,
+.create-product-form select:focus {
+  border-color: var(--color-accent-secondary);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}
+
+.create-product-form #description {
+  width: 100%;
+  height: 80px;
+  resize: vertical;
+}
+
+.create-product-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+  background-color: #fff;
+}
+
+.create-product-form button {
+  margin-top: 4px;
+  padding: 9px var(--spacing-md);
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.create-product-form button:hover {
+  background: var(--color-accent);
+  color: var(--color-text-dark);
+  border-color: var(--color-text-dark);
+  box-shadow: 3px 3px 0 var(--color-text-dark);
+}
+
+/* ── Error messages ── */
+.product-error-message,
+.variant-error-message {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cc0000;
+  margin-top: 4px;
+  min-height: 1rem;
+}
+
+/* ── Table container ── */
+.table-container {
+  padding: var(--spacing-md);
+  border: none;
+  overflow-x: auto;
+  background: var(--color-surface);
+}
+
+.table-container h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  opacity: 0.5;
+  margin: 0 0 var(--spacing-md);
+}
+
+/* ── Tables ── */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+  font-size: 0.875rem;
+}
+
+.admin-table thead tr {
+  border-bottom: 3px solid var(--color-text-dark);
+}
+
+.admin-table thead th {
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  padding: 0 var(--spacing-md) var(--spacing-sm);
+  text-align: left;
+  background: transparent;
+}
+
+.admin-table tbody tr {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  transition: background 0.12s;
+}
+
+.admin-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: var(--color-accent);
+}
+
+.admin-table tbody th,
+.admin-table tbody td {
+  padding: 0.75rem var(--spacing-md);
+  font-weight: 400;
+  color: var(--color-text-dark);
+  border-bottom: none;
+}
+
+/* ── Action buttons in tables ── */
+.admin-table button {
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  margin-right: 4px;
+  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+}
+
+.admin-table button:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  box-shadow: 2px 2px 0 var(--color-accent);
+}
+
+.admin-products-tbody th button {
+  margin-bottom: 4px;
 }
