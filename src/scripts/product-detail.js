@@ -95,8 +95,15 @@ export async function renderProductDetail() {
     updateAddToCartState();
 
     addToCartBtn.addEventListener("click", () => {
+      const selectedVariant = variants.find((v) => v.size === selectedSize);
+
       //Runs add to cart function with arguments product Id and size
-      const result = addToCart(product.id, selectedSize);
+      const result = addToCart(
+        product,
+        product.id,
+        selectedVariant.id,
+        selectedSize,
+      );
 
       //Error & Success messaging/actions
       if (!result.success) {

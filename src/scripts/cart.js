@@ -1,4 +1,4 @@
-import { getProducts, getVariants } from "../utils/api.js";
+import { getProducts, getVariants, postOrder } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress } from "../utils/utility.js";
 
@@ -87,7 +87,7 @@ async function renderCart() {
 
     const totalWithTax = subtotal + taxes;
     const totalPrice = document.querySelector(".total-price");
-    totalPrice.textContent = `Total: $${totalWithTax.toFixed(2)}`;
+    totalPrice.textContent = `$${totalWithTax.toFixed(2)}`;
   } catch (err) {
     console.error(err);
   }
@@ -134,11 +134,78 @@ function validateInputs() {
     const errorMsg = document.querySelector(".cart-error-message");
     errorMsg.classList.add("cart-error-msg");
     errorMsg.innerText = `${emptyFields.join(" & ")} ${emptyFields.length === 1 ? "field is" : "fields are"} empty`;
-    return;
+    return false;
+  }
+  return true;
+}
+
+async function createOrder() {
+  //Validates, if false stops user from ordering.
+  const isValid = validateInputs();
+  if (!isValid) return;
+
+  try {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    //If cart is empty
+    if (!cart || cart.length === 0) {
+      console.error("Cart is empty");
+      return;
+    }
+
+    const products = await getProducts();
+    const variants = await getVariants();
+
+    cart.forEach((item) => {
+      const product = products.filter((p) => p._id === item.productId);
+      const variant = variants.filter((v) => v._id === item.variantId);
+      return { product, variant };
+    });
+
+    const user = getCurrentUser();
+
+    //To get total price
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const taxRate = 0.25;
+    const taxes = subtotal * taxRate;
+    const totalCost = subtotal + taxes;
+
+    //Get address that is saved for user or from inputs
+    const address = null;
+
+    if (user.address) {
+      address = user.address;
+    } else {
+      address = {
+        street: document.querySelector(".street-input").value,
+        city: document.querySelector(".city-input").value,
+        postalCode: document.querySelector(".postal-code-input").value,
+        country: document.querySelector(".country-input").value,
+      };
+    }
+
+    const order = {
+      userId: user.id,
+      userName: user.name,
+      userEmail: user.email,
+      userAddress: address,
+      products: cart.map((item) => ({
+        productId: item.productId,
+        variantId: item.variantId,
+        name: item.name,
+        size: item.size,
+        price: item.price,
+      })),
+      quantity: cart.length,
+      totalCost,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+  } catch (err) {
+    console.error(err);
   }
 }
 
 const confirmPurchaseBtn = document.querySelector(".confirm-btn");
-confirmPurchaseBtn.addEventListener("click", () => {
-  validateInputs();
-});
+confirmPurchaseBtn.addEventListener("click", () => {});
