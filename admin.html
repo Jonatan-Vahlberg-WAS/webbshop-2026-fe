@@ -159,14 +159,16 @@
             <div class="order-filters">
               <input type="text" id="filter-customer" placeholder="Search customer..." />
               <input type="text" id="filter-product" placeholder="Search product..." />
-              <input type="date" id="filter-date-from" />
-              <input type="date" id="filter-date-to" />
+              <label>From: <input type="date" id="filter-date-from" /></label>
+              <label>To: <input type="date" id="filter-date-to" /></label>
               <select id="filter-status">
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>
                 <option value="shipped">Shipped</option>
                 <option value="cancelled">Cancelled</option>
               </select>
+              <button id="clear-filters-btn">Clear</button>
+              <span id="order-count"></span>
               <button id="print-orders-btn">Print</button>
             </div>
 
