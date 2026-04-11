@@ -213,3 +213,9 @@
   margin-top: 4px;
   min-height: 1rem;
 }
+
+.cart-item {
+  margin: 10px 0;
+  border: 1px solid black;
+  padding: 1rem;
+}
