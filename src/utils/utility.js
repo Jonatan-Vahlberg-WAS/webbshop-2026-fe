@@ -127,6 +127,8 @@ export function checkUserAddress() {
 }
 
 //Function that renders the address if a user has one
+//renderElement is the class name of the element where you want to display address
+//elementToHide is the element you hide (that has address inputs or a button like "Add Address")
 export function checkIfUserHasAddress(elementToHide, renderElement) {
   const hasAddress = checkUserAddress();
   const element = document.querySelector(`.${elementToHide}`);
