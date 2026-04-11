@@ -165,9 +165,19 @@ function renderProductTable(products, variants) {
       statusBtn.style.backgroundColor = "green";
       statusBtn.style.color = "white";
 
+      // Only allow going live if there's stock
       statusBtn.addEventListener("click", async () => {
-        await updateProduct({ ...product, status: "live" });
-        await onPageLoad();
+      const totalStock = variants
+        .filter((v) => v.productId === product._id)
+        .reduce((sum, v) => sum + Number(v.stock), 0);
+
+      if (totalStock === 0) {
+        alert("Cannot go live. Product has no stock.");
+        return;
+      }
+
+      await updateProduct({ ...product, status: "live" });
+      await onPageLoad();
       });
 
       actions.append(editBtn, updateStockBtn, statusBtn);
