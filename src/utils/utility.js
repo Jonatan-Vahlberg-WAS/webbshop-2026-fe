@@ -117,3 +117,36 @@ export function addToCart(productId, size) {
     return { success: true, cartItem };
   }
 }
+
+//Checks if the user has a saved address or not
+export function checkUserAddress() {
+  const user = getCurrentUser();
+  console.log("USER:", user);
+
+  return !!user?.address;
+}
+
+//Function that renders the address if a user has one
+//renderElement is the class name of the element where you want to display address
+//elementToHide is the element you hide (that has address inputs or a button like "Add Address")
+export function checkIfUserHasAddress(elementToHide, renderElement) {
+  const hasAddress = checkUserAddress();
+  const element = document.querySelector(`.${elementToHide}`);
+
+  if (hasAddress) {
+    element.style.display = "none";
+
+    const user = getCurrentUser();
+
+    const userAddress = document.querySelector(`.${renderElement}`);
+
+    const name = document.createElement("p");
+    const addressLineOne = document.createElement("p");
+    const addressLineTwo = document.createElement("p");
+
+    name.innerText = user.name;
+    addressLineOne.innerText = `${user.address.street}, ${user.address.city}`;
+    addressLineTwo.innerText = `${user.address.postal_code}, ${user.address.country}`;
+    userAddress.append(name, addressLineOne, addressLineTwo);
+  }
+}

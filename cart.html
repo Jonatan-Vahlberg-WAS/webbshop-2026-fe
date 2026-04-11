@@ -1,128 +1,170 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sole Search – Cart</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="cart.css" />
-
-</head>
-<body>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
     <!-- HEADER -->
     <header class="site-header">
-        <nav>
-            <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
-            <ul class="nav-links">
-                <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html" id="nav-cart" class="active">Cart</a></li>
-                <li><a href="auth.html" id="nav-login">Login</a></li>
-                <li><a href="admin.html" id="nav-admin">Admin</a></li>
-                <li><button id="nav-logout">Logout</button></li>
-            </ul>
-        </nav>
+      <nav>
+        <a href="index.html" class="logo"
+          >SOLE_<span class="logo-search">SEARCH</span></a
+        >
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html" id="nav-cart" class="active">Cart</a></li>
+          <li><a href="auth.html" id="nav-login">Login</a></li>
+          <li><a href="admin.html" id="nav-admin">Admin</a></li>
+          <li><button id="nav-logout">Logout</button></li>
+        </ul>
+      </nav>
     </header>
 
+    <div class="cart-layout">
+      <!-- Container for left and right panels -->
+      <!-- LEFT PANEL -->
 
-    <div class="cart-layout"> <!-- Container for left and right panels -->
-        <!-- LEFT PANEL -->
-        <aside class="left-panel">
-            <a class="back-link" href="products.html">← Continue Shopping</a>
+      <!-- Main purchase panel -->
+      <main class="left-panel">
+        <a class="back-link" href="products.html">← Continue Shopping</a>
 
-            <h1 class="section-title">Your<br>Selection</h1>
-        
-            <div class="product-img">[Shoe Image]</div>
-        
-            <div class="product-row">
-                <span class="product-name">Product Name</span>
-                <span class="product-price">price 943.42 kr</span>
-            </div>
-            <p class="product-size">Size: 10 US</p>
-        
-            <div class="order-summary">
-                <div class="summary-row"><span>Subtotal</span><span>850.00 kr</span></div>
-                <!-- <div class="summary-row shipping"><span>Shipping</span><span>$25.00</span></div> skip for now -->
-                <div class="summary-row"><span>Taxes</span><span>68.42 kr</span></div>
-            </div>
-        
-            <div class="summary-total">
-                <span>Total Due</span>
-                <span>943.42 kr</span>
-            </div>
-        </aside>
-    
-        <!-- Main purchase panel -->
-        <main class="right-panel">
         <form id="checkout-form">
-            <!-- Shipping Address -->
-            <div class="section-heading">
-                <h2>Shipping Address</h2>
-            </div>
-        
+          <!-- Shipping Address -->
+
+          <div class="section-heading">
+            <h2>Shipping Address</h2>
+          </div>
+
+          <div class="user-address"></div>
+
+          <div class="address-form">
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="Firstname and Lastname" required />
-            </div>
-            <div class="form-group">
-                <label>Address</label>
-                <input type="text" placeholder="Address" required />
+              <label>Full Name</label>
+              <input
+                type="text"
+                class="fullname-input"
+                autocomplete="name"
+                placeholder="First and Last name"
+                required />
             </div>
             <div class="row-2">
-                <div class="form-group">
+              <div class="form-group">
+                <label>Street</label>
+                <input
+                  type="text"
+                  class="street-input"
+                  autocomplete="street-address"
+                  placeholder="Street"
+                  required />
+              </div>
+              <div class="form-group">
                 <label>City</label>
-                <input type="text" placeholder="City" required />
-                </div>
-                <div class="form-group">
-                <label>Postal Code</label>
-                <input type="text" placeholder="Postal Code" required    />
-                </div>
-            </div>
-        
-            <!-- Secure Payment -->
-            <div class="section-heading" style="margin-top: 32px;">
-                <h2>Payment</h2>
-            </div>
-        
-            <div class="payment-tabs">
-                <h3 class="tab active">Credit Card</h3>
-            </div>
-        
-            <div class="form-group card-number-wrap">
-                <label>Card Number</label>
-                <input type="text" placeholder="0000 0000 0000 0000" required />
-            </div>
-            <div class="row-2">
-                <div class="form-group">
-                    <label>Expiry</label>
-                    <input type="text" placeholder="MM / YY" required />
-                </div>
-                <div class="form-group">
-                    <label>CVC</label>
-                    <input type="text" placeholder="000" required />
-                </div>
+                <input
+                  type="text"
+                  class="city-input"
+                  autocomplete="address-level2"
+                  placeholder="City"
+                  required />
+              </div>
             </div>
 
-            <div class="confirm-wrap">
-                <button type="submit" class="confirm-btn">
-                    <span>Confirm Purchase</span>
-                </button>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Postal Code</label>
+                <input
+                  type="text"
+                  class="postal-code-input"
+                  autocomplete="postal-code"
+                  placeholder="Postal Code"
+                  required
+                  inputmode="numeric"
+                  pattern="^\d{5}(-\d{4})?$" />
+              </div>
+              <div class="form-group">
+                <label>Country</label>
+                <input
+                  type="text"
+                  class="country-input"
+                  autocomplete="country"
+                  placeholder="Country"
+                  required />
+              </div>
             </div>
+          </div>
+
+          <p class="cart-error-message"></p>
+
+          <!-- Secure Payment -->
+          <div class="section-heading" style="margin-top: 32px">
+            <h2>Payment</h2>
+          </div>
+
+          <div class="payment-tabs">
+            <h3 class="tab active">Credit Card</h3>
+          </div>
+
+          <div class="form-group card-number-wrap">
+            <label>Card Number</label>
+            <input type="text" placeholder="0000 0000 0000 0000" required />
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label>Expiry</label>
+              <input type="text" placeholder="MM / YY" required />
+            </div>
+            <div class="form-group">
+              <label>CVC</label>
+              <input type="text" placeholder="000" required />
+            </div>
+          </div>
+
+          <div class="confirm-wrap">
+            <button type="submit" class="confirm-btn">
+              <span>Confirm Purchase</span>
+            </button>
+          </div>
         </form>
-        </main>
+      </main>
+
+      <aside class="right-panel">
+        <h1 class="section-title">Your<br />Selections</h1>
+
+        <div class="cart-container"></div>
+
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>Subtotal</span><span class="subtotal"></span>
+          </div>
+          <!-- <div class="summary-row shipping"><span>Shipping</span><span>$25.00</span></div> skip for now -->
+          <div class="summary-row">
+            <span>Taxes</span><span class="taxes"></span>
+          </div>
+        </div>
+
+        <div class="summary-total">
+          <span>Total Due</span>
+          <span class="total-price"></span>
+        </div>
+      </aside>
     </div>
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="footer-content">
-            <p>&copy; 2026 Sole Search. All rights reserved.</p>
-        </div>
+      <div class="footer-content">
+        <p>&copy; 2026 Sole Search. All rights reserved.</p>
+      </div>
     </footer>
 
     <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
     <script type="module" src="./src/utils/auth.js"></script>
 
-    <script type="module" src="./src/scripts/index.js"></script>
+    <!-- <script type="module" src="./src/scripts/index.js"></script> -->
 
-</body>
+    <script type="module" src="./src/scripts/cart.js"></script>
+  </body>
 </html>
