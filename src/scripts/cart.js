@@ -23,6 +23,8 @@ async function renderCart() {
 
         if (!product || !variant) return;
 
+        const cartItem = document.createElement("div");
+        cartItem.classList.add("cart-item");
         const imgDiv = document.createElement("div");
         imgDiv.classList.add("product-img");
         const img = document.createElement("img");
@@ -34,6 +36,8 @@ async function renderCart() {
         price.classList.add("product-price");
         const size = document.createElement("p");
         size.classList.add("product-size");
+        const removeItemBtn = document.createElement("button");
+        removeItemBtn.innerText = "Remove Item";
 
         img.src = product.image;
         name.textContent = product.name;
@@ -42,10 +46,30 @@ async function renderCart() {
 
         imgDiv.append(img);
         namePriceContainer.append(name, price);
+        cartItem.append(imgDiv, namePriceContainer, size, removeItemBtn);
 
-        cartContainer.append(imgDiv, namePriceContainer, size);
+        cartContainer.append(cartItem);
 
         subtotal += product.price;
+
+        removeItemBtn.addEventListener("click", () => {
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+          // Remove the clicked item (match both productId + size)
+          cart = cart.filter(
+            (cartItem) =>
+              !(
+                cartItem.productId === item.productId &&
+                cartItem.size === item.size
+              ),
+          );
+
+          localStorage.setItem("cart", JSON.stringify(cart));
+
+          // Re-render cart
+          cartContainer.innerHTML = "";
+          renderCart();
+        });
       });
     } else {
       cartContainer.textContent = "Cart is empty";
