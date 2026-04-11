@@ -117,3 +117,11 @@ export function addToCart(productId, size) {
     return { success: true, cartItem };
   }
 }
+
+//Checks if the user has a saved address or not
+export function checkUserAddress() {
+  const user = getCurrentUser();
+  console.log("USER:", user);
+
+  return !!user?.address;
+}
