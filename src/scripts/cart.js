@@ -1,6 +1,7 @@
 import { getProducts, getVariants } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 
+//Function render cart products in the cart page
 async function renderCart() {
   let subtotal = 0;
 
@@ -71,3 +72,47 @@ async function renderCart() {
 if (window.location.pathname.includes("cart.html")) {
   renderCart();
 }
+
+//To validate address inputs
+function validateInputs() {
+  const name = document.querySelector(".fullname-input");
+  const street = document.querySelector(".street-input");
+  const city = document.querySelector(".city-input");
+  const postalCode = document.querySelector(".postal-code-input");
+  const country = document.querySelector(".country-input");
+
+  let emptyFields = [];
+
+  if (!name.value.trim()) {
+    emptyFields.push("Name");
+    name.style.borderBottom = "1px solid red";
+  }
+  if (!street.value.trim()) {
+    emptyFields.push("Street");
+    street.style.borderBottom = "1px solid red";
+  }
+  if (!city.value.trim()) {
+    emptyFields.push("City");
+    city.style.borderBottom = "1px solid red";
+  }
+  if (!postalCode.value.trim()) {
+    emptyFields.push("Postal Code");
+    postalCode.style.borderBottom = "1px solid red";
+  }
+  if (!country.value) {
+    emptyFields.push("Country");
+    country.style.borderBottom = "1px solid red";
+  }
+
+  if (emptyFields.length > 0) {
+    const errorMsg = document.querySelector(".cart-error-message");
+    errorMsg.classList.add("cart-error-msg");
+    errorMsg.innerText = `${emptyFields.join(" & ")} ${emptyFields.length === 1 ? "field is" : "fields are"} empty`;
+    return;
+  }
+}
+
+const confirmPurchaseBtn = document.querySelector(".confirm-btn");
+confirmPurchaseBtn.addEventListener("click", () => {
+  validateInputs();
+});

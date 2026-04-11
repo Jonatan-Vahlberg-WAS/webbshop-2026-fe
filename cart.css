@@ -1,12 +1,12 @@
 /* ── LAYOUT ── */
 .cart-layout {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
+  grid-template-columns: 1.1fr 1fr;
   min-height: calc(100vh - 60px);
 }
 
 /* ── LEFT PANEL ── */
-.left-panel {
+.right-panel {
   padding: 1.5rem;
   border-right: 1px solid #ddd;
   background: #f9f9f9;
@@ -106,7 +106,7 @@
 }
 
 /* ── RIGHT PANEL ── */
-.right-panel {
+.left-panel {
   padding: 1.5rem 2rem;
 }
 
@@ -203,4 +203,13 @@
   margin: 20px;
   font-weight: bolder;
   font-size: 20px;
+}
+
+/* ── Error messages ── */
+.cart-error-message {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cc0000;
+  margin-top: 4px;
+  min-height: 1rem;
 }
