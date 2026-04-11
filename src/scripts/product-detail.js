@@ -98,12 +98,7 @@ export async function renderProductDetail() {
       const selectedVariant = variants.find((v) => v.size === selectedSize);
 
       //Runs add to cart function with arguments product Id and size
-      const result = addToCart(
-        product,
-        product.id,
-        selectedVariant.id,
-        selectedSize,
-      );
+      const result = addToCart(product.id, selectedVariant.id, selectedSize);
 
       //Error & Success messaging/actions
       if (!result.success) {

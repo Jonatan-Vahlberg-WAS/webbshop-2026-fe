@@ -86,7 +86,7 @@ export function countdownTimer(releaseDate, container) {
 }
 
 //Adds product to cart
-export function addToCart(product, productId, variantId, size) {
+export function addToCart(productId, variantId, size) {
   if (!isLoggedIn()) {
     return { success: false, error: "not_logged_in" };
   } else {
@@ -110,9 +110,7 @@ export function addToCart(product, productId, variantId, size) {
       userId: user.id,
       productId,
       variantId,
-      name: product.name,
       size,
-      price: product.price,
     };
 
     cart.push(cartItem);

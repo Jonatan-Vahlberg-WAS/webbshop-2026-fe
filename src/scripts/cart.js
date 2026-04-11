@@ -7,7 +7,10 @@ async function renderCart() {
   let subtotal = 0;
 
   try {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    const user = getCurrentUser();
+    const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
+      (item) => item.userId === user.id,
+    );
     const products = await getProducts();
     const variants = await getVariants();
     const cartContainer = document.querySelector(".cart-container");
@@ -56,9 +59,12 @@ async function renderCart() {
           let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
           // Remove the clicked item (match both productId + size)
+          const user = getCurrentUser();
+
           cart = cart.filter(
             (cartItem) =>
               !(
+                cartItem.userId === user.id &&
                 cartItem.productId === item.productId &&
                 cartItem.size === item.size
               ),
@@ -145,8 +151,10 @@ async function createOrder() {
   if (!isValid) return;
 
   try {
-    const cart = JSON.parse(localStorage.getItem("cart"));
-
+    const user = getCurrentUser();
+    const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
+      (item) => item.userId === user.id,
+    );
     //If cart is empty
     if (!cart || cart.length === 0) {
       console.error("Cart is empty");
@@ -156,13 +164,22 @@ async function createOrder() {
     const products = await getProducts();
     const variants = await getVariants();
 
-    cart.forEach((item) => {
-      const product = products.filter((p) => p._id === item.productId);
-      const variant = variants.filter((v) => v._id === item.variantId);
-      return { product, variant };
-    });
+    const productDetails = cart.map((item) => {
+      const product = products.find((p) => p._id === item.productId);
+      const variant = variants.find((v) => v._id === item.variantId);
 
-    const user = getCurrentUser();
+      if (!product || !variant) {
+        throw new Error("Invalid cart item");
+      }
+
+      return {
+        productId: item.productId,
+        variantId: item.variantId,
+        name: product.name,
+        size: variant.size,
+        price: product.price,
+      };
+    });
 
     //To get total price
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
@@ -171,7 +188,7 @@ async function createOrder() {
     const totalCost = subtotal + taxes;
 
     //Get address that is saved for user or from inputs
-    const address = null;
+    let address = null;
 
     if (user.address) {
       address = user.address;
@@ -189,13 +206,7 @@ async function createOrder() {
       userName: user.name,
       userEmail: user.email,
       userAddress: address,
-      products: cart.map((item) => ({
-        productId: item.productId,
-        variantId: item.variantId,
-        name: item.name,
-        size: item.size,
-        price: item.price,
-      })),
+      products: productDetails,
       quantity: cart.length,
       totalCost,
       status: "pending",
