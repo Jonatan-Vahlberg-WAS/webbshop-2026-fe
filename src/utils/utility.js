@@ -125,3 +125,26 @@ export function checkUserAddress() {
 
   return !!user?.address;
 }
+
+//Function that renders the address if a user has one
+export function checkIfUserHasAddress(elementToHide, renderElement) {
+  const hasAddress = checkUserAddress();
+  const element = document.querySelector(`.${elementToHide}`);
+
+  if (hasAddress) {
+    element.style.display = "none";
+
+    const user = getCurrentUser();
+
+    const userAddress = document.querySelector(`.${renderElement}`);
+
+    const name = document.createElement("p");
+    const addressLineOne = document.createElement("p");
+    const addressLineTwo = document.createElement("p");
+
+    name.innerText = user.name;
+    addressLineOne.innerText = `${user.address.street}, ${user.address.city}`;
+    addressLineTwo.innerText = `${user.address.postal_code}, ${user.address.country}`;
+    userAddress.append(name, addressLineOne, addressLineTwo);
+  }
+}

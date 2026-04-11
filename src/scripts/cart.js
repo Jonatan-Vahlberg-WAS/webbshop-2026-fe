@@ -1,5 +1,6 @@
 import { getProducts, getVariants } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
+import { checkIfUserHasAddress } from "../utils/utility.js";
 
 //Function render cart products in the cart page
 async function renderCart() {
@@ -71,6 +72,7 @@ async function renderCart() {
 // Only call on cart.html
 if (window.location.pathname.includes("cart.html")) {
   renderCart();
+  checkIfUserHasAddress("address-form", "user-address");
 }
 
 //To validate address inputs
