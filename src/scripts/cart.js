@@ -218,10 +218,12 @@ async function createOrder() {
 
     const order = {
       _id: generateObjectId(),
-      userId: user.id,
-      userName: user.name,
-      userEmail: user.email,
-      userAddress: address,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        address: address,
+      },
       products: productDetails,
       numOfItems: cart.length,
       totalCost,
