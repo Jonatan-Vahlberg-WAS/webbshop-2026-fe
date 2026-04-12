@@ -134,7 +134,54 @@ function renderProductTable(products, variants) {
       document.querySelector("#create-product-btn").innerText = "Update Product";
     });
 
-    actions.append(editBtn, updateStockBtn);
+    const statusBtn = document.createElement("button");
+    if (product.status === "upcoming") {
+      statusBtn.innerText = "Go Live";
+      statusBtn.style.backgroundColor = "green";
+      statusBtn.style.color = "white";
+
+      statusBtn.addEventListener("click", async () => {
+        await updateProduct({ ...product, status: "live" });
+        await onPageLoad();
+      });
+
+      actions.append(editBtn, updateStockBtn, statusBtn);
+
+    } else if (product.status === "live") {
+      statusBtn.innerText = "Mark Sold Out";
+      statusBtn.style.backgroundColor = "orange";
+      statusBtn.style.color = "white";
+
+      statusBtn.addEventListener("click", async () => {
+        await updateProduct({ ...product, status: "sold out" });
+        await onPageLoad();
+      });
+
+      actions.append(editBtn, updateStockBtn, statusBtn);
+
+    } else {
+      // sold out — show Go Live button
+      statusBtn.innerText = "Go Live";
+      statusBtn.style.backgroundColor = "green";
+      statusBtn.style.color = "white";
+
+      // Only allow going live if there's stock
+      statusBtn.addEventListener("click", async () => {
+      const totalStock = variants
+        .filter((v) => v.productId === product._id)
+        .reduce((sum, v) => sum + Number(v.stock), 0);
+
+      if (totalStock === 0) {
+        alert("Cannot go live. Product has no stock.");
+        return;
+      }
+
+      await updateProduct({ ...product, status: "live" });
+      await onPageLoad();
+      });
+
+      actions.append(editBtn, updateStockBtn, statusBtn);
+    }
 
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
