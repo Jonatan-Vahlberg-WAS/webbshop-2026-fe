@@ -6,12 +6,11 @@ import {
   addProduct,
   addVariant,
   updateProduct,
-  updateVariant 
+  updateVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
-
-let editingProductId = null; 
+let editingProductId = null;
 let cancelEditBtn = document.createElement("button");
 cancelEditBtn.innerText = "Cancel";
 cancelEditBtn.type = "button";
@@ -81,7 +80,6 @@ function renderProductTable(products, variants) {
     let stockInput = null;
 
     updateStockBtn.addEventListener("click", async () => {
-
       if (updateStockBtn.innerText.toLowerCase() === "update stock") {
         stockInput = document.createElement("input");
         stockInput.type = "number";
@@ -91,7 +89,6 @@ function renderProductTable(products, variants) {
 
         stock.replaceChild(stockInput, stockText);
         updateStockBtn.innerText = "Save Stock";
-
       } else {
         const newStock = parseInt(stockInput.value);
 
@@ -127,11 +124,13 @@ function renderProductTable(products, variants) {
       cancelEditBtn.style.display = "inline-block";
 
       const date = new Date(product.dropDate);
-      document.querySelector("#release-date").value =
-        date.toISOString().slice(0, 16);
+      document.querySelector("#release-date").value = date
+        .toISOString()
+        .slice(0, 16);
 
       formTitle.innerText = "Edit Product";
-      document.querySelector("#create-product-btn").innerText = "Update Product";
+      document.querySelector("#create-product-btn").innerText =
+        "Update Product";
     });
 
     const statusBtn = document.createElement("button");
@@ -146,7 +145,6 @@ function renderProductTable(products, variants) {
       });
 
       actions.append(editBtn, updateStockBtn, statusBtn);
-
     } else if (product.status === "live") {
       statusBtn.innerText = "Mark Sold Out";
       statusBtn.style.backgroundColor = "orange";
@@ -158,7 +156,6 @@ function renderProductTable(products, variants) {
       });
 
       actions.append(editBtn, updateStockBtn, statusBtn);
-
     } else {
       // sold out — show Go Live button
       statusBtn.innerText = "Go Live";
@@ -167,17 +164,17 @@ function renderProductTable(products, variants) {
 
       // Only allow going live if there's stock
       statusBtn.addEventListener("click", async () => {
-      const totalStock = variants
-        .filter((v) => v.productId === product._id)
-        .reduce((sum, v) => sum + Number(v.stock), 0);
+        const totalStock = variants
+          .filter((v) => v.productId === product._id)
+          .reduce((sum, v) => sum + Number(v.stock), 0);
 
-      if (totalStock === 0) {
-        alert("Cannot go live. Product has no stock.");
-        return;
-      }
+        if (totalStock === 0) {
+          alert("Cannot go live. Product has no stock.");
+          return;
+        }
 
-      await updateProduct({ ...product, status: "live" });
-      await onPageLoad();
+        await updateProduct({ ...product, status: "live" });
+        await onPageLoad();
       });
 
       actions.append(editBtn, updateStockBtn, statusBtn);
@@ -186,8 +183,6 @@ function renderProductTable(products, variants) {
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
   });
-
-
 }
 
 //function to view all users
@@ -225,25 +220,39 @@ function renderOrderTable(products, variants, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
   // filter logic
-  const customerFilter = document.querySelector("#filter-customer").value.toLowerCase();
-  const productFilter = document.querySelector("#filter-product").value.toLowerCase();
+  const customerFilter = document
+    .querySelector("#filter-customer")
+    .value.toLowerCase();
+  const productFilter = document
+    .querySelector("#filter-product")
+    .value.toLowerCase();
   const statusFilter = document.querySelector("#filter-status").value;
   const dateFrom = document.querySelector("#filter-date-from").value;
   const dateTo = document.querySelector("#filter-date-to").value;
 
   const filteredOrders = orders.filter((order) => {
-    const orderProduct = products.find((p) => p._id === order.productId);
-    const orderUser = users.find((u) => u._id === order.userId);
+    const orderProduct = products.find(
+      (p) => p._id === order.products.productId,
+    );
+    const orderUser = users.find((u) => u._id === order.user.id);
 
     const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
-    const matchProduct = orderProduct.name.toLowerCase().includes(productFilter);
+    const matchProduct = orderProduct.name
+      .toLowerCase()
+      .includes(productFilter);
     const matchStatus = statusFilter === "" || order.status === statusFilter;
 
     const orderDate = new Date(order.createdAt).toISOString().slice(0, 10);
     const matchDateFrom = dateFrom === "" || orderDate >= dateFrom;
     const matchDateTo = dateTo === "" || orderDate <= dateTo;
 
-    return matchCustomer && matchProduct && matchStatus && matchDateFrom && matchDateTo;
+    return (
+      matchCustomer &&
+      matchProduct &&
+      matchStatus &&
+      matchDateFrom &&
+      matchDateTo
+    );
   });
 
   orderList.innerHTML = "";
@@ -254,15 +263,16 @@ function renderOrderTable(products, variants, users, orders) {
   }
 
   filteredOrders.forEach((order) => {
-    const orderProduct = products.find((p) => p._id === order.productId);
-    const orderSize = variants.find((v) => v._id === order.variantId);
-    const orderUser = users.find((u) => u._id === order.userId);
+    // const orderProduct = products.find(
+    //   (p) => p._id === order.products.productId,
+    // );
+    // const orderSize = variants.find((v) => v._id === order.products.variantId);
+    const orderUser = users.find((u) => u._id === order.user.id);
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");
     const userName = document.createElement("th");
-    const productName = document.createElement("th");
-    const productSize = document.createElement("th");
+    const numOfItems = document.createElement("th");
     const price = document.createElement("th");
     const date = document.createElement("th");
     const status = document.createElement("th");
@@ -270,29 +280,28 @@ function renderOrderTable(products, variants, users, orders) {
 
     orderId.innerText = order._id;
     userName.innerText = orderUser.name;
-    productName.innerText = orderProduct.name;
-    productSize.innerText = orderSize.size;
-    price.innerText = `$${orderProduct.price}`;
+    numOfItems.innerText = order.numOfItems;
+    price.innerText = `$${order.totalCost}`;
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
+    const viewOrder = document.createElement("button");
+    viewOrder.innerText = "View Order";
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
     const refundBtn = document.createElement("button");
     refundBtn.innerText = "Refund";
-    Actions.append(updateStatusBtn, refundBtn);
+    Actions.append(viewOrder, updateStatusBtn, refundBtn);
 
-    tr.append(orderId, userName, productName, productSize, price, date, status, Actions);
+    tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
   });
 }
 
 //Function that shows stats
 function renderStats(products, orders) {
-  const VAT_RATE = 0.25;
-  const netRevenue = orders.reduce((sum, order) => {
-    const product = products.find((p) => p._id === order.productId);
-    return sum + Number(product.price) / (1 + VAT_RATE);
+  const revenue = orders.reduce((sum, order) => {
+    return sum + order.totalCost;
   }, 0);
   const activeProducts = products.filter((p) => p.status === "live");
   const shipped = orders.filter((o) => o.status === "shipped");
@@ -304,7 +313,7 @@ function renderStats(products, orders) {
   const shippedOrders = document.querySelector(".stat-shipped-orders");
   const pendingOrders = document.querySelector(".stat-pending-orders");
 
-  totalRevenue.innerText = `$ ${netRevenue}`;
+  totalRevenue.innerText = `$ ${revenue.toFixed(2)}`;
   activeDrops.innerText = activeProducts.length;
   totalOrders.innerText = orders.length;
   shippedOrders.innerText = shipped.length;
@@ -332,40 +341,52 @@ async function onPageLoad() {
 onPageLoad();
 
 // Filter listeners — outside onPageLoad to avoid re-attaching on every reload
-document.querySelector("#filter-customer").addEventListener("input", async () => {
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#filter-customer")
+  .addEventListener("input", async () => {
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
-document.querySelector("#filter-product").addEventListener("input", async () => {
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#filter-product")
+  .addEventListener("input", async () => {
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
-document.querySelector("#filter-status").addEventListener("change", async () => {
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#filter-status")
+  .addEventListener("change", async () => {
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
-document.querySelector("#filter-date-from").addEventListener("change", async () => {
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#filter-date-from")
+  .addEventListener("change", async () => {
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
-document.querySelector("#filter-date-to").addEventListener("change", async () => {
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#filter-date-to")
+  .addEventListener("change", async () => {
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
-document.querySelector("#clear-filters-btn").addEventListener("click", async () => {
-  document.querySelector("#filter-customer").value = "";
-  document.querySelector("#filter-product").value = "";
-  document.querySelector("#filter-date-from").value = "";
-  document.querySelector("#filter-date-to").value = "";
-  document.querySelector("#filter-status").value = "";
-  const { products, variants, users, orders } = await fetchData();
-  renderOrderTable(products, variants, users, orders);
-});
+document
+  .querySelector("#clear-filters-btn")
+  .addEventListener("click", async () => {
+    document.querySelector("#filter-customer").value = "";
+    document.querySelector("#filter-product").value = "";
+    document.querySelector("#filter-date-from").value = "";
+    document.querySelector("#filter-date-to").value = "";
+    document.querySelector("#filter-status").value = "";
+    const { products, variants, users, orders } = await fetchData();
+    renderOrderTable(products, variants, users, orders);
+  });
 
 // Print button
 document.querySelector("#print-orders-btn").addEventListener("click", () => {
@@ -440,7 +461,7 @@ async function createProduct() {
 
   await addProduct(product);
   alert("Product created! Please add at least one size & stock.");
-  
+
   await onPageLoad();
   document.querySelector(".create-product-form").reset();
 }
@@ -470,7 +491,7 @@ async function editProduct() {
   if (!editingProductId) return;
 
   const products = await getProducts();
-  const existingProduct = products.find(p => p._id === editingProductId);
+  const existingProduct = products.find((p) => p._id === editingProductId);
   if (!existingProduct) return;
 
   if (!name.value.trim() || !price.value) {
@@ -619,4 +640,3 @@ tabButtons.forEach((btn) => {
     btn.classList.add("active");
   });
 });
-

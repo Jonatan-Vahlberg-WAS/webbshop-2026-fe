@@ -11,7 +11,9 @@
   <body>
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
+        <a href="index.html" class="logo"
+          >SOLE_<span class="logo-search">SEARCH</span></a
+        >
         <ul class="nav-links">
           <li><a href="products.html">Products</a></li>
           <li><a href="cart.html" id="nav-cart">Cart</a></li>
@@ -157,8 +159,14 @@
           <div class="table-container">
             <h2>Order List</h2>
             <div class="order-filters">
-              <input type="text" id="filter-customer" placeholder="Search customer..." />
-              <input type="text" id="filter-product" placeholder="Search product..." />
+              <input
+                type="text"
+                id="filter-customer"
+                placeholder="Search customer..." />
+              <input
+                type="text"
+                id="filter-product"
+                placeholder="Search product..." />
               <label>From: <input type="date" id="filter-date-from" /></label>
               <label>To: <input type="date" id="filter-date-to" /></label>
               <select id="filter-status">
@@ -176,11 +184,10 @@
               <thead>
                 <tr>
                   <th>Order Id</th>
-                  <th>Customer</th>
-                  <th>Product</th>
-                  <th>Size</th>
-                  <th>Price</th>
                   <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Price</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
