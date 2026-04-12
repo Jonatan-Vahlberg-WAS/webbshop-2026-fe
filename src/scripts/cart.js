@@ -1,18 +1,24 @@
-import { getProducts, getVariants } from "../utils/api.js";
+import { getProducts, getVariants, postOrder } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
-import { checkIfUserHasAddress } from "../utils/utility.js";
+import { checkIfUserHasAddress, generateObjectId } from "../utils/utility.js";
 
 //Function render cart products in the cart page
 async function renderCart() {
   let subtotal = 0;
+  const cartContainer = document.querySelector(".cart-container");
+
+  cartContainer.innerHTML = "";
+  cartContainer.classList.remove("empty-cart");
 
   try {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    const user = getCurrentUser();
+    const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
+      (item) => item.userId === user.id,
+    );
     const products = await getProducts();
     const variants = await getVariants();
-    const cartContainer = document.querySelector(".cart-container");
 
-    if (cart) {
+    if (cart.length > 0) {
       cart.forEach((item) => {
         //Match the products in the cart with the database
         const product = products.find((p) => p._id === item.productId);
@@ -59,6 +65,7 @@ async function renderCart() {
           cart = cart.filter(
             (cartItem) =>
               !(
+                cartItem.userId === user.id &&
                 cartItem.productId === item.productId &&
                 cartItem.size === item.size
               ),
@@ -72,6 +79,7 @@ async function renderCart() {
         });
       });
     } else {
+      cartContainer.innerHTML = "";
       cartContainer.textContent = "Cart is empty";
       cartContainer.classList.add("empty-cart");
     }
@@ -87,7 +95,7 @@ async function renderCart() {
 
     const totalWithTax = subtotal + taxes;
     const totalPrice = document.querySelector(".total-price");
-    totalPrice.textContent = `Total: $${totalWithTax.toFixed(2)}`;
+    totalPrice.textContent = `$${totalWithTax.toFixed(2)}`;
   } catch (err) {
     console.error(err);
   }
@@ -134,11 +142,121 @@ function validateInputs() {
     const errorMsg = document.querySelector(".cart-error-message");
     errorMsg.classList.add("cart-error-msg");
     errorMsg.innerText = `${emptyFields.join(" & ")} ${emptyFields.length === 1 ? "field is" : "fields are"} empty`;
-    return;
+    return false;
+  }
+  return true;
+}
+
+async function createOrder() {
+  const user = getCurrentUser();
+  let isValid = true;
+  //Only validate form if user has no saved address
+  if (!user.address) {
+    isValid = validateInputs();
+  }
+  if (!isValid) return;
+
+  try {
+    //Filter cart belonging to user id
+    const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
+      (item) => item.userId === user.id,
+    );
+    //Stops function fom running if cart is empty
+    if (!cart || cart.length === 0) {
+      console.error("Cart is empty");
+      return;
+    }
+
+    const products = await getProducts();
+    const variants = await getVariants();
+
+    //Take cart information and use product & variant to get name,price and size
+    const productDetails = cart.map((item) => {
+      const product = products.find((p) => p._id === item.productId);
+      const variant = variants.find((v) => v._id === item.variantId);
+
+      if (!product || !variant) {
+        console.error("Invalid cart item:", {
+          item,
+          productFound: !!product,
+          variantFound: !!variant,
+        });
+
+        throw new Error("Invalid cart item");
+      }
+
+      return {
+        productId: item.productId,
+        variantId: item.variantId,
+        name: product.name,
+        size: variant.size,
+        price: product.price,
+      };
+    });
+
+    //To get total price
+    const subtotal = productDetails.reduce((sum, item) => sum + item.price, 0);
+    const taxRate = 0.25;
+    const taxes = subtotal * taxRate;
+    const totalCost = subtotal + taxes;
+
+    //Get address that is saved for user or from inputs
+    let address = null;
+
+    if (user.address) {
+      //Save a copy of the user address
+      address = { ...user.address };
+    } else {
+      address = {
+        fullName: document.querySelector(".fullname-input").value,
+        street: document.querySelector(".street-input").value,
+        city: document.querySelector(".city-input").value,
+        postalCode: document.querySelector(".postal-code-input").value,
+        country: document.querySelector(".country-input").value,
+      };
+    }
+
+    const order = {
+      _id: generateObjectId(),
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        address: address,
+      },
+      products: productDetails,
+      numOfItems: cart.length,
+      totalCost,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const result = await postOrder(order);
+
+    if (!result) {
+      console.error("Order failed");
+      return;
+    }
+
+    console.log("Order success");
+
+    //Clear Cart
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(
+        JSON.parse(localStorage.getItem("cart")).filter(
+          (item) => item.userId !== user.id,
+        ),
+      ),
+    );
+  } catch (err) {
+    console.error("CREATE ORDER ERROR:", err.message);
+    console.error(err);
   }
 }
 
 const confirmPurchaseBtn = document.querySelector(".confirm-btn");
 confirmPurchaseBtn.addEventListener("click", () => {
-  validateInputs();
+  createOrder();
 });
