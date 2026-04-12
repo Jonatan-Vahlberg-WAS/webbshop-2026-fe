@@ -147,10 +147,24 @@
       "id": "664000000000000000000001",
       "_id": "664000000000000000000001",
       "userId": "663000000000000000000002",
-      "productId": "661000000000000000000002",
-      "variantId": "662000000000000000000003",
-      "quantity": 1,
+      "userName": "Bob Smith",
+      "userEmail": "bob@example.com",
+      "userAddress": {
+        "street": "742 Maple Avenue",
+        "postal_code": "10012",
+        "city": "New York",
+        "country": "USA"
+      },
+      "products": {
+        "productId": "661000000000000000000002",
+        "variantId": "662000000000000000000003",
+        "name": "StreetFlex High",
+        "size": 8,
+        "price": 89.5
+      },
+      "numOfItems": 1,
       "status": "confirmed",
+      "totalCost": 89.5,
       "createdAt": "2026-03-21T14:35:00.000Z",
       "updatedAt": "2026-03-21T14:35:00.000Z",
       "__v": 0
@@ -159,10 +173,24 @@
       "id": "664000000000000000000002",
       "_id": "664000000000000000000002",
       "userId": "663000000000000000000003",
-      "productId": "661000000000000000000002",
-      "variantId": "662000000000000000000004",
-      "quantity": 2,
+      "userName": "Charlie Lee",
+      "userEmail": "charlie@example.com",
+      "userAddress": {
+        "street": "18 Birchwood Lane",
+        "postal_code": "94107",
+        "city": "San Francisco",
+        "country": "USA"
+      },
+      "products": {
+        "productId": "661000000000000000000002",
+        "variantId": "662000000000000000000004",
+        "name": "StreetFlex High",
+        "size": 10,
+        "price": 89.5
+      },
+      "numOfItems": 2,
       "status": "pending",
+      "totalCost": 179,
       "createdAt": "2026-03-22T10:20:00.000Z",
       "updatedAt": "2026-03-22T10:20:00.000Z",
       "__v": 0
@@ -171,10 +199,24 @@
       "id": "664000000000000000000003",
       "_id": "664000000000000000000003",
       "userId": "663000000000000000000002",
-      "productId": "661000000000000000000003",
-      "variantId": "662000000000000000000005",
-      "quantity": 1,
+      "userName": "Bob Smith",
+      "userEmail": "bob@example.com",
+      "userAddress": {
+        "street": "742 Maple Avenue",
+        "postal_code": "10012",
+        "city": "New York",
+        "country": "USA"
+      },
+      "products": {
+        "productId": "661000000000000000000003",
+        "variantId": "662000000000000000000005",
+        "name": "TrailBlazer XT",
+        "size": 9,
+        "price": 135
+      },
+      "numOfItems": 1,
       "status": "shipped",
+      "totalCost": 135,
       "createdAt": "2026-03-05T09:00:00.000Z",
       "updatedAt": "2026-03-05T09:00:00.000Z",
       "__v": 0
