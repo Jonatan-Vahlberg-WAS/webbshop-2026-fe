@@ -231,15 +231,17 @@ function renderOrderTable(products, variants, users, orders) {
   const dateTo = document.querySelector("#filter-date-to").value;
 
   const filteredOrders = orders.filter((order) => {
-    const orderProduct = products.find(
-      (p) => p._id === order.products.productId,
-    );
+    const productItems = Array.isArray(order.products)
+      ? order.products
+      : [order.products];
+
     const orderUser = users.find((u) => u._id === order.user.id);
 
     const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
-    const matchProduct = orderProduct.name
-      .toLowerCase()
-      .includes(productFilter);
+    const matchProduct = productItems.some((item) => {
+      const product = products.find((p) => p._id === item.productId);
+      return product?.name.toLowerCase().includes(productFilter);
+    });
     const matchStatus = statusFilter === "" || order.status === statusFilter;
 
     const orderDate = new Date(order.createdAt).toISOString().slice(0, 10);
@@ -263,10 +265,15 @@ function renderOrderTable(products, variants, users, orders) {
   }
 
   filteredOrders.forEach((order) => {
-    // const orderProduct = products.find(
-    //   (p) => p._id === order.products.productId,
-    // );
-    // const orderSize = variants.find((v) => v._id === order.products.variantId);
+    //To show product information later
+    // const productItems = Array.isArray(order.products)
+    //   ? order.products
+    //   : [order.products];
+
+    // productItems.forEach((item) => {
+    //   const product = products.find((p) => p._id === item.productId);
+    // });
+
     const orderUser = users.find((u) => u._id === order.user.id);
 
     const tr = document.createElement("tr");
