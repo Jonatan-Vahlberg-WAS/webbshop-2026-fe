@@ -53,6 +53,8 @@ function renderProductTable(products, variants) {
     const stock = document.createElement("th");
     const dropStatus = document.createElement("th");
     const actions = document.createElement("th");
+    const productActions = document.createElement("th");
+    const variantActions = document.createElement("th");
 
     name.innerText = product.name;
     price.innerText = `$${product.price}`;
@@ -169,7 +171,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, deleteBtn,statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else if (product.status === "live") {
       statusBtn.innerText = "Mark Sold Out";
       statusBtn.style.backgroundColor = "orange";
@@ -180,7 +183,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn,deleteBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else {
       // sold out — show Go Live button
       statusBtn.innerText = "Go Live";
@@ -202,10 +206,11 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn,deleteBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, actions);
+    tr.append(name, price, size, stock, dropStatus, productActions, variantActions);
     productList.append(tr);
   });
 }

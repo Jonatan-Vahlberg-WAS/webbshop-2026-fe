@@ -435,3 +435,12 @@
   color: var(--color-text-light);
   box-shadow: 3px 3px 0 var(--color-accent);
 }
+
+.admin-table thead th:nth-last-child(-n+2) {
+  text-align: center;
+}
+
+.admin-table tbody th:nth-last-child(-n+2) {
+  text-align: center;
+  vertical-align: middle;
+}
