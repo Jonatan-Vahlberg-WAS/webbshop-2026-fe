@@ -137,8 +137,11 @@ export function checkIfUserHasAddress(elementToHide, renderElement) {
   if (hasAddress) {
     element.style.display = "none";
 
-    const user = getCurrentUser();
+    //Remove required from inputs
+    const inputs = element.querySelectorAll("input, select");
+    inputs.forEach((input) => input.removeAttribute("required"));
 
+    const user = getCurrentUser();
     const userAddress = document.querySelector(`.${renderElement}`);
 
     const name = document.createElement("p");
