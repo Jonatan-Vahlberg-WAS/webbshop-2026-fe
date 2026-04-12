@@ -186,6 +186,8 @@ function renderProductTable(products, variants) {
     tr.append(name, price, size, stock, dropStatus, actions);
     productList.append(tr);
   });
+
+
 }
 
 //function to view all users
@@ -222,7 +224,36 @@ function renderUserTable(users, orders) {
 function renderOrderTable(products, variants, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
-  orders.forEach((order) => {
+  // filter logic
+  const customerFilter = document.querySelector("#filter-customer").value.toLowerCase();
+  const productFilter = document.querySelector("#filter-product").value.toLowerCase();
+  const statusFilter = document.querySelector("#filter-status").value;
+  const dateFrom = document.querySelector("#filter-date-from").value;
+  const dateTo = document.querySelector("#filter-date-to").value;
+
+  const filteredOrders = orders.filter((order) => {
+    const orderProduct = products.find((p) => p._id === order.productId);
+    const orderUser = users.find((u) => u._id === order.userId);
+
+    const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
+    const matchProduct = orderProduct.name.toLowerCase().includes(productFilter);
+    const matchStatus = statusFilter === "" || order.status === statusFilter;
+
+    const orderDate = new Date(order.createdAt).toISOString().slice(0, 10);
+    const matchDateFrom = dateFrom === "" || orderDate >= dateFrom;
+    const matchDateTo = dateTo === "" || orderDate <= dateTo;
+
+    return matchCustomer && matchProduct && matchStatus && matchDateFrom && matchDateTo;
+  });
+
+  orderList.innerHTML = "";
+
+  const orderCount = document.querySelector("#order-count");
+  if (orderCount) {
+    orderCount.innerText = `Showing ${filteredOrders.length} orders`;
+  }
+
+  filteredOrders.forEach((order) => {
     const orderProduct = products.find((p) => p._id === order.productId);
     const orderSize = variants.find((v) => v._id === order.variantId);
     const orderUser = users.find((u) => u._id === order.userId);
@@ -233,6 +264,7 @@ function renderOrderTable(products, variants, users, orders) {
     const productName = document.createElement("th");
     const productSize = document.createElement("th");
     const price = document.createElement("th");
+    const date = document.createElement("th");
     const status = document.createElement("th");
     const Actions = document.createElement("th");
 
@@ -241,6 +273,7 @@ function renderOrderTable(products, variants, users, orders) {
     productName.innerText = orderProduct.name;
     productSize.innerText = orderSize.size;
     price.innerText = `$${orderProduct.price}`;
+    date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
     const updateStatusBtn = document.createElement("button");
@@ -249,7 +282,7 @@ function renderOrderTable(products, variants, users, orders) {
     refundBtn.innerText = "Refund";
     Actions.append(updateStatusBtn, refundBtn);
 
-    tr.append(orderId, userName, productName, productSize, price, status, Actions);
+    tr.append(orderId, userName, productName, productSize, price, date, status, Actions);
     orderList.append(tr);
   });
 }
@@ -297,6 +330,47 @@ async function onPageLoad() {
 }
 
 onPageLoad();
+
+// Filter listeners — outside onPageLoad to avoid re-attaching on every reload
+document.querySelector("#filter-customer").addEventListener("input", async () => {
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+document.querySelector("#filter-product").addEventListener("input", async () => {
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+document.querySelector("#filter-status").addEventListener("change", async () => {
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+document.querySelector("#filter-date-from").addEventListener("change", async () => {
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+document.querySelector("#filter-date-to").addEventListener("change", async () => {
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+document.querySelector("#clear-filters-btn").addEventListener("click", async () => {
+  document.querySelector("#filter-customer").value = "";
+  document.querySelector("#filter-product").value = "";
+  document.querySelector("#filter-date-from").value = "";
+  document.querySelector("#filter-date-to").value = "";
+  document.querySelector("#filter-status").value = "";
+  const { products, variants, users, orders } = await fetchData();
+  renderOrderTable(products, variants, users, orders);
+});
+
+// Print button
+document.querySelector("#print-orders-btn").addEventListener("click", () => {
+  window.print();
+});
 
 // Function that creates a product
 async function createProduct() {
@@ -545,3 +619,4 @@ tabButtons.forEach((btn) => {
     btn.classList.add("active");
   });
 });
+

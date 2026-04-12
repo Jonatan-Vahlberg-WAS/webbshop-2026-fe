@@ -342,3 +342,96 @@
 .admin-products-tbody th button {
   margin-bottom: 4px;
 }
+
+.order-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+  align-items: center;
+}
+
+.order-filters input,
+.order-filters select {
+  padding: 8px 10px;
+  background: #fff;
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.order-filters input:focus,
+.order-filters select:focus {
+  border-color: var(--color-accent-secondary);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}
+
+.order-filters select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-color: #fff;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+.order-filters #print-orders-btn {
+  padding: 8px var(--spacing-md);
+  background: var(--color-accent);
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  margin-left: auto;
+}
+
+.order-filters #print-orders-btn:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .admin-stats,
+  .tabs,
+  .order-filters,
+  #products-create-render,
+  #users-render {
+    display: none !important;
+  }
+}
+
+.order-filters #clear-filters-btn {
+  padding: 8px var(--spacing-md);
+  background: transparent;
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-text-dark);
+  border-radius: 0;
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.order-filters #clear-filters-btn:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}

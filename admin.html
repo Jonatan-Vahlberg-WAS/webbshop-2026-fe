@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Hakim Livs</title>
+    <title>Admin - Sole Search</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="admin.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -156,6 +156,21 @@
         <div id="orders-render" class="tab-content">
           <div class="table-container">
             <h2>Order List</h2>
+            <div class="order-filters">
+              <input type="text" id="filter-customer" placeholder="Search customer..." />
+              <input type="text" id="filter-product" placeholder="Search product..." />
+              <label>From: <input type="date" id="filter-date-from" /></label>
+              <label>To: <input type="date" id="filter-date-to" /></label>
+              <select id="filter-status">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="shipped">Shipped</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button id="clear-filters-btn">Clear</button>
+              <span id="order-count"></span>
+              <button id="print-orders-btn">Print</button>
+            </div>
 
             <table class="admin-order-list admin-table">
               <thead>
@@ -165,6 +180,7 @@
                   <th>Product</th>
                   <th>Size</th>
                   <th>Price</th>
+                  <th>Date</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
