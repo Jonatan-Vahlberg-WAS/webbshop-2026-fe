@@ -146,14 +146,16 @@
     {
       "id": "664000000000000000000001",
       "_id": "664000000000000000000001",
-      "userId": "663000000000000000000002",
-      "userName": "Bob Smith",
-      "userEmail": "bob@example.com",
-      "userAddress": {
-        "street": "742 Maple Avenue",
-        "postal_code": "10012",
-        "city": "New York",
-        "country": "USA"
+      "user": {
+        "id": "663000000000000000000002",
+        "name": "Bob Smith",
+        "email": "bob@example.com",
+        "address": {
+          "street": "742 Maple Avenue",
+          "postal_code": "10012",
+          "city": "New York",
+          "country": "USA"
+        }
       },
       "products": {
         "productId": "661000000000000000000002",
@@ -172,14 +174,16 @@
     {
       "id": "664000000000000000000002",
       "_id": "664000000000000000000002",
-      "userId": "663000000000000000000003",
-      "userName": "Charlie Lee",
-      "userEmail": "charlie@example.com",
-      "userAddress": {
-        "street": "18 Birchwood Lane",
-        "postal_code": "94107",
-        "city": "San Francisco",
-        "country": "USA"
+      "user": {
+        "id": "663000000000000000000003",
+        "name": "Charlie Lee",
+        "email": "charlie@example.com",
+        "address": {
+          "street": "18 Birchwood Lane",
+          "postal_code": "94107",
+          "city": "San Francisco",
+          "country": "USA"
+        }
       },
       "products": {
         "productId": "661000000000000000000002",
@@ -198,14 +202,16 @@
     {
       "id": "664000000000000000000003",
       "_id": "664000000000000000000003",
-      "userId": "663000000000000000000002",
-      "userName": "Bob Smith",
-      "userEmail": "bob@example.com",
-      "userAddress": {
-        "street": "742 Maple Avenue",
-        "postal_code": "10012",
-        "city": "New York",
-        "country": "USA"
+      "user": {
+        "id": "663000000000000000000002",
+        "name": "Bob Smith",
+        "email": "bob@example.com",
+        "address": {
+          "street": "742 Maple Avenue",
+          "postal_code": "10012",
+          "city": "New York",
+          "country": "USA"
+        }
       },
       "products": {
         "productId": "661000000000000000000003",
