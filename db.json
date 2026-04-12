@@ -167,7 +167,7 @@
         }
       ],
       "numOfItems": 1,
-      "totalCost": 89.5,
+      "totalCost": 111.88,
       "status": "confirmed",
       "createdAt": "2026-03-21T14:35:00.000Z",
       "updatedAt": "2026-03-21T14:35:00.000Z",
@@ -211,7 +211,7 @@
         }
       ],
       "numOfItems": 3,
-      "totalCost": 345.49,
+      "totalCost": 431.81,
       "status": "pending",
       "createdAt": "2026-03-22T10:20:00.000Z",
       "updatedAt": "2026-03-22T10:20:00.000Z",
@@ -248,7 +248,7 @@
         }
       ],
       "numOfItems": 2,
-      "totalCost": 224.5,
+      "totalCost": 280.63,
       "status": "shipped",
       "createdAt": "2026-03-05T09:00:00.000Z",
       "updatedAt": "2026-03-05T09:00:00.000Z",
