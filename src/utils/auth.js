@@ -56,6 +56,8 @@ async function handleLogin() {
         email: user.email,
         isAdmin: user.isAdmin,
         address: user.address,
+        //added wishlist to what is saved in LS
+        wishlist: user.wishlist,
       }),
     );
 
