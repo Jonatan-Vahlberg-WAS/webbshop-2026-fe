@@ -44,7 +44,7 @@
             <div class="profile-left">
 
             <!-- PROFILE INFO-->
-             <div class="profile-section" id="profile-info-section">
+            <div class="profile-section" id="profile-info-section">
                 <h2 class="profile-section-title">My Profile</h2>
                 <h3>Email</h3>
                 <div class="profile-email"></div>
@@ -55,7 +55,41 @@
                 </div>
                 <h3>Password</h3>
                 <div class="profile-password"></div>
-             </div>
+            </div>
+
+            <!-- PROFILE INFO EDIT-->
+            <div class="profile-section hidden" id="profile-edit-section">
+                <h2 class="profile-section-title">Edit Profile</h2>
+                <form>
+                    <h3>Name</h3>
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name"/>
+
+                    <h3>Email</h3>
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email"/>
+
+                    <h3>Address</h3>
+                    <label for="edit-street">Street</label>
+                    <input type="text" id="edit-street"/>
+                    <label for="edit-postal-code">Postal Code</label>
+                    <input type="text" id="edit-postal-code"/>
+                    <label for="edit-city">City</label>
+                    <input type="text" id="edit-city"/>
+                    <label for="edit-country">Country</label>
+                    <input type="text" id="edit-country"/>
+
+                    <h3>Password</h3>
+                    <label for="edit-password">New Password</label>
+                    <input type="password" id="edit-password">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password">
+
+                    <button type="button" id="save-profile-btn">Save</button>
+                    <button type="button" id="cancel-edit-btn">Cancel</button>
+                </form>
+            </div>
+            
 
             <!-- ORDER HISTORY -->
             <section class="profile-section" id="order-history-section">

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadProfile()
+    editProfile()
 
     // logout button
     const logoutBtn = document.getElementById('logout-btn')
@@ -71,4 +72,46 @@ function createOrderCard(order) {
     orderCard.appendChild(orderQuantity);
 
     return orderCard;
+}
+
+function editProfile() {
+    const user = getCurrentUser()
+
+    const btnEdit = document.getElementById('edit-profile-btn');
+    const btnCancel = document.getElementById('cancel-edit-btn');
+    const btnSave = document.getElementById('save-profile-btn');
+
+    btnEdit.addEventListener('click', () => {
+        const editSection = document.getElementById('profile-edit-section');
+        const infoSection = document.getElementById('profile-info-section');
+
+        if (editSection.classList.contains('hidden')) {
+            editSection.classList.remove('hidden');
+            infoSection.classList.add('hidden');
+            btnEdit.textContent = "Cancel edit";
+
+            document.getElementById('edit-name').value = user.name;
+            document.getElementById('edit-email').value = user.email;
+
+            if (user.address) {
+            document.getElementById('edit-street').value = user.address.street;
+            document.getElementById('edit-postal-code').value = user.address.postal_code;
+            document.getElementById('edit-city').value = user.address.city;
+            document.getElementById('edit-country').value = user.address.country;
+            }
+
+        } else {
+            editSection.classList.add('hidden');
+            infoSection.classList.remove('hidden');
+            btnEdit.textContent = "Edit Profile";
+        }
+
+    })
+
+    btnCancel.addEventListener('click', () => {
+        document.getElementById('profile-edit-section').classList.add('hidden');
+        document.getElementById('profile-info-section').classList.remove('hidden');
+        btnEdit.textContent = "Edit Profile";
+
+    })
 }
