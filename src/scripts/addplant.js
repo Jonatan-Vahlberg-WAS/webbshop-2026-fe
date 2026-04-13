@@ -32,7 +32,8 @@ form.addEventListener("submit", async function (e) {
     const res = await fetch(BASE_URL + "plants", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify(newPlant)
     });
