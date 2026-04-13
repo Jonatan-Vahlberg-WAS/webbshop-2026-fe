@@ -1,3 +1,5 @@
+import { getBaseUrl } from "../utils/api.js";
+
 document.addEventListener("DOMContentLoaded", initRegister);
 
 function initRegister() {
@@ -61,7 +63,7 @@ function registerUser() {
 
   
 // Logga in användare
-  function loginUser() {
+  /* function loginUser() {
   const data = validateFields();
   if (!data) return;
 
@@ -82,4 +84,59 @@ function registerUser() {
   alert(`Välkommen ${existingUser.name}!`);
   
   window.location.href = "profil.html";
+  } */
+
+
+/* Logga in med vår API med TOKEN */
+async function loginUser() {
+
+  // get only email + password (NOT name)
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  // validation for login
+  if (!email || !password) {
+    alert("Email och lösenord krävs");
+    return;
   }
+
+  // get BASE URL
+  const BASE_URL = getBaseUrl();
+
+  try {
+    // call backend login API
+    const res = await fetch(BASE_URL + "auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    // parse response
+    const result = await res.json();
+
+    // debug response 
+    console.log("LOGIN RESPONSE:", result);
+
+    // handle error from backend
+    if (!res.ok) {
+      alert(result.message || "Fel vid inloggning");
+      return;
+    }
+
+    // SAVE TOKEN 
+    localStorage.setItem("token", result.token);
+
+    // KEEP team logic for UI)
+    sessionStorage.setItem("loggedIn", JSON.stringify(result.user || {}));
+
+    alert("Välkommen!");
+
+    window.location.href = "profil.html";
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Något gick fel vid inloggning");
+  }
+}
