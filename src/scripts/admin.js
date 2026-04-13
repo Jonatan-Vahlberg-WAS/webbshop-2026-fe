@@ -192,7 +192,7 @@ function renderUserTable(users, orders) {
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => o.userId === user._id);
+    const userOrders = orders.filter((o) => o.user.id === user._id);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
