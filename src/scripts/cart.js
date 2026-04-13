@@ -147,6 +147,7 @@ function validateInputs() {
   return true;
 }
 
+//Function that runs when confirm purchase button is pressed, creates order in backend
 async function createOrder() {
   const user = getCurrentUser();
   let isValid = true;
@@ -191,6 +192,7 @@ async function createOrder() {
         name: product.name,
         size: variant.size,
         price: product.price,
+        image: product.image,
       };
     });
 
@@ -250,6 +252,8 @@ async function createOrder() {
         ),
       ),
     );
+
+    summaryModal(order);
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err.message);
     console.error(err);
@@ -257,6 +261,65 @@ async function createOrder() {
 }
 
 const confirmPurchaseBtn = document.querySelector(".confirm-btn");
-confirmPurchaseBtn.addEventListener("click", () => {
+confirmPurchaseBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   createOrder();
 });
+
+//Create modal to show order summary
+function summaryModal(order) {
+  const background = document.createElement("div");
+  background.classList.add("order-modal-background");
+  const modal = document.createElement("div");
+  modal.classList.add("order-modal");
+
+  const closeBtn = document.createElement("button");
+  closeBtn.innerText = "Close";
+
+  closeBtn.addEventListener("click", () => {
+    background.remove();
+  });
+
+  const orderNr = document.createElement("h1");
+  const orderDate = document.createElement("p");
+
+  orderNr.innerText = order._id;
+  orderDate.innerText = new Date(order.createdAt).toLocaleString();
+
+  const userInfo = document.createElement("div");
+  const userName = document.createElement("p");
+  const userEmail = document.createElement("p");
+  const userAddress = document.createElement("p");
+
+  userName.innerText = order.user.name;
+  userEmail.innerText = order.user.email;
+  const addr = order.user.address;
+  userAddress.innerText = `${addr.street}, ${addr.city}, ${addr.postalCode}, ${addr.country}`;
+  userInfo.append(userName, userEmail, userAddress);
+
+  const productInfo = document.createElement("div");
+
+  order.products.forEach((product) => {
+    const productCard = document.createElement("div");
+
+    const productImg = document.createElement("img");
+    const productName = document.createElement("h2");
+    const productSize = document.createElement("p");
+    const productPrice = document.createElement("p");
+
+    productImg.src = product.image;
+    productName.innerText = product.name;
+    productSize.innerText = product.size;
+    productPrice.innerText = `$ ${product.price}`;
+
+    productCard.append(productImg, productName, productSize, productPrice);
+    productInfo.append(productCard);
+  });
+
+  const totalPrice = document.createElement("p");
+  totalPrice.innerText = `Total Cost: $ ${order.totalCost.toFixed(2)}`;
+
+  modal.append(closeBtn, orderNr, orderDate, userInfo, productInfo, totalPrice);
+  background.append(modal);
+  document.body.append(background);
+}
