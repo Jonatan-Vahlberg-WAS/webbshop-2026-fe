@@ -126,7 +126,13 @@
         "city": "New York",
         "country": "USA"
       },
-      "wishlist": [],
+      "wishlist": [
+        {
+          "productId": "661000000000000000000002",
+          "variantId": "662000000000000000000004",
+          "size": 10
+        }
+      ],
       "createdAt": "2026-03-02T08:00:00.000Z",
       "updatedAt": "2026-03-02T08:00:00.000Z",
       "__v": 0

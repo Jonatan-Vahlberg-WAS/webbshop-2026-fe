@@ -192,6 +192,7 @@ export async function addToWishlist(productId, variantId, size) {
     }
 
     // user.wishlist = updatedUser.wishlist;
+    //Below stays for now since we are using db.json
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
     return { success: true };

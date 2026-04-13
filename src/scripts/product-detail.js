@@ -5,6 +5,7 @@ import {
   addToCart,
   addToWishlist,
 } from "../utils/utility.js";
+import { getCurrentUser } from "../utils/auth.js";
 
 let selectedSize = null;
 
@@ -22,6 +23,8 @@ export async function renderProductDetail() {
     const product = await getProduct(productId);
     const allVariants = await getVariants();
     const variants = allVariants.filter((v) => v.productId === productId);
+    let currentUser = getCurrentUser();
+    let wishlist = currentUser?.wishlist || [];
 
     //run breadcrumb function
     renderBreadcrumbs(product);
@@ -94,6 +97,10 @@ export async function renderProductDetail() {
         //Erases error/success message
         const message = document.querySelector(".cart-message");
         message.innerText = "";
+
+        //Update button state is variant size is wishlisted
+        const selectedVariant = variants.find((v) => v.size === selectedSize);
+        updateWishlistState(selectedVariant);
       });
 
       sizes.append(button);
@@ -156,12 +163,40 @@ export async function renderProductDetail() {
             message.style.color = "red";
             break;
         }
+
+        //update wishlist state after the add to wishlist button is pressed
+        wishlist = currentUser?.wishlist || wishlist;
+        updateWishlistState(selectedVariant);
       } else {
         const message = document.querySelector(".cart-message");
         message.textContent = "Item added to wishlist!";
         message.style.color = "green";
       }
     });
+
+    //monitors and updates wishlist state
+    function updateWishlistState(selectedVariant) {
+      if (!selectedVariant) {
+        addToWishlistBtn.textContent = "Add to Wishlist";
+        addToWishlistBtn.classList.remove("active");
+        return;
+      }
+
+      const isWishlisted = wishlist.some(
+        (item) =>
+          item.productId === product.id &&
+          item.variantId === selectedVariant.id &&
+          item.size === selectedVariant.size,
+      );
+
+      if (isWishlisted) {
+        addToWishlistBtn.textContent = "Wishlisted";
+        addToWishlistBtn.classList.add("active");
+      } else {
+        addToWishlistBtn.textContent = "Add to Wishlist";
+        addToWishlistBtn.classList.remove("active");
+      }
+    }
   } catch (error) {
     console.error(error);
   }
