@@ -74,7 +74,6 @@ async function renderCart() {
           localStorage.setItem("cart", JSON.stringify(cart));
 
           // Re-render cart
-          cartContainer.innerHTML = "";
           renderCart();
         });
       });
@@ -133,7 +132,7 @@ function validateInputs() {
     emptyFields.push("Postal Code");
     postalCode.style.borderBottom = "1px solid red";
   }
-  if (!country.value) {
+  if (!country.value.trim()) {
     emptyFields.push("Country");
     country.style.borderBottom = "1px solid red";
   }
