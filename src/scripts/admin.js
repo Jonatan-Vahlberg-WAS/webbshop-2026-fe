@@ -7,6 +7,7 @@ import {
   addVariant,
   updateProduct,
   updateVariant,
+  deleteVariant
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -52,6 +53,8 @@ function renderProductTable(products, variants) {
     const stock = document.createElement("th");
     const dropStatus = document.createElement("th");
     const actions = document.createElement("th");
+    const productActions = document.createElement("th");
+    const variantActions = document.createElement("th");
 
     name.innerText = product.name;
     price.innerText = `$${product.price}`;
@@ -133,6 +136,32 @@ function renderProductTable(products, variants) {
         "Update Product";
     });
 
+    // Delete size button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete Size";
+    deleteBtn.style.backgroundColor = "red";
+    deleteBtn.style.color = "white";
+
+    deleteBtn.addEventListener("click", async () => {
+      // Check if variant has active orders
+      const { orders } = await fetchData();
+      const hasActiveOrder = orders.some(
+        (o) =>
+          o.status !== "cancelled" &&
+          o.products.some((p) => p.variantId === variant._id)
+      );
+
+      if (hasActiveOrder) {
+        alert("Cannot delete this size as it has active orders.");
+        return;
+      }
+
+      const confirmed = window.confirm(`Delete size ${variant.size}?`);
+      if (!confirmed) return;
+
+      await deleteVariant(variant._id);
+      tr.remove();
+    });
     const statusBtn = document.createElement("button");
     if (product.status === "upcoming") {
       statusBtn.innerText = "Go Live";
@@ -144,7 +173,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else if (product.status === "live") {
       statusBtn.innerText = "Mark Sold Out";
       statusBtn.style.backgroundColor = "orange";
@@ -155,7 +185,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else {
       // sold out — show Go Live button
       statusBtn.innerText = "Go Live";
@@ -177,10 +208,11 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, actions);
+    tr.append(name, price, size, stock, dropStatus, productActions, variantActions);
     productList.append(tr);
   });
 }

@@ -64,6 +64,14 @@ export async function getVariant(productId) {
   }
 }
 
+//Delete variant data in the API
+export async function deleteVariant(id) {
+  const response = await fetch(`http://localhost:3000/variants/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
 //Get user data from the API
 export async function getUsers() {
   const url = new URL("users", getBaseUrl());
