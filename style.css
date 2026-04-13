@@ -29,6 +29,46 @@
   --shadow-hover: 0 8px 24px rgba(45, 90, 61, 0.12);
 }
  */
+
+/* 🌿 Primary green */
+:root {
+  --green-main: #2f5d3a;
+  --green-hover: #3a7448;
+}
+/* Addplant PAGE */
+/* Confirmation buttons */
+#confirmation button {
+  display: block;
+  width: 260px;
+  margin: 10px auto;
+  padding: 14px 20px;
+
+  background-color: var(--green-main);
+  color: white;
+
+  border: none;
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#confirmation button:hover {
+  background-color: var(--green-hover);
+  transform: translateY(-2px);
+}
+
+#confirmation button:active {
+  transform: scale(0.97);
+  background-color: var(--green-main);
+}
+
+
+
+
 * {
   box-sizing: border-box;
 }
