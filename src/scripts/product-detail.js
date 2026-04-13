@@ -1,5 +1,10 @@
 import { getProduct, getVariants } from "../utils/api.js";
-import { formatDateISO, countdownTimer, addToCart } from "../utils/utility.js";
+import {
+  formatDateISO,
+  countdownTimer,
+  addToCart,
+  addToWishlist,
+} from "../utils/utility.js";
 
 let selectedSize = null;
 
@@ -45,6 +50,8 @@ export async function renderProductDetail() {
     const addToCartBtn = document.querySelector(".add-to-cart");
     //Add to cart button starts disabled
     addToCartBtn.disabled = true;
+
+    const addToWishlistBtn = document.querySelector(".add-to-wishlist");
 
     // Helper to update Add to Cart button state
     function updateAddToCartState() {
@@ -94,6 +101,7 @@ export async function renderProductDetail() {
 
     updateAddToCartState();
 
+    //add to cart event listener
     addToCartBtn.addEventListener("click", () => {
       const selectedVariant = variants.find((v) => v.size === selectedSize);
 
@@ -115,6 +123,36 @@ export async function renderProductDetail() {
       } else {
         const message = document.querySelector(".cart-message");
         message.textContent = "Item added to cart!";
+        message.style.color = "green";
+      }
+    });
+
+    //add to wishlist event listener
+    addToWishlistBtn.addEventListener("click", async () => {
+      const selectedVariant = variants.find((v) => v.size === selectedSize);
+
+      //Runs add to cart function with arguments product Id and size
+      const result = await addToWishlist(
+        product.id,
+        selectedVariant.id,
+        selectedSize,
+      );
+
+      //Error & Success messaging/actions
+      if (!result.success) {
+        switch (result.error) {
+          case "not_logged_in":
+            window.location.href = "auth.html";
+            break;
+          case "duplicate_size":
+            const message = document.querySelector(".cart-message");
+            message.textContent = "You can only add one of each size!";
+            message.style.color = "red";
+            break;
+        }
+      } else {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "Item added to wishlist!";
         message.style.color = "green";
       }
     });

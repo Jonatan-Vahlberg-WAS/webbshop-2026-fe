@@ -232,3 +232,16 @@ export async function loginUser(email, password) {
     throw error;
   }
 }
+
+//add item to wishlist
+export async function addWishlist(userId, wishlistedItem) {
+  const url = new URL(`users/${userId}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, wishlistedItem);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
+}
