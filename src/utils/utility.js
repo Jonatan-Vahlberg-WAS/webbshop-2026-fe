@@ -191,6 +191,7 @@ export async function addToWishlist(productId, variantId, size) {
       return { success: false, error: "server_error" };
     }
 
+    // user.wishlist = updatedUser.wishlist;
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
     return { success: true };

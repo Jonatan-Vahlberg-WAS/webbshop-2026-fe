@@ -130,6 +130,12 @@ export async function renderProductDetail() {
     //add to wishlist event listener
     addToWishlistBtn.addEventListener("click", async () => {
       const selectedVariant = variants.find((v) => v.size === selectedSize);
+      if (!selectedVariant) {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "Please select a size first!";
+        message.style.color = "red";
+        return;
+      }
 
       //Runs add to cart function with arguments product Id and size
       const result = await addToWishlist(
