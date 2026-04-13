@@ -240,7 +240,84 @@ function renderUserTable(users, orders) {
     flagBtn.innerText = "Flag";
     const viewOrdersBtn = document.createElement("button");
     viewOrdersBtn.innerText = "View Orders";
-    Actions.append(viewOrdersBtn, flagBtn);
+
+    viewOrdersBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#user-orders-modal");
+      const modalUserName = document.querySelector("#modal-user-name");
+      const modalAddress = document.querySelector("#modal-user-address");
+      const modalTbody = document.querySelector("#modal-order-tbody");
+
+      modalUserName.innerText = `${user.name}'s Order History`;
+      modalTbody.innerHTML = "";
+
+      // address
+      const address = user.address;
+      if (address) {
+        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`;
+      } else {
+        modalAddress.innerText = "No address on file";
+      }
+
+      const userOrders = orders.filter((o) => o.user.id === user._id);
+
+      if (userOrders.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 6;
+        td.innerText = "No orders found.";
+        td.style.textAlign = "center";
+        tr.append(td);
+        modalTbody.append(tr);
+      } else {
+        userOrders.forEach((order) => {
+          order.products.forEach((product) => {
+            const tr = document.createElement("tr");
+            const img = document.createElement("th");
+            const productName = document.createElement("th");
+            const size = document.createElement("th");
+            const price = document.createElement("th");
+            const status = document.createElement("th");
+            const date = document.createElement("th");
+
+            const imgEl = document.createElement("img");
+            imgEl.src = product.image || "https://placehold.co/50x50";
+            imgEl.style.width = "50px";
+            imgEl.style.height = "50px";
+            imgEl.style.objectFit = "cover";
+            img.appendChild(imgEl);
+
+            productName.innerText = product.name;
+            size.innerText = product.size;
+            price.innerText = `$${product.price}`;
+            status.innerText = order.status;
+            date.innerText = new Date(order.createdAt).toLocaleDateString();
+
+            tr.append(img, productName, size, price, status, date);
+            modalTbody.append(tr);
+          });
+        });
+      }
+
+  modal.style.display = "flex";
+});
+
+    // Close modal
+    document.querySelector("#close-modal-btn").addEventListener("click", () => {
+      document.querySelector("#user-orders-modal").style.display = "none";
+    });
+
+    // Close modal when clicking outside
+    document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
+      if (e.target.id === "user-orders-modal") {
+        document.querySelector("#user-orders-modal").style.display = "none";
+      }
+    });
+    // Print modal
+    document.querySelector("#print-modal-btn").addEventListener("click", () => {
+    window.print();
+    });
+
+Actions.append(viewOrdersBtn, flagBtn);
 
     tr.append(name, email, numOfOrders, Actions);
     userList.append(tr);
