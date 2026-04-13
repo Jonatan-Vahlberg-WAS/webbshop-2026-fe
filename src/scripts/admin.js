@@ -146,7 +146,9 @@ function renderProductTable(products, variants) {
       // Check if variant has active orders
       const { orders } = await fetchData();
       const hasActiveOrder = orders.some(
-        (o) => o.variantId === variant._id && o.status !== "cancelled"
+        (o) =>
+          o.status !== "cancelled" &&
+          o.products.some((p) => p.variantId === variant._id)
       );
 
       if (hasActiveOrder) {
