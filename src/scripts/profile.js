@@ -1,6 +1,7 @@
 import { getCurrentUser, isLoggedIn, logoutUser } from "../utils/auth.js"
 import { getMyOrders } from "../utils/api.js"
 import { formatDateISO } from "../utils/utility.js"
+import { checkIfUserHasAddress } from "../utils/utility.js"
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -26,10 +27,12 @@ async function loadProfile() {
     const myOrders = await getMyOrders(user.id)
     renderMyOrders(myOrders)
 
+    checkIfUserHasAddress('add-address', 'profile-address')
+
     // show user info on the profile page
-    document.getElementById('profile-name').textContent = user.name
-    // TODO: add profile-email element to HTML
-    // document.getElementById('profile-email').textContent = user.email
+    document.querySelector('.profile-name').textContent = user.name
+    document.querySelector('.profile-email').textContent = user.email
+    document.querySelector('.profile-password').textContent = `************`
 }
 
 function renderMyOrders(orders) {
@@ -51,19 +54,20 @@ function createOrderCard(order) {
 
     const orderDate = document.createElement('p');
     orderDate.textContent = formatDateISO(order.createdAt);
+    orderCard.appendChild(orderDate);
 
-    const orderName = document.createElement("h3");
-    orderName.textContent = order.productId; //TODO: replace with product name when fetching product details
+    order.products.forEach(product => {
+        const productName = document.createElement("p");
+        productName.textContent = product.name;
+        orderCard.appendChild(productName);
+    })
 
     const orderStatus = document.createElement("p");
     orderStatus.textContent = order.status;
+    orderCard.appendChild(orderStatus);
 
     const orderQuantity = document.createElement("p");
-    orderQuantity.textContent = `Amount: ${order.quantity}`;
-
-    orderCard.appendChild(orderDate);
-    orderCard.appendChild(orderName);
-    orderCard.appendChild(orderStatus);
+    orderQuantity.textContent = `Amount: ${order.numOfItems}`;
     orderCard.appendChild(orderQuantity);
 
     return orderCard;

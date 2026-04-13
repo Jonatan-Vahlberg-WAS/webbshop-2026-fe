@@ -108,11 +108,10 @@ export async function postOrder(order) {
 //Temp version
 export async function getMyOrders(userId) {
   const url = new URL("orders", getBaseUrl());
-  url.searchParams.append("userId", userId);
 
   try {
     const response = await axios.get(url);
-    return response.data;
+    return response.data.filter(order => order.user.id === userId);
   } catch (error) {
     console.error("API error:", error);
     return [];
