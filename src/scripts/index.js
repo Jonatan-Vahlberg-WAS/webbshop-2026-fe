@@ -1,20 +1,20 @@
 import { getProducts } from "../utils/productsApi.js";
 
 // TEMP: Default products for rendering when backend is unavailable
-const TEMP_PRODUCTS = [
-  { name: "Organic Tomatoes", price: 4.99, image: null },
-  { name: "Fresh Milk", price: 2.49, image: null },
-  { name: "Whole Grain Bread", price: 3.99, image: null },
-  { name: "Free Range Eggs", price: 5.49, image: null },
-  { name: "Bananas", price: 1.29, image: null },
-  { name: "Greek Yogurt", price: 3.79, image: null },
-];
+// const TEMP_PRODUCTS = [
+// { name: "Organic Tomatoes", price: 4.99, image: null },
+// { name: "Fresh Milk", price: 2.49, image: null },
+// { name: "Whole Grain Bread", price: 3.99, image: null },
+// { name: "Free Range Eggs", price: 5.49, image: null },
+// { name: "Bananas", price: 1.29, image: null },
+// { name: "Greek Yogurt", price: 3.79, image: null },
+// ];
 
 document.addEventListener("DOMContentLoaded", loadProducts);
 
 async function loadProducts() {
   const productsContainer = document.getElementById("products");
-  productsContainer.innerHTML = "<p>Loading products...</p>";
+  productsContainer.innerHTML = "<p>Loading events...</p>";
 
   try {
     const products = await getProducts();
@@ -54,7 +54,7 @@ function createProductCard(product) {
 
   const imageSection = product.image
     ? `<img class="product-card__image" src="${product.image}" alt="${product.name}" loading="lazy" />`
-    : `<div class="product-card__image-placeholder">🥬</div>`;
+    : `<div class="product-card__image-placeholder">🎈</div>`;
 
   element.innerHTML = `
     ${imageSection}
@@ -70,4 +70,45 @@ function createProductCard(product) {
   });
 
   return element;
+}
+
+const form = document.getElementById('loginForm');
+
+if (form) {
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    try {
+      const response = await axios.post(
+        "https://webbshop-2026-be-one.vercel.app/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.status === 200) {
+        const token = response.data.token;
+        const user = response.data.user;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        console.log("Logged in:", user);
+
+        window.location.assign("index.html");
+      } else {
+        alert("Invalid email or password.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Login failed.");
+    }
+  });
 }

@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register - Eventera</title>
+    <title>Login - Eventera</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@1.8.4/dist/axios.min.js"></script>
-    <script type="module" src="./src/scripts/register.js" defer></script>
-    <script type="module" src="./src/scripts/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./src/scripts/header.js" defer></script>
-  </head>
-  <body>
+    <script type="module" src="./src/scripts/index.js" defer></script>
+</head>
+<body>
 
     <header class="site-header">
       <nav class="nav">
         <a href="index.html" class="logo">Eventera</a>
-        
         <ul class="nav-links">
           <li><a href="about.html">About us</a></li>
           <li><a href="register.html">Register</a></li>
@@ -24,26 +21,22 @@
         </ul>
 
         <div class="user-area" id="userArea" style="display: none;">
-          <div class="user-profile" id="userProfile">
-            <div class="user-avatar" id="userInitial">U</div>
+          <div class="user-profile">
+            <div class="user-avatar" id="userInitial"></div>
             <span id="userName">User</span>
           </div>
           <button class="logout-btn" id="logoutBtn">Logout</button>
         </div>
       </nav>
     </header>
+    
+    <!-- LOGIN HERO - Reusing register styles -->
+    <section class="login-hero">
+      <div class="register-card">   <!-- Reusing register-card -->
+        <h1>Welcome back</h1>
+        <p>Sign in to continue discovering great events</p>
 
-    <section class="register-hero">
-      <div class="register-card">
-        <h1>Find your vibe.</h1>
-        <p>Join Eventera and discover unforgettable experiences</p>
-
-        <form id="registerForm" class="register-form">
-          <div>
-            <span class="form-label">Full Name</span>
-            <input type="text" id="name" placeholder="Enter your name" required />
-          </div>
-          
+        <form id="loginForm" class="login-form">
           <div>
             <span class="form-label">Email Address</span>
             <input type="email" id="email" placeholder="you@example.com" required />
@@ -51,17 +44,17 @@
           
           <div>
             <span class="form-label">Password</span>
-            <input type="password" id="password" placeholder="Create a password" minlength="6" required />
+            <input type="password" id="password" placeholder="Enter your password" required />
           </div>
 
           <button type="submit" class="btn btn-primary" id="submitBtn">
-            Create Account
+            Log In
           </button>
         </form>
 
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.95rem;">
-          Already have an account? 
-          <a href="login.html" style="color: white; text-decoration: underline;">Log in</a>
+        <p style="text-align: center; margin-top: 1.8rem; font-size: 0.95rem;">
+          Don't have an account? 
+          <a href="register.html" style="color: white; text-decoration: underline;">Create one</a>
         </p>
       </div>
     </section>
@@ -88,7 +81,5 @@
         </div>
       </div>
     </footer>
-
-
-  </body>
+</body>
 </html>

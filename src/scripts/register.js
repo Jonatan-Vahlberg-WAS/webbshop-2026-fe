@@ -1,20 +1,67 @@
-document.addEventListener("DOMContentLoaded", initRegister);
+const form = document.querySelector("#registerForm");
 
-function initRegister() {
-  const registerForm = document.getElementById("registerForm");
+if (form) {
+  const nameInput = document.querySelector("#name");
+  const emailInput = document.querySelector("#email");
+  const passwordInput = document.querySelector("#password");
 
-  registerForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    handleRegister();
+  if (localStorage.getItem("token")) {
+    window.location.assign("index.html");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (name.length < 3) {
+      alert("Name must be at least 3 characters long.");
+      return;
+    }
+
+    try {
+      const registerResponse = await axios.post(
+        "https://webbshop-2026-be-one.vercel.app/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+
+      console.log({ name, email, password });
+
+      if (registerResponse.status === 201) {
+        console.log("Registration successful");
+
+        const loginResponse = await axios.post(
+          "https://webbshop-2026-be-one.vercel.app/auth/login",
+          {
+            email: email,
+            password,
+          }
+        );
+
+        if (loginResponse.status === 200) {
+          const token = loginResponse.data.token;
+
+          localStorage.setItem("token", token);
+
+          console.log("Logged in with token:", token);
+
+          window.location.assign("index.html");
+        } else {
+          throw new Error("Login failed after registration");
+        }
+      } else {
+        throw new Error("Registration failed");
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Registration or login failed.");
+    }
   });
-}
-
-function handleRegister() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  // TODO: Call register API when backend is ready
-  console.log("Register:", { name, email });
-  alert("Registration functionality not implemented yet");
 }
