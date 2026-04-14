@@ -157,7 +157,7 @@ export function checkIfUserHasAddress(elementToHide, renderElement) {
 }
 
 //Add product to wishlist
-export async function addToWishlist(productId, variantId, size) {
+export async function addToWishlist(productId, variantId) {
   if (!isLoggedIn()) {
     return { success: false, error: "not_logged_in" };
   } else {
@@ -167,7 +167,7 @@ export async function addToWishlist(productId, variantId, size) {
     const currentWishlist = Array.isArray(user.wishlist) ? user.wishlist : [];
 
     const exists = currentWishlist.some(
-      (item) => item.productId === productId && item.size === size,
+      (item) => item.productId === productId && item.variantId === variantId,
     );
 
     if (exists) {
@@ -179,7 +179,6 @@ export async function addToWishlist(productId, variantId, size) {
       {
         productId,
         variantId,
-        size,
       },
     ];
 

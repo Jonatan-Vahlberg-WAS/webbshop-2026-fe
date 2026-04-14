@@ -145,11 +145,7 @@ export async function renderProductDetail() {
       }
 
       //Runs add to cart function with arguments product Id and size
-      const result = await addToWishlist(
-        product.id,
-        selectedVariant.id,
-        selectedSize,
-      );
+      const result = await addToWishlist(product.id, selectedVariant.id);
 
       //Error & Success messaging/actions
       if (!result.success) {
@@ -159,7 +155,7 @@ export async function renderProductDetail() {
             break;
           case "duplicate_size":
             const message = document.querySelector(".cart-message");
-            message.textContent = "You can only add one of each size!";
+            message.textContent = "This variant is already in your wishlist!";
             message.style.color = "red";
             break;
         }
@@ -185,8 +181,7 @@ export async function renderProductDetail() {
       const isWishlisted = wishlist.some(
         (item) =>
           item.productId === product.id &&
-          item.variantId === selectedVariant.id &&
-          item.size === selectedVariant.size,
+          item.variantId === selectedVariant.id,
       );
 
       if (isWishlisted) {

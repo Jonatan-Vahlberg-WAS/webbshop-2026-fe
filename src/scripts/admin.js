@@ -8,7 +8,6 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
-  updateOrder,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -149,7 +148,7 @@ function renderProductTable(products, variants) {
       const hasActiveOrder = orders.some(
         (o) =>
           o.status !== "cancelled" &&
-          o.products.some((p) => p.variantId === variant._id)
+          o.products.some((p) => p.variantId === variant._id),
       );
 
       if (hasActiveOrder) {
@@ -213,7 +212,15 @@ function renderProductTable(products, variants) {
       variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, productActions, variantActions);
+    tr.append(
+      name,
+      price,
+      size,
+      stock,
+      dropStatus,
+      productActions,
+      variantActions,
+    );
     productList.append(tr);
   });
 }
@@ -231,16 +238,18 @@ function renderUserTable(users, orders) {
     const name = document.createElement("th");
     const email = document.createElement("th");
     const numOfOrders = document.createElement("th");
+    const numOfWishlists = document.createElement("th");
     const Actions = document.createElement("th");
 
     name.innerText = user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
+    numOfWishlists.innerText = user.wishlist.length;
 
     const flagBtn = document.createElement("button");
     flagBtn.innerText = "Flag";
     const viewOrdersBtn = document.createElement("button");
-    viewOrdersBtn.innerText = "Order History";
+    viewOrdersBtn.innerText = "View Orders";
 
     viewOrdersBtn.addEventListener("click", () => {
       const modal = document.querySelector("#user-orders-modal");
@@ -299,8 +308,8 @@ function renderUserTable(users, orders) {
         });
       }
 
-  modal.style.display = "flex";
-});
+      modal.style.display = "flex";
+    });
 
     // Close modal
     document.querySelector("#close-modal-btn").addEventListener("click", () => {
@@ -308,19 +317,21 @@ function renderUserTable(users, orders) {
     });
 
     // Close modal when clicking outside
-    document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
-      if (e.target.id === "user-orders-modal") {
-        document.querySelector("#user-orders-modal").style.display = "none";
-      }
-    });
+    document
+      .querySelector("#user-orders-modal")
+      .addEventListener("click", (e) => {
+        if (e.target.id === "user-orders-modal") {
+          document.querySelector("#user-orders-modal").style.display = "none";
+        }
+      });
     // Print modal
     document.querySelector("#print-modal-btn").addEventListener("click", () => {
-    window.print();
+      window.print();
     });
 
-Actions.append(viewOrdersBtn, flagBtn);
+    Actions.append(viewOrdersBtn, flagBtn);
 
-    tr.append(name, email, numOfOrders, Actions);
+    tr.append(name, email, numOfOrders, numOfWishlists, Actions);
     userList.append(tr);
   });
 }
@@ -402,103 +413,13 @@ function renderOrderTable(products, variants, users, orders) {
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
-    const viewOrderBtn = document.createElement("button");
-    viewOrderBtn.type = "button";
-    viewOrderBtn.innerText = "Order Detail";
-
-    viewOrderBtn.addEventListener("click", () => {
-      const modal = document.querySelector("#order-detail-modal");
-      const modalTbody = document.querySelector("#modal-order-products");
-
-      modalTbody.innerHTML = "";
-
-      document.querySelector("#modal-order-id").innerText = `Order #${order._id}`;
-      document.querySelector("#modal-order-date").innerText = new Date(order.createdAt).toLocaleDateString();
-      document.querySelector("#modal-order-customer").innerText = order.user.name;
-      document.querySelector("#modal-order-status").innerText = order.status;
-      document.querySelector("#modal-order-total").innerText = `$${order.totalCost}`;
-
-      const address = order.user.address;
-      document.querySelector("#modal-order-address").innerText = address
-        ? `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`
-        : "No address on file";
-
-      order.products.forEach((product) => {
-        const tr = document.createElement("tr");
-        const productName = document.createElement("th");
-        const size = document.createElement("th");
-        const price = document.createElement("th");
-
-        productName.innerText = product.name;
-        size.innerText = product.size;
-        price.innerText = `$${product.price}`;
-
-        tr.append(productName, size, price);
-        modalTbody.append(tr);
-      });
-
-      const closeBtn = document.querySelector("#close-order-modal-btn"); 
-      if (closeBtn) {
-          closeBtn.onclick = () => {
-              modal.style.display = "none";
-          };
-      }
-
-      window.addEventListener("click", (event) => {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
-      });
-
-
-      const printBtn = document.querySelector("#print-order-modal-btn");
-      if (printBtn) {
-        printBtn.onclick = () => {
-            window.print();
-        };
-    }
-
-      modal.style.display = "flex";
-    });
-
+    const viewOrder = document.createElement("button");
+    viewOrder.innerText = "View Order";
     const updateStatusBtn = document.createElement("button");
-    updateStatusBtn.type = "button";
     updateStatusBtn.innerText = "Update Status";
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.type = "button";
-    cancelBtn.innerText = "Cancel";
-    cancelBtn.style.backgroundColor = "red";
-    cancelBtn.style.color = "white";
-
-    // Initial UI State: If already cancelled, hide the Cancel button
-    if (order.status === "cancelled") {
-        cancelBtn.style.display = "none";
-    }
-
-    cancelBtn.addEventListener("click", async (e) => {
-        e.stopPropagation(); // Prevent triggering the view details modal
-        e.preventDefault();
-
-        const isConfirmed = window.confirm(`Are you sure you want to cancel order #${order._id}?`);
-        if (!isConfirmed) return;
-
-        try {
-            await updateOrder(order._id, { status: "cancelled" });
-
-            // Update status text in the row
-            status.innerText = "cancelled"; 
-
-            // Hide only the Cancel button
-            cancelBtn.style.display = "none";
-
-            alert("Order status updated to cancelled.");
-        } catch (error) {
-            alert("Failed to update status.");
-        }
-    });
-
-    Actions.append(viewOrderBtn, updateStatusBtn, cancelBtn);
+    const refundBtn = document.createElement("button");
+    refundBtn.innerText = "Refund";
+    Actions.append(viewOrder, updateStatusBtn, refundBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
@@ -538,18 +459,11 @@ async function onPageLoad() {
   renderProductSelect(products);
 
   const form = document.querySelector(".create-product-form");
-
-  if (form && !form.contains(cancelEditBtn)) {
-    cancelEditBtn.innerText = "Cancel Edit";
-    cancelEditBtn.type = "button"; // Prevents default form submission
-    
-    form.append(cancelEditBtn);
-
-    cancelEditBtn.addEventListener("click", (e) => {
-      e.preventDefault(); 
-      cancelEdit(); 
-    });
-  }
+  form.append(cancelEditBtn);
+  cancelEditBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    cancelEdit();
+  });
 }
 
 onPageLoad();
@@ -606,7 +520,6 @@ document
 document.querySelector("#print-orders-btn").addEventListener("click", () => {
   window.print();
 });
-
 
 // Function that creates a product
 async function createProduct() {
