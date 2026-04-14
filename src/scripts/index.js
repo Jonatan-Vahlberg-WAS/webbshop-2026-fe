@@ -55,21 +55,18 @@ async function loadProducts() {
 
     //debounce (limit on how often a function fires)
     function debounce(fn, delay) {
-      //Store timer to be able to cancel previous timers
-      let timeoutId;
+      //Store timer to be able cancel previous timers
+      let timeout;
 
-      //Returns new function
-      return function (...args) {
-        //Everytime a user types, clear previous timer
-        clearTimeout(timeoutId);
-        //Start new timer
-        timeoutId = setTimeout(() => {
-          fn.apply(this, args);
-        }, delay);
+      return () => {
+        //clear previous timer
+        clearTimeout(timeout);
+        //start new timer
+        timeout = setTimeout(fn, delay);
       };
     }
 
-    //Search + debounce event listener
+    //Debounce + Search event listener
     const debouncedSearch = debounce(searchCatalogue, 300);
     searchInput.addEventListener("input", debouncedSearch);
 
