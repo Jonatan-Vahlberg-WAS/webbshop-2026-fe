@@ -251,7 +251,7 @@ function renderUserTable(users, orders) {
     name.innerText = user.isFlagged ? `🚩 ${user.name}` : user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
-    numOfWishlists.innerText = user.wishlist.length;
+    numOfWishlists.innerText = user.wishlist?.length ?? 0;
 
     if (user.isFlagged) {
     tr.style.backgroundColor = "#ffe0e0";
@@ -333,7 +333,7 @@ function renderUserTable(users, orders) {
 }
 
 //function to view all orders
-function renderOrderTable(products, variants, users, orders) {
+function renderOrderTable(products, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
   // filter logic
@@ -354,7 +354,7 @@ function renderOrderTable(products, variants, users, orders) {
 
     const orderUser = users.find((u) => u._id === order.user.id);
 
-    const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
+    const matchCustomer = orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
     const matchProduct = productItems.some((item) => {
       const product = products.find((p) => p._id === item.productId);
       return product?.name.toLowerCase().includes(productFilter);
@@ -486,7 +486,7 @@ async function onPageLoad() {
 
   renderProductTable(products, variants);
   renderUserTable(users, orders);
-  renderOrderTable(products, variants, users, orders);
+  renderOrderTable(products, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
 }
@@ -558,35 +558,35 @@ document
   .querySelector("#filter-customer")
   .addEventListener("input", async () => {
     const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-product")
   .addEventListener("input", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-status")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-date-from")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-date-to")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
@@ -597,8 +597,8 @@ document
     document.querySelector("#filter-date-from").value = "";
     document.querySelector("#filter-date-to").value = "";
     document.querySelector("#filter-status").value = "";
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 // Print button
