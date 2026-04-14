@@ -20,7 +20,7 @@ function initRegister() {
   });
 }
 
-//alert för fältvalidering
+//alert för fältvalidering - EMANS KOD
 function validateFields() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -32,6 +32,18 @@ function validateFields() {
   }
 
   return { name, email, password };
+}
+// Waraporn lade till validation bara för login
+function validateLogin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("Email och lösenord krävs");
+    return false;
+  }
+
+  return { email, password };
 }
 
 // Registrera användare
@@ -62,7 +74,7 @@ function registerUser() {
   }
 
   
-// Logga in användare
+// Logga in användare -- EMANS KOD using fake API
   /* function loginUser() {
   const data = validateFields();
   if (!data) return;
@@ -87,18 +99,12 @@ function registerUser() {
   } */
 
 
-/* Logga in med vår API med TOKEN */
+/* Logga in med BE API med TOKEN */
 async function loginUser() {
+  const data = validateLogin();
+  if (!data) return;
 
-  // get only email + password (NOT name)
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  // validation for login
-  if (!email || !password) {
-    alert("Email och lösenord krävs");
-    return;
-  }
+  const { email, password } = data;
 
   // get BASE URL
   const BASE_URL = getBaseUrl();
@@ -118,10 +124,11 @@ async function loginUser() {
 
     // debug response 
     console.log("LOGIN RESPONSE:", result);
+  
 
     // handle error from backend
     if (!res.ok) {
-      alert(result.message || "Fel vid inloggning");
+      alert(result.error || result.message || "Fel vid inloggning");
       return;
     }
 

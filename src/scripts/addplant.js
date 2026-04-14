@@ -1,5 +1,59 @@
 import { getBaseUrl } from "../utils/api.js";
 
+// MAP SETUP
+const selectMap = L.map("select-map").setView([59.33, 18.06], 13);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+}).addTo(selectMap);
+
+// MAP INTERACTION
+
+let selectedCoordinates = null;
+let selectedMarker;
+
+// click to select location
+selectMap.on("click", function (e) {
+  const { lat, lng } = e.latlng;
+
+  selectedCoordinates = [lat, lng];
+
+  console.log("Selected:", selectedCoordinates);
+
+  // remove old marker
+  if (selectedMarker) {
+    selectMap.removeLayer(selectedMarker);
+  }
+
+  // add new marker
+  selectedMarker = L.marker([lat, lng]).addTo(selectMap);
+
+  // show feedback popup
+  selectedMarker.bindPopup("Vald plats 🌱").openPopup();
+});
+
+//  added USER LOCATION
+
+navigator.geolocation.getCurrentPosition(
+  (pos) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+
+    console.log("User location:", lat, lng);
+
+    // show user marker
+    L.marker([lat, lng]).addTo(selectMap).bindPopup("Du är här 📍");
+
+    // center map
+    selectMap.setView([lat, lng], 14);
+  },
+  (err) => {
+    console.log("Location error:", err);
+  },
+);
+
+// Form
+
 const form = document.getElementById("plantForm");
 
 form.addEventListener("submit", async function (e) {
@@ -7,23 +61,27 @@ form.addEventListener("submit", async function (e) {
 
   const BASE_URL = getBaseUrl();
 
-  // get values
   const plantName = document.getElementById("plantName").value;
   const imageUrl = document.getElementById("plantImage").value;
   const light = Number(document.getElementById("lightLevel").value);
 
-  // 👉 TEMP: fixed Stockholm coordinates
-  const coordinates = [59.33, 18.06];
+  // require map selection
+  if (!selectedCoordinates) {
+    alert("Välj en plats på kartan 📍");
+    return;
+  }
 
   const newPlant = {
     plantName,
-    description: "", // optional for now
+    description: "Fin växt 🌱",
     light,
-    water: 1, // default (backend expects it)
-    imageUrl,
-    coordinates,
+    water: 1,
+    imageUrl: imageUrl.includes("?")
+      ? imageUrl
+      : imageUrl + "?w=400&h=300&fit=crop",
+    coordinates: selectedCoordinates,
     meetingTime: new Date().toISOString(),
-    available: true
+    available: true,
   };
 
   console.log("Sending plant:", newPlant);
@@ -33,22 +91,42 @@ form.addEventListener("submit", async function (e) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(newPlant)
+      body: JSON.stringify(newPlant),
     });
-    
+
     console.log("STATUS:", res.status);
 
     const data = await res.json();
     console.log("RESPONSE:", data);
 
-    // reset form
-    form.reset();
+    if (!res.ok) {
+      alert("Kunde inte spara växt ❌");
+      return;
+    }
 
-    // optional: redirect to map
-    /* window.location.href = "/map.html"; */
+    // CONFIRMATION UI
+    form.innerHTML = `
+      <div class="confirmation-box">
+        <h2>🌱 Växt tillagd!</h2>
+        <p>Din växt finns nu på kartan</p>
 
+        <div class="confirmation-buttons">
+          <button id="goHome">Gå till Hem</button>
+          <button id="goMap">Se på karta</button>
+        </div>
+      </div>
+    `;
+
+    // navigation
+    document.getElementById("goHome").onclick = () => {
+      window.location.href = "/index.html";
+    };
+
+    document.getElementById("goMap").onclick = () => {
+      window.location.href = "/map.html";
+    };
   } catch (error) {
     console.error("Error saving plant:", error);
   }

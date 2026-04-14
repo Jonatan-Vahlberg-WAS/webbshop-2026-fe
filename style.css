@@ -512,3 +512,57 @@ button[type="submit"]:hover {
   margin: 0;
   font-size: 18px;
 }
+
+/* =========================
+   CONFIRMATION UI
+========================= */
+.confirmation-box {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.confirmation-box h2 {
+  margin-bottom: 10px;
+}
+
+.confirmation-box p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* buttons container */
+.confirmation-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* buttons style (match your theme) */
+.confirmation-buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* primary (map) */
+#goMap {
+  background: #2d5a3d;
+  color: white;
+}
+
+#goMap:hover {
+  background: #3d7451;
+}
+
+/* secondary (home) */
+#goHome {
+  background: #ccc;
+  color: #333;
+}
+
+#goHome:hover {
+  background: #bbb;
+}
