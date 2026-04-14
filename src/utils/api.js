@@ -64,6 +64,19 @@ export async function getVariant(productId) {
   }
 }
 
+//Delete variant data in the API
+export async function deleteVariant(id) {
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.delete(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting variant:", error);
+    return null;
+  }
+}
+
 //Get user data from the API
 export async function getUsers() {
   const url = new URL("users", getBaseUrl());
@@ -175,12 +188,15 @@ export async function addVariant(variant) {
 
 //Update variant data in the API
 export async function updateVariant(id, data) {
-  const response = await fetch(`http://localhost:3000/variants/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  return response.json();
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating variant:", error);
+    return null;
+  }
 }
 
 // Register new user
@@ -233,6 +249,30 @@ export async function updateUser(user) {
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
+    return null;
+  }
+}
+//add item to wishlist
+export async function addWishlist(userId, wishlistedItem) {
+  const url = new URL(`users/${userId}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, wishlistedItem);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
+}
+
+export async function updateOrder(id, data) {
+  const url = new URL(`orders/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating order:", error);
     return null;
   }
 }

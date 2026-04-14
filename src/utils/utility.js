@@ -1,4 +1,5 @@
 import { getCurrentUser, isLoggedIn } from "../utils/auth.js";
+import { addWishlist } from "../utils/api.js";
 
 export function formatDateISO(isoString) {
   const date = new Date(isoString);
@@ -153,5 +154,47 @@ export function checkIfUserHasAddress(elementToHide, renderElement) {
     addressLineTwo.innerText = `${user.address.postal_code}, ${user.address.country}`;
     userAddress.innerHTML = "";
     userAddress.append(name, addressLineOne, addressLineTwo);
+  }
+}
+
+//Add product to wishlist
+export async function addToWishlist(productId, variantId) {
+  if (!isLoggedIn()) {
+    return { success: false, error: "not_logged_in" };
+  } else {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const currentWishlist = Array.isArray(user.wishlist) ? user.wishlist : [];
+
+    const exists = currentWishlist.some(
+      (item) => item.productId === productId && item.variantId === variantId,
+    );
+
+    if (exists) {
+      return { success: false, error: "duplicate_size" };
+    }
+
+    const updatedWishlist = [
+      ...currentWishlist,
+      {
+        productId,
+        variantId,
+      },
+    ];
+
+    const updatedUser = await addWishlist(user.id, {
+      wishlist: updatedWishlist,
+    });
+
+    if (!updatedUser) {
+      return { success: false, error: "server_error" };
+    }
+
+    // user.wishlist = updatedUser.wishlist;
+    //Below stays for now since we are using db.json
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    return { success: true };
   }
 }

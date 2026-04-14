@@ -7,6 +7,8 @@ import {
   addVariant,
   updateProduct,
   updateVariant,
+  deleteVariant,
+  updateOrder,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -52,6 +54,8 @@ function renderProductTable(products, variants) {
     const stock = document.createElement("th");
     const dropStatus = document.createElement("th");
     const actions = document.createElement("th");
+    const productActions = document.createElement("th");
+    const variantActions = document.createElement("th");
 
     name.innerText = product.name;
     price.innerText = `$${product.price}`;
@@ -133,6 +137,32 @@ function renderProductTable(products, variants) {
         "Update Product";
     });
 
+    // Delete size button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete Size";
+    deleteBtn.style.backgroundColor = "red";
+    deleteBtn.style.color = "white";
+
+    deleteBtn.addEventListener("click", async () => {
+      // Check if variant has active orders
+      const { orders } = await fetchData();
+      const hasActiveOrder = orders.some(
+        (o) =>
+          o.status !== "cancelled" &&
+          o.products.some((p) => p.variantId === variant._id),
+      );
+
+      if (hasActiveOrder) {
+        alert("Cannot delete this size as it has active orders.");
+        return;
+      }
+
+      const confirmed = window.confirm(`Delete size ${variant.size}?`);
+      if (!confirmed) return;
+
+      await deleteVariant(variant._id);
+      tr.remove();
+    });
     const statusBtn = document.createElement("button");
     if (product.status === "upcoming") {
       statusBtn.innerText = "Go Live";
@@ -144,7 +174,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else if (product.status === "live") {
       statusBtn.innerText = "Mark Sold Out";
       statusBtn.style.backgroundColor = "orange";
@@ -155,7 +186,8 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     } else {
       // sold out — show Go Live button
       statusBtn.innerText = "Go Live";
@@ -177,10 +209,19 @@ function renderProductTable(products, variants) {
         await onPageLoad();
       });
 
-      actions.append(editBtn, updateStockBtn, statusBtn);
+      productActions.append(editBtn, statusBtn);
+      variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, actions);
+    tr.append(
+      name,
+      price,
+      size,
+      stock,
+      dropStatus,
+      productActions,
+      variantActions,
+    );
     productList.append(tr);
   });
 }
@@ -192,25 +233,106 @@ function renderUserTable(users, orders) {
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => o.userId === user._id);
+    const userOrders = orders.filter((o) => o.user.id === user._id);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
     const email = document.createElement("th");
     const numOfOrders = document.createElement("th");
+    const numOfWishlists = document.createElement("th");
     const Actions = document.createElement("th");
 
     name.innerText = user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
+    numOfWishlists.innerText = user.wishlist.length;
 
     const flagBtn = document.createElement("button");
     flagBtn.innerText = "Flag";
     const viewOrdersBtn = document.createElement("button");
-    viewOrdersBtn.innerText = "View Orders";
+    viewOrdersBtn.innerText = "Order History";
+
+    viewOrdersBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#user-orders-modal");
+      const modalUserName = document.querySelector("#modal-user-name");
+      const modalAddress = document.querySelector("#modal-user-address");
+      const modalTbody = document.querySelector("#modal-order-tbody");
+
+      modalUserName.innerText = `${user.name}'s Order History`;
+      modalTbody.innerHTML = "";
+
+      // address
+      const address = user.address;
+      if (address) {
+        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`;
+      } else {
+        modalAddress.innerText = "No address on file";
+      }
+
+      const userOrders = orders.filter((o) => o.user.id === user._id);
+
+      if (userOrders.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 6;
+        td.innerText = "No orders found.";
+        td.style.textAlign = "center";
+        tr.append(td);
+        modalTbody.append(tr);
+      } else {
+        userOrders.forEach((order) => {
+          order.products.forEach((product) => {
+            const tr = document.createElement("tr");
+            const img = document.createElement("th");
+            const productName = document.createElement("th");
+            const size = document.createElement("th");
+            const price = document.createElement("th");
+            const status = document.createElement("th");
+            const date = document.createElement("th");
+
+            const imgEl = document.createElement("img");
+            imgEl.src = product.image || "https://placehold.co/50x50";
+            imgEl.style.width = "50px";
+            imgEl.style.height = "50px";
+            imgEl.style.objectFit = "cover";
+            img.appendChild(imgEl);
+
+            productName.innerText = product.name;
+            size.innerText = product.size;
+            price.innerText = `$${product.price}`;
+            status.innerText = order.status;
+            date.innerText = new Date(order.createdAt).toLocaleDateString();
+
+            tr.append(img, productName, size, price, status, date);
+            modalTbody.append(tr);
+          });
+        });
+      }
+
+      modal.style.display = "flex";
+    });
+
+    // Close modal
+    document.querySelector("#close-modal-btn").addEventListener("click", () => {
+      document.querySelector("#user-orders-modal").style.display = "none";
+    });
+
+    // Close modal when clicking outside
+    document
+      .querySelector("#user-orders-modal")
+      .addEventListener("click", (e) => {
+        if (e.target.id === "user-orders-modal") {
+          document.querySelector("#user-orders-modal").style.display = "none";
+        }
+      });
+    // Print modal
+    document.querySelector("#print-modal-btn").addEventListener("click", () => {
+      window.print();
+    });
+
     Actions.append(viewOrdersBtn, flagBtn);
 
-    tr.append(name, email, numOfOrders, Actions);
+    tr.append(name, email, numOfOrders, numOfWishlists, Actions);
     userList.append(tr);
   });
 }
@@ -292,13 +414,69 @@ function renderOrderTable(products, variants, users, orders) {
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
-    const viewOrder = document.createElement("button");
-    viewOrder.innerText = "View Order";
+    const viewOrderBtn = document.createElement("button");
+    viewOrderBtn.innerText = "Order Detail";
+
+    viewOrderBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#order-detail-modal");
+      const modalTbody = document.querySelector("#modal-order-products");
+
+      modalTbody.innerHTML = "";
+
+      document.querySelector("#modal-order-id").innerText = `Order #${order._id}`;
+      document.querySelector("#modal-order-date").innerText = new Date(order.createdAt).toLocaleDateString();
+      document.querySelector("#modal-order-customer").innerText = order.user.name;
+      document.querySelector("#modal-order-status").innerText = order.status;
+      document.querySelector("#modal-order-total").innerText = `$${order.totalCost}`;
+
+      const address = order.user.address;
+      document.querySelector("#modal-order-address").innerText = address
+        ? `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`
+        : "No address on file";
+
+      order.products.forEach((product) => {
+        const tr = document.createElement("tr");
+        const productName = document.createElement("th");
+        const size = document.createElement("th");
+        const price = document.createElement("th");
+
+        productName.innerText = product.name;
+        size.innerText = product.size;
+        price.innerText = `$${product.price}`;
+
+        tr.append(productName, size, price);
+        modalTbody.append(tr);
+      });
+
+            const closeBtn = document.querySelector("#close-order-modal-btn"); 
+      if (closeBtn) {
+          closeBtn.onclick = () => {
+              modal.style.display = "none";
+          };
+      }
+
+      window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+      };
+
+      const printBtn = document.querySelector("#print-order-modal-btn");
+      if (printBtn) {
+        printBtn.onclick = () => {
+            window.print();
+        };
+    }
+
+      modal.style.display = "flex";
+    });
+
+
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
     const refundBtn = document.createElement("button");
     refundBtn.innerText = "Refund";
-    Actions.append(viewOrder, updateStatusBtn, refundBtn);
+    Actions.append(viewOrderBtn, updateStatusBtn, refundBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);

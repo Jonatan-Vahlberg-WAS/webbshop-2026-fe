@@ -35,3 +35,16 @@
   background-color: #000;
   color: #fff;
 }
+
+/* Wishlist button */
+.add-to-wishlist.active {
+  background: #deed00;
+  border-color: #deed00;
+  color: black;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(233, 30, 99, 0.25);
+}
+
+.add-to-wishlist.active::after {
+  content: " ♥";
+}
