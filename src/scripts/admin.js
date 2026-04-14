@@ -8,7 +8,7 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
-  updateUser,
+  flagUser,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -541,7 +541,7 @@ document.querySelector(".admin-user-tbody").addEventListener("click", async (e) 
   const userId = tr.dataset.userId;
 
   try {
-    await updateUser(userId, { isFlagged: !isFlagged });
+    await flagUser(userId, !isFlagged);
     flagBtn.innerText = !isFlagged ? "Unflag" : "Flag";
     flagBtn.style.backgroundColor = !isFlagged ? "gray" : "red";
     tr.style.backgroundColor = !isFlagged ? "#ffe0e0" : "";
