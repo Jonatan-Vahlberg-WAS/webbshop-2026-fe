@@ -1,15 +1,15 @@
 //Get base API Url
-// export function getBaseUrl() {
-//   if (window.location.hostname.includes("localhost") && false) {
-//     return "http://localhost:3000/";
-//   }
-//   return "https://webbshop-2026-be.vercel.app/";
-// }
+export function getBaseUrl() {
+  if (window.location.hostname.includes("localhost") && false) {
+    return "http://localhost:3000/";
+  }
+  return "https://webbshop-2026-be.vercel.app/";
+}
 
 //Temp: Base URL is fake data
-function getBaseUrl() {
-  return "http://localhost:3000/";
-}
+// function getBaseUrl() {
+//   return "http://localhost:3000/";
+// }
 
 //Get product data from the API
 export async function getProducts() {

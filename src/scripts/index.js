@@ -114,7 +114,7 @@ function createProductCard(product) {
   element.appendChild(productCard);
 
   //Navigates to the product detail page
-  element.addEventListener("click", () => goToProduct(product.id));
+  element.addEventListener("click", () => goToProduct(product._id));
 
   return element;
 }
