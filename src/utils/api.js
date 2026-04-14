@@ -66,10 +66,15 @@ export async function getVariant(productId) {
 
 //Delete variant data in the API
 export async function deleteVariant(id) {
-  const response = await fetch(`http://localhost:3000/variants/${id}`, {
-    method: "DELETE",
-  });
-  return response.json();
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.delete(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting variant:", error);
+    return null;
+  }
 }
 
 //Get user data from the API

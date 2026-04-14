@@ -17,9 +17,6 @@ cancelEditBtn.innerText = "Cancel";
 cancelEditBtn.type = "button";
 cancelEditBtn.style.display = "none";
 
-//To get Id from mongodb
-const getId = (obj) => obj?._id || obj?.id || obj;
-
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
   const products = await getProducts();
@@ -37,8 +34,8 @@ function renderProductTable(products, variants) {
   productList.innerHTML = "";
 
   const sortedVariants = [...variants].sort((a, b) => {
-    const productA = products.find((p) => getId(p) === a.productId);
-    const productB = products.find((p) => getId(p) === b.productId);
+    const productA = products.find((p) => p._id === a.productId);
+    const productB = products.find((p) => p._id === b.productId);
 
     const nameCompare = productA.name.localeCompare(productB.name);
     if (nameCompare !== 0) return nameCompare;
@@ -47,7 +44,7 @@ function renderProductTable(products, variants) {
   });
 
   sortedVariants.forEach((variant) => {
-    const product = products.find((p) => getId(p) === variant.productId);
+    const product = products.find((p) => p._id === variant.productId);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -184,7 +181,7 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct({ ...product, status: "sold out" });
+        await updateProduct(product._id, { status: "sold out" });
         await onPageLoad();
       });
 
@@ -235,7 +232,7 @@ function renderUserTable(users, orders) {
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => getId(o.user) === getId(user));
+    const userOrders = orders.filter((o) => o.user?._id === user._id);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -264,12 +261,12 @@ function renderUserTable(users, orders) {
       // address
       const address = user.address;
       if (address) {
-        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`;
+        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postalCode}, ${address.country}`;
       } else {
         modalAddress.innerText = "No address on file";
       }
 
-      const userOrders = orders.filter((o) => getId(o.user) === getId(user));
+      const userOrders = orders.filter((o) => o.user?._id === user._id);
 
       if (userOrders.length === 0) {
         const tr = document.createElement("tr");
@@ -357,11 +354,11 @@ function renderOrderTable(products, variants, users, orders) {
       ? order.products
       : [order.products];
 
-    const orderUser = users.find((u) => u._id === order.user._id);
+    const orderUser = users.find((u) => u._id === order.user?._id);
 
     const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
     const matchProduct = productItems.some((item) => {
-      const product = products.find((p) => getId(p) === item.productId);
+      const product = products.find((p) => p._id === item.productId);
       return product?.name.toLowerCase().includes(productFilter);
     });
     const matchStatus = statusFilter === "" || order.status === statusFilter;
@@ -393,10 +390,10 @@ function renderOrderTable(products, variants, users, orders) {
     //   : [order.products];
 
     // productItems.forEach((item) => {
-    //   const product = products.find((p) => getId(p) === item.productId);
+    //   const product = products.find((p) => p._id === item.productId);
     // });
 
-    const orderUser = users.find((u) => u._id === order.user._id);
+    const orderUser = users.find((u) => u._id === order.user?._id);
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");
@@ -620,7 +617,7 @@ async function editProduct() {
   if (!editingProductId) return;
 
   const products = await getProducts();
-  const existingProduct = products.find((p) => getId(p) === editingProductId);
+  const existingProduct = products.find((p) => p._id === editingProductId);
   if (!existingProduct) return;
 
   if (!name.value.trim() || !price.value) {
@@ -744,7 +741,8 @@ async function createVariant() {
     __v: 0,
   };
 
-  addVariant(variant);
+  await addVariant(variant);
+  await onPageLoad();
 }
 
 //Create Variant button listener
