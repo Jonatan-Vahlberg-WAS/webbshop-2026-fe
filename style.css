@@ -500,8 +500,6 @@ button[type="submit"]:hover {
   background-color: #304130;
 }
 
-
-/* Content */
 .tab-content {
   display: none;
 }
@@ -510,7 +508,6 @@ button[type="submit"]:hover {
   display: block;
 }
 
-/* List styling */
 .list-container {
   display: flex;
   flex-direction: column;
@@ -524,4 +521,16 @@ button[type="submit"]:hover {
   padding: 15px;
   background: #A2BF8F;
   border: 2px solid white;
+}
+
+body {
+  margin: 0;
+  font-family: 'Karla', sans-serif;
+  background-color: #ffffff;
+  color: #222;
+}
+
+h1, h2 {
+  font-family: 'Italiana', serif;
+  letter-spacing: 1px;
 }
