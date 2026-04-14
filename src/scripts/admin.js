@@ -437,6 +437,26 @@ function renderOrderTable(products, variants, users, orders) {
         modalTbody.append(tr);
       });
 
+      const closeBtn = document.querySelector("#close-order-modal-btn"); 
+      if (closeBtn) {
+          closeBtn.onclick = () => {
+              modal.style.display = "none";
+          };
+      }
+
+      window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+      };
+
+      const printBtn = document.querySelector("#print-order-modal-btn");
+      if (printBtn) {
+        printBtn.onclick = () => {
+            window.print();
+        };
+    }
+
       modal.style.display = "flex";
     });
 
