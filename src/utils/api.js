@@ -277,3 +277,15 @@ export async function updateOrder(id, data) {
     return null;
   }
 }
+
+export async function flagUser(id, isFlagged) {
+  const url = new URL(`users/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, { isFlagged });
+    return response.data;
+  } catch (error) {
+    console.error("Error flagging user:", error);
+    return null;
+  }
+}
