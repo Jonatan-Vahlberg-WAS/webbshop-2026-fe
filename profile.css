@@ -71,6 +71,10 @@
     margin-bottom: 1rem;
 }
 
+.hidden {
+    display:none;
+}
+
 /* ORDER LIST */
 .order-list {
     display: flex;
