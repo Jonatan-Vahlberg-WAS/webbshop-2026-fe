@@ -240,7 +240,7 @@ function renderUserTable(users, orders) {
     const flagBtn = document.createElement("button");
     flagBtn.innerText = "Flag";
     const viewOrdersBtn = document.createElement("button");
-    viewOrdersBtn.innerText = "View Orders";
+    viewOrdersBtn.innerText = "Order History";
 
     viewOrdersBtn.addEventListener("click", () => {
       const modal = document.querySelector("#user-orders-modal");
@@ -444,11 +444,12 @@ function renderOrderTable(products, variants, users, orders) {
           };
       }
 
-      window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-      };
+      window.addEventListener("click", (event) => {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+      });
+
 
       const printBtn = document.querySelector("#print-order-modal-btn");
       if (printBtn) {
