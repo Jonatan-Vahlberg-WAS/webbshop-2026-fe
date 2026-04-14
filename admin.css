@@ -539,3 +539,35 @@
   color: var(--color-text-light);
   box-shadow: 3px 3px 0 var(--color-accent);
 }
+
+.modal-section {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--color-text-dark);
+}
+
+.modal-section p {
+  font-size: 0.875rem;
+  margin: 4px 0;
+}
+
+#print-order-modal-btn {
+  background: #DEED00;
+  color: black;
+  border: 2px solid var(--color-text-dark);
+  padding: 8px var(--spacing-md);
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+#print-order-modal-btn:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}

@@ -66,10 +66,15 @@ export async function getVariant(productId) {
 
 //Delete variant data in the API
 export async function deleteVariant(id) {
-  const response = await fetch(`http://localhost:3000/variants/${id}`, {
-    method: "DELETE",
-  });
-  return response.json();
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.delete(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting variant:", error);
+    return null;
+  }
 }
 
 //Get user data from the API
@@ -184,12 +189,15 @@ export async function addVariant(variant) {
 
 //Update variant data in the API
 export async function updateVariant(id, data) {
-  const response = await fetch(`http://localhost:3000/variants/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  return response.json();
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating variant:", error);
+    return null;
+  }
 }
 
 // Register new user
@@ -242,6 +250,18 @@ export async function addWishlist(userId, wishlistedItem) {
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
+    return null;
+  }
+}
+
+export async function updateOrder(id, data) {
+  const url = new URL(`orders/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating order:", error);
     return null;
   }
 }
