@@ -79,7 +79,6 @@ function registerUser() {
   }
 
   sessionStorage.setItem("loggedIn", JSON.stringify(existingUser));
-  alert(`Välkommen ${existingUser.name}!`);
   
   window.location.href = "profil.html";
   }

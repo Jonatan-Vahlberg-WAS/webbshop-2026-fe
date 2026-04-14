@@ -1,3 +1,4 @@
+
 const form = document.getElementById("plantForm");
 
 form.addEventListener("submit", function (e) {
@@ -30,4 +31,30 @@ form.addEventListener("submit", function (e) {
 
   // reset form
   form.reset();
+
+  // hide form
+  form.style.display = "none";
+
+  // show confirmation
+  const confirmation = document.getElementById("confirmation");
+  if (confirmation) {
+    confirmation.style.display = "block";
+  }
 });
+
+
+// navigation buttons
+const goMapBtn = document.getElementById("goMap");
+const goHomeBtn = document.getElementById("goHome");
+
+if (goMapBtn) {
+  goMapBtn.addEventListener("click", () => {
+    window.location.href = "/map.html";
+  });
+}
+
+if (goHomeBtn) {
+  goHomeBtn.addEventListener("click", () => {
+    window.location.href = "/index.html";
+  });
+}
