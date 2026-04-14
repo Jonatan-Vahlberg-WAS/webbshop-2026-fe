@@ -558,8 +558,61 @@ h1, h2 {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-
   text-align: center;
   width: 80%;
   max-width: 900px;
 }
+
+.hero-title {
+  font-size: 64px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.6;
+  color: white;
+  text-shadow: 0 3px 15px rgba(0,0,0,0.6);
+  margin-bottom: 35px;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10rem;
+  padding-bottom: 10rem;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.btn-green {
+  background-color: #2E7D57;
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: #3a9a6d;
+}
+
+.btn-white {
+  background-color: white;
+  color: #2E7D57;
+  border: 2px solid #2E7D57;
+}
+
+.btn-white:hover {
+  background-color: #e8f5ee;
+}
+
