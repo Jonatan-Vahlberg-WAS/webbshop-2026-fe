@@ -217,6 +217,47 @@ function renderProductTable(products, variants) {
       variantActions.append(updateStockBtn, deleteBtn);
     }
 
+    // Row clickable — show product detail modal
+      tr.style.cursor = "pointer";
+
+      tr.addEventListener("click", (e) => {
+        if (e.target.tagName === "BUTTON" || e.target.tagName === "INPUT") return;
+
+        const modal = document.querySelector("#product-detail-modal");
+        const modalVariants = document.querySelector("#modal-product-variants");
+
+        modalVariants.innerHTML = "";
+
+        const formatDate = (dateStr) => {
+          const d = new Date(dateStr);
+          return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+        };
+
+        document.querySelector("#modal-product-name").innerText = product.name;
+        document.querySelector("#modal-product-status").innerText = product.status;
+        document.querySelector("#modal-product-price").innerText = `$${product.price}`;
+        document.querySelector("#modal-product-description").innerText = product.description;
+        document.querySelector("#modal-product-dropdate").innerText = formatDate(product.dropDate);
+        document.querySelector("#modal-product-image").src = product.image || "https://placehold.co/120x120";
+
+        // show details for this product
+        const productVariants = variants.filter((v) => v.productId === product._id);
+        productVariants.forEach((v) => {
+          const tr = document.createElement("tr");
+          const size = document.createElement("th");
+          const stock = document.createElement("th");
+
+          size.innerText = v.size;
+          stock.innerText = v.stock;
+          stock.style.color = getStockColor(v.stock);
+
+          tr.append(size, stock);
+          modalVariants.append(tr);
+        });
+
+        modal.style.display = "flex";
+      });
+
     tr.append(
       name,
       price,
@@ -493,6 +534,17 @@ async function onPageLoad() {
 
 onPageLoad();
 
+// Close product detail modal
+document.querySelector("#close-product-modal-btn").addEventListener("click", () => {
+  document.querySelector("#product-detail-modal").style.display = "none";
+});
+
+document.querySelector("#product-detail-modal").addEventListener("click", (e) => {
+  if (e.target.id === "product-detail-modal") {
+    document.querySelector("#product-detail-modal").style.display = "none";
+  }
+});
+
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
 cancelEditBtn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -514,7 +566,7 @@ document.querySelector("#print-order-modal-btn").addEventListener("click", () =>
   window.print();
 });
 
-// Close user orders modal
+// Close user order history modal
 document.querySelector("#close-modal-btn").addEventListener("click", () => {
   document.querySelector("#user-orders-modal").style.display = "none";
 });
