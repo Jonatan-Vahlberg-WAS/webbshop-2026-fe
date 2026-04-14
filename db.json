@@ -120,6 +120,7 @@
       "email": "bob@example.com",
       "password": "Bob@1234",
       "isAdmin": false,
+      "isFlagged": false,
       "address": {
         "street": "742 Maple Avenue",
         "postal_code": "10012",
@@ -143,6 +144,7 @@
       "email": "charlie@example.com",
       "password": "Charlie#2026",
       "isAdmin": false,
+      "isFlagged": false,
       "wishlist": [],
       "createdAt": "2026-03-03T08:00:00.000Z",
       "updatedAt": "2026-03-03T08:00:00.000Z",

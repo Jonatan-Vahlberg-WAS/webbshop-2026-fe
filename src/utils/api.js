@@ -265,3 +265,16 @@ export async function updateOrder(id, data) {
     return null;
   }
 }
+
+//update user data in the API
+export async function updateUser(id, data) {
+  const url = new URL(`users/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
+}

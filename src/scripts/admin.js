@@ -8,15 +8,11 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
-  updateOrder,
+  updateUser,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
 let editingProductId = null;
-let cancelEditBtn = document.createElement("button");
-cancelEditBtn.innerText = "Cancel";
-cancelEditBtn.type = "button";
-cancelEditBtn.style.display = "none";
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
@@ -171,7 +167,9 @@ function renderProductTable(products, variants) {
 
       statusBtn.addEventListener("click", async () => {
         await updateProduct({ ...product, status: "live" });
-        await onPageLoad();
+        dropStatus.innerText = "live";
+        statusBtn.innerText = "Mark Sold Out";
+        statusBtn.style.backgroundColor = "orange";
       });
 
       productActions.append(editBtn, statusBtn);
@@ -183,7 +181,10 @@ function renderProductTable(products, variants) {
 
       statusBtn.addEventListener("click", async () => {
         await updateProduct({ ...product, status: "sold out" });
-        await onPageLoad();
+        product.status = "sold out";
+        dropStatus.innerText = "sold out";
+        statusBtn.innerText = "Go Live";
+        statusBtn.style.backgroundColor = "green";
       });
 
       productActions.append(editBtn, statusBtn);
@@ -206,7 +207,10 @@ function renderProductTable(products, variants) {
         }
 
         await updateProduct({ ...product, status: "live" });
-        await onPageLoad();
+        product.status = "live";
+        dropStatus.innerText = "live";
+        statusBtn.innerText = "Mark Sold Out";
+        statusBtn.style.backgroundColor = "orange";
       });
 
       productActions.append(editBtn, statusBtn);
@@ -229,6 +233,7 @@ function renderProductTable(products, variants) {
 //function to view all users
 function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
+  userList.innerHTML = "";
 
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
@@ -236,19 +241,27 @@ function renderUserTable(users, orders) {
     const userOrders = orders.filter((o) => o.user.id === user._id);
 
     const tr = document.createElement("tr");
+    tr.dataset.userId = user._id;
     const name = document.createElement("th");
     const email = document.createElement("th");
     const numOfOrders = document.createElement("th");
     const numOfWishlists = document.createElement("th");
     const Actions = document.createElement("th");
 
-    name.innerText = user.name;
+    name.innerText = user.isFlagged ? `🚩 ${user.name}` : user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
     numOfWishlists.innerText = user.wishlist.length;
 
+    if (user.isFlagged) {
+    tr.style.backgroundColor = "#ffe0e0";
+    }
+
     const flagBtn = document.createElement("button");
-    flagBtn.innerText = "Flag";
+    flagBtn.innerText = user.isFlagged ? "Unflag" : "Flag";
+    flagBtn.style.backgroundColor = user.isFlagged ? "gray" : "red";
+    flagBtn.style.color = "white";
+
     const viewOrdersBtn = document.createElement("button");
     viewOrdersBtn.innerText = "Order History";
 
@@ -310,24 +323,6 @@ function renderUserTable(users, orders) {
       }
 
       modal.style.display = "flex";
-    });
-
-    // Close modal
-    document.querySelector("#close-modal-btn").addEventListener("click", () => {
-      document.querySelector("#user-orders-modal").style.display = "none";
-    });
-
-    // Close modal when clicking outside
-    document
-      .querySelector("#user-orders-modal")
-      .addEventListener("click", (e) => {
-        if (e.target.id === "user-orders-modal") {
-          document.querySelector("#user-orders-modal").style.display = "none";
-        }
-      });
-    // Print modal
-    document.querySelector("#print-modal-btn").addEventListener("click", () => {
-      window.print();
     });
 
     Actions.append(viewOrdersBtn, flagBtn);
@@ -448,26 +443,6 @@ function renderOrderTable(products, variants, users, orders) {
         modalTbody.append(tr);
       });
 
-            const closeBtn = document.querySelector("#close-order-modal-btn"); 
-      if (closeBtn) {
-          closeBtn.onclick = () => {
-              modal.style.display = "none";
-          };
-      }
-
-      window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-      };
-
-      const printBtn = document.querySelector("#print-order-modal-btn");
-      if (printBtn) {
-        printBtn.onclick = () => {
-            window.print();
-        };
-    }
-
       modal.style.display = "flex";
     });
 
@@ -514,16 +489,69 @@ async function onPageLoad() {
   renderOrderTable(products, variants, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
-
-  const form = document.querySelector(".create-product-form");
-  form.append(cancelEditBtn);
-  cancelEditBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    cancelEdit();
-  });
 }
 
 onPageLoad();
+
+const cancelEditBtn = document.querySelector("#cancel-edit-btn");
+cancelEditBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  cancelEdit();
+});
+
+// Close order detail modal
+document.querySelector("#close-order-modal-btn").addEventListener("click", () => {
+  document.querySelector("#order-detail-modal").style.display = "none";
+});
+
+document.querySelector("#order-detail-modal").addEventListener("click", (e) => {
+  if (e.target.id === "order-detail-modal") {
+    document.querySelector("#order-detail-modal").style.display = "none";
+  }
+});
+
+document.querySelector("#print-order-modal-btn").addEventListener("click", () => {
+  window.print();
+});
+
+// Close user orders modal
+document.querySelector("#close-modal-btn").addEventListener("click", () => {
+  document.querySelector("#user-orders-modal").style.display = "none";
+});
+
+document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
+  if (e.target.id === "user-orders-modal") {
+    document.querySelector("#user-orders-modal").style.display = "none";
+  }
+});
+
+document.querySelector("#print-modal-btn").addEventListener("click", () => {
+  window.print();
+});
+
+document.querySelector(".admin-user-tbody").addEventListener("click", async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.target.innerText.toLowerCase() !== "flag" && e.target.innerText.toLowerCase() !== "unflag") return;
+
+  const flagBtn = e.target;
+  const tr = flagBtn.closest("tr");
+  const nameCell = tr.querySelector("th:nth-child(1)");
+  const isFlagged = flagBtn.innerText.toLowerCase() === "unflag";
+  const userId = tr.dataset.userId;
+
+  try {
+    await updateUser(userId, { isFlagged: !isFlagged });
+    flagBtn.innerText = !isFlagged ? "Unflag" : "Flag";
+    flagBtn.style.backgroundColor = !isFlagged ? "gray" : "red";
+    tr.style.backgroundColor = !isFlagged ? "#ffe0e0" : "";
+    nameCell.innerText = !isFlagged
+      ? `🚩 ${nameCell.innerText}`
+      : nameCell.innerText.replace("🚩 ", "");
+  } catch (error) {
+    alert("Failed to flag account. Please try again.");
+  }
+});
 
 // Filter listeners — outside onPageLoad to avoid re-attaching on every reload
 document
@@ -721,6 +749,7 @@ createProductBtn.addEventListener("click", () => {
 //Render all products so admin can choose which product to add variants to
 function renderProductSelect(products) {
   const productSelect = document.querySelector("#choose-product");
+  productSelect.innerHTML = ""
 
   products.forEach((product) => {
     const option = document.createElement("option");
