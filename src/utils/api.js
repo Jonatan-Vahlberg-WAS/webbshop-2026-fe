@@ -121,11 +121,10 @@ export async function postOrder(order) {
 //Temp version
 export async function getMyOrders(userId) {
   const url = new URL("orders", getBaseUrl());
-  url.searchParams.append("userId", userId);
 
   try {
     const response = await axios.get(url);
-    return response.data;
+    return response.data.filter(order => order.user.id === userId);
   } catch (error) {
     console.error("API error:", error);
     return [];
@@ -238,6 +237,19 @@ export async function loginUser(email, password) {
   } catch (error) {
     console.error("Login error:", error);
     throw error;
+  }
+}
+
+//Update user data in the API
+export async function updateUser(user) {
+  const url = new URL(`users/${user.id}`, getBaseUrl()).toString(); //TODO: Update to ._id later
+
+  try {
+    const response = await axios.put(url, user);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
   }
 }
 
