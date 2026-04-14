@@ -8,6 +8,7 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
+  updateOrder,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -249,7 +250,7 @@ function renderUserTable(users, orders) {
     const flagBtn = document.createElement("button");
     flagBtn.innerText = "Flag";
     const viewOrdersBtn = document.createElement("button");
-    viewOrdersBtn.innerText = "View Orders";
+    viewOrdersBtn.innerText = "Order History";
 
     viewOrdersBtn.addEventListener("click", () => {
       const modal = document.querySelector("#user-orders-modal");
@@ -413,13 +414,69 @@ function renderOrderTable(products, variants, users, orders) {
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
-    const viewOrder = document.createElement("button");
-    viewOrder.innerText = "View Order";
+    const viewOrderBtn = document.createElement("button");
+    viewOrderBtn.innerText = "Order Detail";
+
+    viewOrderBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#order-detail-modal");
+      const modalTbody = document.querySelector("#modal-order-products");
+
+      modalTbody.innerHTML = "";
+
+      document.querySelector("#modal-order-id").innerText = `Order #${order._id}`;
+      document.querySelector("#modal-order-date").innerText = new Date(order.createdAt).toLocaleDateString();
+      document.querySelector("#modal-order-customer").innerText = order.user.name;
+      document.querySelector("#modal-order-status").innerText = order.status;
+      document.querySelector("#modal-order-total").innerText = `$${order.totalCost}`;
+
+      const address = order.user.address;
+      document.querySelector("#modal-order-address").innerText = address
+        ? `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`
+        : "No address on file";
+
+      order.products.forEach((product) => {
+        const tr = document.createElement("tr");
+        const productName = document.createElement("th");
+        const size = document.createElement("th");
+        const price = document.createElement("th");
+
+        productName.innerText = product.name;
+        size.innerText = product.size;
+        price.innerText = `$${product.price}`;
+
+        tr.append(productName, size, price);
+        modalTbody.append(tr);
+      });
+
+            const closeBtn = document.querySelector("#close-order-modal-btn"); 
+      if (closeBtn) {
+          closeBtn.onclick = () => {
+              modal.style.display = "none";
+          };
+      }
+
+      window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+      };
+
+      const printBtn = document.querySelector("#print-order-modal-btn");
+      if (printBtn) {
+        printBtn.onclick = () => {
+            window.print();
+        };
+    }
+
+      modal.style.display = "flex";
+    });
+
+
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
     const refundBtn = document.createElement("button");
     refundBtn.innerText = "Refund";
-    Actions.append(viewOrder, updateStatusBtn, refundBtn);
+    Actions.append(viewOrderBtn, updateStatusBtn, refundBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
