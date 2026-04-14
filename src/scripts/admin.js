@@ -7,7 +7,8 @@ import {
   addVariant,
   updateProduct,
   updateVariant,
-  deleteVariant
+  deleteVariant,
+  updateOrder,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -401,13 +402,82 @@ function renderOrderTable(products, variants, users, orders) {
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
-    const viewOrder = document.createElement("button");
-    viewOrder.innerText = "View Order";
+    const viewOrderBtn = document.createElement("button");
+    viewOrderBtn.type = "button";
+    viewOrderBtn.innerText = "Order Detail";
+
+    viewOrderBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#order-detail-modal");
+      const modalTbody = document.querySelector("#modal-order-products");
+
+      modalTbody.innerHTML = "";
+
+      document.querySelector("#modal-order-id").innerText = `Order #${order._id}`;
+      document.querySelector("#modal-order-date").innerText = new Date(order.createdAt).toLocaleDateString();
+      document.querySelector("#modal-order-customer").innerText = order.user.name;
+      document.querySelector("#modal-order-status").innerText = order.status;
+      document.querySelector("#modal-order-total").innerText = `$${order.totalCost}`;
+
+      const address = order.user.address;
+      document.querySelector("#modal-order-address").innerText = address
+        ? `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`
+        : "No address on file";
+
+      order.products.forEach((product) => {
+        const tr = document.createElement("tr");
+        const productName = document.createElement("th");
+        const size = document.createElement("th");
+        const price = document.createElement("th");
+
+        productName.innerText = product.name;
+        size.innerText = product.size;
+        price.innerText = `$${product.price}`;
+
+        tr.append(productName, size, price);
+        modalTbody.append(tr);
+      });
+
+      modal.style.display = "flex";
+    });
+
     const updateStatusBtn = document.createElement("button");
+    updateStatusBtn.type = "button";
     updateStatusBtn.innerText = "Update Status";
-    const refundBtn = document.createElement("button");
-    refundBtn.innerText = "Refund";
-    Actions.append(viewOrder, updateStatusBtn, refundBtn);
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.type = "button";
+    cancelBtn.innerText = "Cancel";
+    cancelBtn.style.backgroundColor = "red";
+    cancelBtn.style.color = "white";
+
+    // Initial UI State: If already cancelled, hide the Cancel button
+    if (order.status === "cancelled") {
+        cancelBtn.style.display = "none";
+    }
+
+    cancelBtn.addEventListener("click", async (e) => {
+        e.stopPropagation(); // Prevent triggering the view details modal
+        e.preventDefault();
+
+        const isConfirmed = window.confirm(`Are you sure you want to cancel order #${order._id}?`);
+        if (!isConfirmed) return;
+
+        try {
+            await updateOrder(order._id, { status: "cancelled" });
+
+            // Update status text in the row
+            status.innerText = "cancelled"; 
+
+            // Hide only the Cancel button
+            cancelBtn.style.display = "none";
+
+            alert("Order status updated to cancelled.");
+        } catch (error) {
+            alert("Failed to update status.");
+        }
+    });
+
+    Actions.append(viewOrderBtn, updateStatusBtn, cancelBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
@@ -447,11 +517,18 @@ async function onPageLoad() {
   renderProductSelect(products);
 
   const form = document.querySelector(".create-product-form");
-  form.append(cancelEditBtn);
-  cancelEditBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    cancelEdit();
-  });
+
+  if (form && !form.contains(cancelEditBtn)) {
+    cancelEditBtn.innerText = "Cancel Edit";
+    cancelEditBtn.type = "button"; // Prevents default form submission
+    
+    form.append(cancelEditBtn);
+
+    cancelEditBtn.addEventListener("click", (e) => {
+      e.preventDefault(); 
+      cancelEdit(); 
+    });
+  }
 }
 
 onPageLoad();
@@ -508,6 +585,7 @@ document
 document.querySelector("#print-orders-btn").addEventListener("click", () => {
   window.print();
 });
+
 
 // Function that creates a product
 async function createProduct() {

@@ -226,6 +226,38 @@
           </table>
         </div>
       </div>
+      <div id="order-detail-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+          <div class="modal-header">
+            <div>
+              <h2 id="modal-order-id"></h2>
+              <p id="modal-order-date"></p>
+            </div>
+            <div>
+              <button id="print-order-modal-btn">Print</button>
+              <button id="close-order-modal-btn">✕</button>
+            </div>
+          </div>
+
+          <div class="modal-section">
+            <p><strong>Customer:</strong> <span id="modal-order-customer"></span></p>
+            <p><strong>Address:</strong> <span id="modal-order-address"></span></p>
+            <p><strong>Status:</strong> <span id="modal-order-status"></span></p>
+            <p><strong>Total:</strong> <span id="modal-order-total"></span></p>
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody id="modal-order-products"></tbody>
+          </table>
+        </div>
+      </div>
     </main>
 
     <!-- FOOTER -->

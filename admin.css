@@ -539,3 +539,14 @@
   color: var(--color-text-light);
   box-shadow: 3px 3px 0 var(--color-accent);
 }
+
+.modal-section {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--color-text-dark);
+}
+
+.modal-section p {
+  font-size: 0.875rem;
+  margin: 4px 0;
+}
