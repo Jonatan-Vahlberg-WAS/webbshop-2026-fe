@@ -252,6 +252,7 @@ export async function updateUser(user) {
     return null;
   }
 }
+
 //add item to wishlist
 export async function addWishlist(userId, wishlistedItem) {
   const url = new URL(`users/${userId}`, getBaseUrl()).toString();
