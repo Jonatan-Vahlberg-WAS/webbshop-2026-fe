@@ -25,6 +25,54 @@ async function loadProducts() {
     const heroName = document.getElementById("hero-product-name");
     const heroTimer = document.getElementById("hero-product-timer");
 
+    //Search product catalogue
+    const searchInput = document.querySelector("#product-search");
+
+    function searchCatalogue() {
+      const searchValue = searchInput.value;
+
+      //If empty
+      if (!searchValue) {
+        productsContainer.innerHTML = "";
+        products.forEach((product) => {
+          const card = createProductCard(product);
+          productsContainer.appendChild(card);
+        });
+        return;
+      }
+
+      const filteredProducts = products.filter((p) =>
+        p.name.toLowerCase().includes(searchValue.toLowerCase()),
+      );
+
+      productsContainer.innerHTML = "";
+
+      filteredProducts.forEach((product) => {
+        const card = createProductCard(product);
+        productsContainer.appendChild(card);
+      });
+    }
+
+    //debounce (limit on how often a function fires)
+    function debounce(fn, delay) {
+      //Store timer to be able to cancel previous timers
+      let timeoutId;
+
+      //Returns new function
+      return function (...args) {
+        //Everytime a user types, clear previous timer
+        clearTimeout(timeoutId);
+        //Start new timer
+        timeoutId = setTimeout(() => {
+          fn.apply(this, args);
+        }, delay);
+      };
+    }
+
+    //Search + debounce event listener
+    const debouncedSearch = debounce(searchCatalogue, 300);
+    searchInput.addEventListener("input", debouncedSearch);
+
     let toRender;
     if (heroImage) {
       toRender = getLatestDrops(products);
