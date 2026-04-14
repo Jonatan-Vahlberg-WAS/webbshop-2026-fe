@@ -157,11 +157,11 @@ export async function addProduct(product) {
 }
 
 //Update product data in the API
-export async function updateProduct(product) {
-  const url = new URL(`products/${product._id}`, getBaseUrl()).toString();
+export async function updateProduct(id, data) {
+  const url = new URL(`products/${id}`, getBaseUrl()).toString();
 
   try {
-    const response = await axios.put(url, product);
+    const response = await axios.patch(url, data);
     return response.data;
   } catch (error) {
     console.error("Error updating product:", error);
@@ -184,12 +184,9 @@ export async function addVariant(variant) {
 
 //Update variant data in the API
 export async function updateVariant(id, data) {
-  const response = await fetch(`http://localhost:3000/variants/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  return response.json();
+  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+  const response = await axios.patch(url, data);
+  return response.data;
 }
 
 // Register new user

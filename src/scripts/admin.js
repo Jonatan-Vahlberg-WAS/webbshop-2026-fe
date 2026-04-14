@@ -7,7 +7,7 @@ import {
   addVariant,
   updateProduct,
   updateVariant,
-  deleteVariant
+  deleteVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -16,6 +16,9 @@ let cancelEditBtn = document.createElement("button");
 cancelEditBtn.innerText = "Cancel";
 cancelEditBtn.type = "button";
 cancelEditBtn.style.display = "none";
+
+//To get Id from mongodb
+const getId = (obj) => obj?._id || obj?.id || obj;
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
@@ -34,8 +37,8 @@ function renderProductTable(products, variants) {
   productList.innerHTML = "";
 
   const sortedVariants = [...variants].sort((a, b) => {
-    const productA = products.find((p) => p._id === a.productId);
-    const productB = products.find((p) => p._id === b.productId);
+    const productA = products.find((p) => getId(p) === a.productId);
+    const productB = products.find((p) => getId(p) === b.productId);
 
     const nameCompare = productA.name.localeCompare(productB.name);
     if (nameCompare !== 0) return nameCompare;
@@ -44,7 +47,7 @@ function renderProductTable(products, variants) {
   });
 
   sortedVariants.forEach((variant) => {
-    const product = products.find((p) => p._id === variant.productId);
+    const product = products.find((p) => getId(p) === variant.productId);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -100,7 +103,7 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateVariant(variant.id, { stock: newStock });
+        await updateVariant(variant._id, { stock: newStock });
 
         stockText.innerText = newStock;
         stockText.style.color = getStockColor(newStock);
@@ -148,7 +151,7 @@ function renderProductTable(products, variants) {
       const hasActiveOrder = orders.some(
         (o) =>
           o.status !== "cancelled" &&
-          o.products.some((p) => p.variantId === variant._id)
+          o.products.some((p) => p.variantId === variant._id),
       );
 
       if (hasActiveOrder) {
@@ -169,7 +172,7 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct({ ...product, status: "live" });
+        await updateProduct(product._id, { status: "live" });
         await onPageLoad();
       });
 
@@ -204,7 +207,7 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateProduct({ ...product, status: "live" });
+        await updateProduct(product._id, { status: "live" });
         await onPageLoad();
       });
 
@@ -212,7 +215,15 @@ function renderProductTable(products, variants) {
       variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, productActions, variantActions);
+    tr.append(
+      name,
+      price,
+      size,
+      stock,
+      dropStatus,
+      productActions,
+      variantActions,
+    );
     productList.append(tr);
   });
 }
@@ -224,7 +235,7 @@ function renderUserTable(users, orders) {
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => o.user.id === user._id);
+    const userOrders = orders.filter((o) => getId(o.user) === getId(user));
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -258,7 +269,7 @@ function renderUserTable(users, orders) {
         modalAddress.innerText = "No address on file";
       }
 
-      const userOrders = orders.filter((o) => o.user.id === user._id);
+      const userOrders = orders.filter((o) => getId(o.user) === getId(user));
 
       if (userOrders.length === 0) {
         const tr = document.createElement("tr");
@@ -298,8 +309,8 @@ function renderUserTable(users, orders) {
         });
       }
 
-  modal.style.display = "flex";
-});
+      modal.style.display = "flex";
+    });
 
     // Close modal
     document.querySelector("#close-modal-btn").addEventListener("click", () => {
@@ -307,17 +318,19 @@ function renderUserTable(users, orders) {
     });
 
     // Close modal when clicking outside
-    document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
-      if (e.target.id === "user-orders-modal") {
-        document.querySelector("#user-orders-modal").style.display = "none";
-      }
-    });
+    document
+      .querySelector("#user-orders-modal")
+      .addEventListener("click", (e) => {
+        if (e.target._id === "user-orders-modal") {
+          document.querySelector("#user-orders-modal").style.display = "none";
+        }
+      });
     // Print modal
     document.querySelector("#print-modal-btn").addEventListener("click", () => {
-    window.print();
+      window.print();
     });
 
-Actions.append(viewOrdersBtn, flagBtn);
+    Actions.append(viewOrdersBtn, flagBtn);
 
     tr.append(name, email, numOfOrders, Actions);
     userList.append(tr);
@@ -344,11 +357,11 @@ function renderOrderTable(products, variants, users, orders) {
       ? order.products
       : [order.products];
 
-    const orderUser = users.find((u) => u._id === order.user.id);
+    const orderUser = users.find((u) => u._id === order.user._id);
 
     const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
     const matchProduct = productItems.some((item) => {
-      const product = products.find((p) => p._id === item.productId);
+      const product = products.find((p) => getId(p) === item.productId);
       return product?.name.toLowerCase().includes(productFilter);
     });
     const matchStatus = statusFilter === "" || order.status === statusFilter;
@@ -380,10 +393,10 @@ function renderOrderTable(products, variants, users, orders) {
     //   : [order.products];
 
     // productItems.forEach((item) => {
-    //   const product = products.find((p) => p._id === item.productId);
+    //   const product = products.find((p) => getId(p) === item.productId);
     // });
 
-    const orderUser = users.find((u) => u._id === order.user.id);
+    const orderUser = users.find((u) => u._id === order.user._id);
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");
@@ -607,7 +620,7 @@ async function editProduct() {
   if (!editingProductId) return;
 
   const products = await getProducts();
-  const existingProduct = products.find((p) => p._id === editingProductId);
+  const existingProduct = products.find((p) => getId(p) === editingProductId);
   if (!existingProduct) return;
 
   if (!name.value.trim() || !price.value) {
