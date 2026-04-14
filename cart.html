@@ -26,109 +26,107 @@
     </header>
 
     <div class="cart-layout">
-      <!-- Container for left and right panels -->
-      <!-- LEFT PANEL -->
+      <main>
+        <form class="left-panel">
+          <a class="back-link" href="products.html">← Continue Shopping</a>
 
-      <!-- Main purchase panel -->
-      <main class="left-panel">
-        <a class="back-link" href="products.html">← Continue Shopping</a>
+          <div id="checkout-form">
+            <!-- Shipping Address -->
 
-        <form id="checkout-form">
-          <!-- Shipping Address -->
+            <div class="section-heading">
+              <h2>Shipping Address</h2>
+            </div>
 
-          <div class="section-heading">
-            <h2>Shipping Address</h2>
-          </div>
+            <div class="user-address"></div>
 
-          <div class="user-address"></div>
+            <div class="address-form">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  class="fullname-input"
+                  autocomplete="name"
+                  placeholder="First and Last name"
+                  required />
+              </div>
+              <div class="row-2">
+                <div class="form-group">
+                  <label>Street</label>
+                  <input
+                    type="text"
+                    class="street-input"
+                    autocomplete="street-address"
+                    placeholder="Street"
+                    required />
+                </div>
+                <div class="form-group">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    class="city-input"
+                    autocomplete="address-level2"
+                    placeholder="City"
+                    required />
+                </div>
+              </div>
 
-          <div class="address-form">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input
-                type="text"
-                class="fullname-input"
-                autocomplete="name"
-                placeholder="First and Last name"
-                required />
+              <div class="row-2">
+                <div class="form-group">
+                  <label>Postal Code</label>
+                  <input
+                    type="text"
+                    class="postal-code-input"
+                    autocomplete="postal-code"
+                    placeholder="Postal Code"
+                    required
+                    inputmode="numeric"
+                    pattern="^\d{5}(-\d{4})?$" />
+                </div>
+                <div class="form-group">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    class="country-input"
+                    autocomplete="country"
+                    placeholder="Country"
+                    required />
+                </div>
+              </div>
+            </div>
+
+            <p class="cart-error-message"></p>
+
+            <!-- Secure Payment -->
+            <div class="section-heading" style="margin-top: 32px">
+              <h2>Payment</h2>
+            </div>
+
+            <div class="payment-tabs">
+              <h3 class="tab active">Credit Card</h3>
+            </div>
+
+            <p class="no-func">This section has no functionality</p>
+
+            <div class="form-group card-number-wrap">
+              <label>Card Number</label>
+              <input type="text" placeholder="0000 0000 0000 0000" />
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Street</label>
-                <input
-                  type="text"
-                  class="street-input"
-                  autocomplete="street-address"
-                  placeholder="Street"
-                  required />
+                <label>Expiry</label>
+                <input type="text" placeholder="MM / YY" />
               </div>
               <div class="form-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  class="city-input"
-                  autocomplete="address-level2"
-                  placeholder="City"
-                  required />
+                <label>CVC</label>
+                <input type="text" placeholder="000" />
               </div>
             </div>
 
-            <div class="row-2">
-              <div class="form-group">
-                <label>Postal Code</label>
-                <input
-                  type="text"
-                  class="postal-code-input"
-                  autocomplete="postal-code"
-                  placeholder="Postal Code"
-                  required
-                  inputmode="numeric"
-                  pattern="^\d{5}(-\d{4})?$" />
-              </div>
-              <div class="form-group">
-                <label>Country</label>
-                <input
-                  type="text"
-                  class="country-input"
-                  autocomplete="country"
-                  placeholder="Country"
-                  required />
-              </div>
+            <div class="confirm-wrap">
+              <button type="button" class="confirm-btn">
+                <span>Confirm Purchase</span>
+              </button>
             </div>
-          </div>
-
-          <p class="cart-error-message"></p>
-
-          <!-- Secure Payment -->
-          <div class="section-heading" style="margin-top: 32px">
-            <h2>Payment</h2>
-          </div>
-
-          <div class="payment-tabs">
-            <h3 class="tab active">Credit Card</h3>
-          </div>
-
-          <p class="no-func">This section has no functionality</p>
-
-          <div class="form-group card-number-wrap">
-            <label>Card Number</label>
-            <input type="text" placeholder="0000 0000 0000 0000" />
-          </div>
-          <div class="row-2">
-            <div class="form-group">
-              <label>Expiry</label>
-              <input type="text" placeholder="MM / YY" />
-            </div>
-            <div class="form-group">
-              <label>CVC</label>
-              <input type="text" placeholder="000" />
-            </div>
-          </div>
-
-          <div class="confirm-wrap">
-            <button type="button" class="confirm-btn">
-              <span>Confirm Purchase</span>
-            </button>
           </div>
         </form>
       </main>
@@ -163,7 +161,7 @@
     </footer>
 
     <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
-    <script type="module" src="./src/utils/auth.js"></script>
+    <!-- <script type="module" src="./src/utils/auth.js"></script> -->
 
     <!-- <script type="module" src="./src/scripts/index.js"></script> -->
 

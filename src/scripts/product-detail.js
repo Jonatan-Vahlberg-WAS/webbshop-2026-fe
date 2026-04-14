@@ -1,5 +1,11 @@
 import { getProduct, getVariants } from "../utils/api.js";
-import { formatDateISO, countdownTimer, addToCart } from "../utils/utility.js";
+import {
+  formatDateISO,
+  countdownTimer,
+  addToCart,
+  addToWishlist,
+} from "../utils/utility.js";
+import { getCurrentUser } from "../utils/auth.js";
 
 let selectedSize = null;
 
@@ -17,6 +23,8 @@ export async function renderProductDetail() {
     const product = await getProduct(productId);
     const allVariants = await getVariants();
     const variants = allVariants.filter((v) => v.productId === productId);
+    let currentUser = getCurrentUser();
+    let wishlist = currentUser?.wishlist || [];
 
     //run breadcrumb function
     renderBreadcrumbs(product);
@@ -45,6 +53,8 @@ export async function renderProductDetail() {
     const addToCartBtn = document.querySelector(".add-to-cart");
     //Add to cart button starts disabled
     addToCartBtn.disabled = true;
+
+    const addToWishlistBtn = document.querySelector(".add-to-wishlist");
 
     // Helper to update Add to Cart button state
     function updateAddToCartState() {
@@ -87,6 +97,10 @@ export async function renderProductDetail() {
         //Erases error/success message
         const message = document.querySelector(".cart-message");
         message.innerText = "";
+
+        //Update button state is variant size is wishlisted
+        const selectedVariant = variants.find((v) => v.size === selectedSize);
+        updateWishlistState(selectedVariant);
       });
 
       sizes.append(button);
@@ -94,6 +108,7 @@ export async function renderProductDetail() {
 
     updateAddToCartState();
 
+    //add to cart event listener
     addToCartBtn.addEventListener("click", () => {
       const selectedVariant = variants.find((v) => v.size === selectedSize);
 
@@ -118,6 +133,65 @@ export async function renderProductDetail() {
         message.style.color = "green";
       }
     });
+
+    //add to wishlist event listener
+    addToWishlistBtn.addEventListener("click", async () => {
+      const selectedVariant = variants.find((v) => v.size === selectedSize);
+      if (!selectedVariant) {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "Please select a size first!";
+        message.style.color = "red";
+        return;
+      }
+
+      //Runs add to cart function with arguments product Id and size
+      const result = await addToWishlist(product.id, selectedVariant.id);
+
+      //Error & Success messaging/actions
+      if (!result.success) {
+        switch (result.error) {
+          case "not_logged_in":
+            window.location.href = "auth.html";
+            break;
+          case "duplicate_size":
+            const message = document.querySelector(".cart-message");
+            message.textContent = "This variant is already in your wishlist!";
+            message.style.color = "red";
+            break;
+        }
+
+        //update wishlist state after the add to wishlist button is pressed
+        wishlist = currentUser?.wishlist || wishlist;
+        updateWishlistState(selectedVariant);
+      } else {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "Item added to wishlist!";
+        message.style.color = "green";
+      }
+    });
+
+    //monitors and updates wishlist state
+    function updateWishlistState(selectedVariant) {
+      if (!selectedVariant) {
+        addToWishlistBtn.textContent = "Add to Wishlist";
+        addToWishlistBtn.classList.remove("active");
+        return;
+      }
+
+      const isWishlisted = wishlist.some(
+        (item) =>
+          item.productId === product.id &&
+          item.variantId === selectedVariant.id,
+      );
+
+      if (isWishlisted) {
+        addToWishlistBtn.textContent = "Wishlisted";
+        addToWishlistBtn.classList.add("active");
+      } else {
+        addToWishlistBtn.textContent = "Add to Wishlist";
+        addToWishlistBtn.classList.remove("active");
+      }
+    }
   } catch (error) {
     console.error(error);
   }
