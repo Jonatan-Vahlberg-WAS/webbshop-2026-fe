@@ -1,7 +1,6 @@
-import { getCurrentUser, isLoggedIn, logoutUser } from "../utils/auth.js"
+import { getCurrentUser, isLoggedIn, logoutUser, togglePassword } from "../utils/auth.js"
 import { getMyOrders, updateUser } from "../utils/api.js"
-import { formatDateISO } from "../utils/utility.js"
-import { checkIfUserHasAddress } from "../utils/utility.js"
+import { formatDateISO, checkIfUserHasAddress } from "../utils/utility.js"
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -147,9 +146,27 @@ function editProfile() {
             return
         }
 
-        if (editPassword !== confirmPassword) {
-            passwordError.textContent = `Passwords do not match!`;
-            return
+        if (editPassword) {
+            if (editPassword.length < 8) {
+                passwordError.textContent = "Password must be at least 8 characters.";
+                return
+            }
+            if (!/[A-Z]/.test(editPassword)) {
+                passwordError.textContent = "Password must contain at least one capital letter.";
+                return
+            }
+            if (!/[0-9]/.test(editPassword)) {
+                passwordError.textContent = "Password must contain at least one number.";
+                return
+            }
+            if (!/[!@#$%&*]/.test(editPassword)) {
+                passwordError.textContent = "Password must contain at least one special character (! @ # $ % & *).";
+                return
+            }
+            if (editPassword !== confirmPassword) {
+                passwordError.textContent = "Passwords do not match!";
+                return
+            }
         }
 
         const updatedUser = {
@@ -191,4 +208,24 @@ function editProfile() {
 
     })
 
+    document.getElementById('edit-password').addEventListener('input', checkEditPasswordRules);
+    const toggleEditPw = document.getElementById('toggle-edit-password');
+    toggleEditPw.addEventListener('click', () => togglePassword('edit-password', toggleEditPw));
+
+}
+
+function checkEditPasswordRules() {
+    const password = document.getElementById('edit-password').value;
+
+    const rules = {
+        "edit-req-length": password.length >= 8,
+        "edit-req-upper": /[A-Z]/.test(password),
+        "edit-req-number": /[0-9]/.test(password),
+        "edit-req-special": /[!@#$%&*]/.test(password),
+    };
+
+    for (const [id, passed] of Object.entries(rules)) {
+        const el = document.getElementById(id);
+        el.style.color = passed ? "green" : "";
+    }
 }

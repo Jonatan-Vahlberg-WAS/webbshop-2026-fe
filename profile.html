@@ -84,7 +84,16 @@
 
                     <h3>Password</h3>
                     <label for="edit-password">New Password</label>
-                    <input type="password" id="edit-password">
+                    <div class="input-wrap">
+                        <input type="password" id="edit-password">
+                        <button type="button" class="toggle-pw" id="toggle-edit-password">Show</button>
+                    </div>
+                    <ul class="pw-requirements">
+                        <li id="edit-req-length">Minimum 8 characters</li>
+                        <li id="edit-req-upper">At least one capital letter</li>
+                        <li id="edit-req-number">At least one number</li>
+                        <li id="edit-req-special">At least one special character (! @ # $ % & *)</li>
+                    </ul>
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password">
                     <p class="password-error"></p>
