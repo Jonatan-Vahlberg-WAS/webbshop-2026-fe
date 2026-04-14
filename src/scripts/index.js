@@ -47,6 +47,14 @@ async function loadProducts() {
 
       productsContainer.innerHTML = "";
 
+      //If no products match
+      if (filteredProducts.length === 0) {
+        const message = document.createElement("p");
+        message.innerText = "No Products Found";
+        productsContainer.append(message);
+        return;
+      }
+
       filteredProducts.forEach((product) => {
         const card = createProductCard(product);
         productsContainer.appendChild(card);
