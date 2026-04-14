@@ -1,4 +1,4 @@
-import { registerUser } from "../utils/api.js" 
+import { registerUser, loginUser } from "../utils/api.js" 
 import { initLogin, togglePassword } from "../utils/auth.js" 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -101,11 +101,23 @@ async function handleRegister() {
   errorMsg.textContent = "";
 
   try {
-    await registerUser(name, email, password)
-    showLogin()
-    document.getElementById('login-error').textContent = 'Account created! Now you can log in.'
+    await registerUser(name, email, password);
+    const users = await loginUser(email, password);
+    const user = users[0];
+    const fakeToken = "mock-token-" + user.id;
+    localStorage.setItem("token", fakeToken);
+    localStorage.setItem("user", JSON.stringify({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      address: user.address,
+      wishlist: user.wishlist,
+    }));
+
+    window.location.href = "index.html";
 
   } catch (error) {
-    errorMsg.textContent = error.message || "Registration failed. Please try again."
+    errorMsg.textContent = error.message || "Registration failed. Please try again.";
   }
 }
