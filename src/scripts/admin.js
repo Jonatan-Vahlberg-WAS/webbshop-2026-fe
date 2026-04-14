@@ -7,7 +7,7 @@ import {
   addVariant,
   updateProduct,
   updateVariant,
-  deleteVariant
+  deleteVariant,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
 
@@ -148,7 +148,7 @@ function renderProductTable(products, variants) {
       const hasActiveOrder = orders.some(
         (o) =>
           o.status !== "cancelled" &&
-          o.products.some((p) => p.variantId === variant._id)
+          o.products.some((p) => p.variantId === variant._id),
       );
 
       if (hasActiveOrder) {
@@ -212,7 +212,15 @@ function renderProductTable(products, variants) {
       variantActions.append(updateStockBtn, deleteBtn);
     }
 
-    tr.append(name, price, size, stock, dropStatus, productActions, variantActions);
+    tr.append(
+      name,
+      price,
+      size,
+      stock,
+      dropStatus,
+      productActions,
+      variantActions,
+    );
     productList.append(tr);
   });
 }
@@ -230,11 +238,13 @@ function renderUserTable(users, orders) {
     const name = document.createElement("th");
     const email = document.createElement("th");
     const numOfOrders = document.createElement("th");
+    const numOfWishlists = document.createElement("th");
     const Actions = document.createElement("th");
 
     name.innerText = user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
+    numOfWishlists.innerText = user.wishlist.length;
 
     const flagBtn = document.createElement("button");
     flagBtn.innerText = "Flag";
@@ -298,8 +308,8 @@ function renderUserTable(users, orders) {
         });
       }
 
-  modal.style.display = "flex";
-});
+      modal.style.display = "flex";
+    });
 
     // Close modal
     document.querySelector("#close-modal-btn").addEventListener("click", () => {
@@ -307,19 +317,21 @@ function renderUserTable(users, orders) {
     });
 
     // Close modal when clicking outside
-    document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
-      if (e.target.id === "user-orders-modal") {
-        document.querySelector("#user-orders-modal").style.display = "none";
-      }
-    });
+    document
+      .querySelector("#user-orders-modal")
+      .addEventListener("click", (e) => {
+        if (e.target.id === "user-orders-modal") {
+          document.querySelector("#user-orders-modal").style.display = "none";
+        }
+      });
     // Print modal
     document.querySelector("#print-modal-btn").addEventListener("click", () => {
-    window.print();
+      window.print();
     });
 
-Actions.append(viewOrdersBtn, flagBtn);
+    Actions.append(viewOrdersBtn, flagBtn);
 
-    tr.append(name, email, numOfOrders, Actions);
+    tr.append(name, email, numOfOrders, numOfWishlists, Actions);
     userList.append(tr);
   });
 }
