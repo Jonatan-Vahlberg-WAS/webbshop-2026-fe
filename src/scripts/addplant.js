@@ -8,7 +8,6 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(selectMap);
 
 // MAP INTERACTION
-
 let selectedCoordinates = null;
 let selectedMarker;
 
@@ -20,40 +19,29 @@ selectMap.on("click", function (e) {
 
   console.log("Selected:", selectedCoordinates);
 
-  // remove old marker
   if (selectedMarker) {
     selectMap.removeLayer(selectedMarker);
   }
 
-  // add new marker
   selectedMarker = L.marker([lat, lng]).addTo(selectMap);
-
-  // show feedback popup
   selectedMarker.bindPopup("Vald plats 🌱").openPopup();
 });
 
-//  added USER LOCATION
-
+// USER LOCATION
 navigator.geolocation.getCurrentPosition(
   (pos) => {
     const lat = pos.coords.latitude;
     const lng = pos.coords.longitude;
 
-    console.log("User location:", lat, lng);
-
-    // show user marker
     L.marker([lat, lng]).addTo(selectMap).bindPopup("Du är här 📍");
-
-    // center map
     selectMap.setView([lat, lng], 14);
   },
   (err) => {
     console.log("Location error:", err);
-  },
+  }
 );
 
-// Form
-
+// FORM
 const form = document.getElementById("plantForm");
 
 form.addEventListener("submit", async function (e) {
@@ -65,7 +53,6 @@ form.addEventListener("submit", async function (e) {
   const imageUrl = document.getElementById("plantImage").value;
   const light = Number(document.getElementById("lightLevel").value);
 
-  // require map selection
   if (!selectedCoordinates) {
     alert("Välj en plats på kartan 📍");
     return;
@@ -84,8 +71,6 @@ form.addEventListener("submit", async function (e) {
     available: true,
   };
 
-  console.log("Sending plant:", newPlant);
-
   try {
     const res = await fetch(BASE_URL + "plants", {
       method: "POST",
@@ -95,11 +80,6 @@ form.addEventListener("submit", async function (e) {
       },
       body: JSON.stringify(newPlant),
     });
-
-    console.log("STATUS:", res.status);
-
-    const data = await res.json();
-    console.log("RESPONSE:", data);
 
     if (!res.ok) {
       alert("Kunde inte spara växt ❌");
@@ -119,7 +99,6 @@ form.addEventListener("submit", async function (e) {
       </div>
     `;
 
-    // navigation
     document.getElementById("goHome").onclick = () => {
       window.location.href = "/index.html";
     };
@@ -127,6 +106,7 @@ form.addEventListener("submit", async function (e) {
     document.getElementById("goMap").onclick = () => {
       window.location.href = "/map.html";
     };
+
   } catch (error) {
     console.error("Error saving plant:", error);
   }
