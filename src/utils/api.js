@@ -220,13 +220,15 @@ export async function registerUser(name, email, password) {
 
 // Login user
 export async function loginUser(email, password) {
-  const url = new URL("users", getBaseUrl());
-  url.searchParams.append("email", email);
-  url.searchParams.append("password", password);
+  const url = new URL("auth/login", getBaseUrl()).toString();
 
   try {
-    const response = await axios.get(url.toString());
-    return response.data;
+    const response = await axios.post(url, {
+      email,
+      password,
+    });
+
+    return response.data; // { token, user }
   } catch (error) {
     console.error("Login error:", error);
     throw error;

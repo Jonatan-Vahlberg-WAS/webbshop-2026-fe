@@ -36,30 +36,19 @@ async function handleLogin() {
   btn.textContent = "Signing in...";
 
   try {
-    const users = await loginUser(email, password);
+    const data = await loginUser(email, password);
 
-    if (users.length === 0) {
+    if (!data || !data.user || !data.token) {
       errorMsg.textContent = "Invalid email or password.";
       btn.disabled = false;
       btn.textContent = "Sign In";
       return;
     }
 
-    const user = users[0];
-    const fakeToken = "mock-token-" + user.id;
-    localStorage.setItem("token", fakeToken);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        address: user.address,
-        //added wishlist to what is saved in LS
-        wishlist: user.wishlist,
-      }),
-    );
+    const { user, token } = data;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
 
     if (user.isAdmin) {
       window.location.href = "admin.html";
