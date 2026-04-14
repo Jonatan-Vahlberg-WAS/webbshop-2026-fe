@@ -25,6 +25,59 @@ async function loadProducts() {
     const heroName = document.getElementById("hero-product-name");
     const heroTimer = document.getElementById("hero-product-timer");
 
+    //Search product catalogue
+    const searchInput = document.querySelector("#product-search");
+
+    function searchCatalogue() {
+      const searchValue = searchInput.value;
+
+      //If empty
+      if (!searchValue) {
+        productsContainer.innerHTML = "";
+        products.forEach((product) => {
+          const card = createProductCard(product);
+          productsContainer.appendChild(card);
+        });
+        return;
+      }
+
+      const filteredProducts = products.filter((p) =>
+        p.name.toLowerCase().includes(searchValue.toLowerCase()),
+      );
+
+      productsContainer.innerHTML = "";
+
+      //If no products match
+      if (filteredProducts.length === 0) {
+        const message = document.createElement("p");
+        message.innerText = "No Products Found";
+        productsContainer.append(message);
+        return;
+      }
+
+      filteredProducts.forEach((product) => {
+        const card = createProductCard(product);
+        productsContainer.appendChild(card);
+      });
+    }
+
+    //debounce (limit on how often a function fires)
+    function debounce(fn, delay) {
+      //Store timer to be able cancel previous timers
+      let timeout;
+
+      return () => {
+        //clear previous timer
+        clearTimeout(timeout);
+        //start new timer
+        timeout = setTimeout(fn, delay);
+      };
+    }
+
+    //Debounce + Search event listener
+    const debouncedSearch = debounce(searchCatalogue, 300);
+    searchInput.addEventListener("input", debouncedSearch);
+
     let toRender;
     if (heroImage) {
       toRender = getLatestDrops(products);
