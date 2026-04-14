@@ -34,6 +34,7 @@
             </div>
             <div class="profile-hero-actions">
             <button class="btn btn--outline" id="edit-profile-btn">Edit Profile</button>
+            <p class="save-success"></p>
             <!--<button class="btn btn--primary" id="logout-btn">Log Out</button>-->
             </div>
         </section>
@@ -64,10 +65,12 @@
                     <h3>Name</h3>
                     <label for="edit-name">Name</label>
                     <input type="text" id="edit-name"/>
+                    <p class="name-error"></p>
 
                     <h3>Email</h3>
                     <label for="edit-email">Email</label>
                     <input type="email" id="edit-email"/>
+                    <p class="email-error"></p>
 
                     <h3>Address</h3>
                     <label for="edit-street">Street</label>
@@ -84,8 +87,10 @@
                     <input type="password" id="edit-password">
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password">
+                    <p class="password-error"></p>
 
                     <button type="button" id="save-profile-btn">Save</button>
+                    <p class="save-error"></p>
                     <button type="button" id="cancel-edit-btn">Cancel</button>
                 </form>
             </div>

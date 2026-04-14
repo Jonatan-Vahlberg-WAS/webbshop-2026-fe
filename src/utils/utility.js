@@ -151,6 +151,7 @@ export function checkIfUserHasAddress(elementToHide, renderElement) {
     name.innerText = user.name;
     addressLineOne.innerText = `${user.address.street}, ${user.address.city}`;
     addressLineTwo.innerText = `${user.address.postal_code}, ${user.address.country}`;
+    userAddress.innerHTML = "";
     userAddress.append(name, addressLineOne, addressLineTwo);
   }
 }

@@ -1,5 +1,5 @@
 import { getCurrentUser, isLoggedIn, logoutUser } from "../utils/auth.js"
-import { getMyOrders } from "../utils/api.js"
+import { getMyOrders, updateUser } from "../utils/api.js"
 import { formatDateISO } from "../utils/utility.js"
 import { checkIfUserHasAddress } from "../utils/utility.js"
 
@@ -75,15 +75,16 @@ function createOrderCard(order) {
 }
 
 function editProfile() {
-    const user = getCurrentUser()
+
+    const editSection = document.getElementById('profile-edit-section');
+    const infoSection = document.getElementById('profile-info-section');
 
     const btnEdit = document.getElementById('edit-profile-btn');
     const btnCancel = document.getElementById('cancel-edit-btn');
     const btnSave = document.getElementById('save-profile-btn');
 
     btnEdit.addEventListener('click', () => {
-        const editSection = document.getElementById('profile-edit-section');
-        const infoSection = document.getElementById('profile-info-section');
+        const user = getCurrentUser()
 
         if (editSection.classList.contains('hidden')) {
             editSection.classList.remove('hidden');
@@ -109,9 +110,160 @@ function editProfile() {
     })
 
     btnCancel.addEventListener('click', () => {
-        document.getElementById('profile-edit-section').classList.add('hidden');
-        document.getElementById('profile-info-section').classList.remove('hidden');
+        editSection.classList.add('hidden');
+        infoSection.classList.remove('hidden');
         btnEdit.textContent = "Edit Profile";
 
     })
+
+    // btnSave.addEventListener('click', async (event) => {
+    //     event.preventDefault();
+    //     const user = getCurrentUser()
+
+    //     const nameError = document.querySelector('.name-error');
+    //     const emailError = document.querySelector('.email-error');
+    //     const passwordError = document.querySelector('.password-error');
+
+    //     nameError.textContent = "";
+    //     emailError.textContent= "";
+    //     passwordError.textContent= "";
+
+
+    //     const name = document.getElementById('edit-name').value;
+    //     const email = document.getElementById('edit-email').value;
+    //     const street = document.getElementById('edit-street').value;
+    //     const postalCode = document.getElementById('edit-postal-code').value;
+    //     const city = document.getElementById('edit-city').value;
+    //     const country = document.getElementById('edit-country').value;
+    //     const editPassword = document.getElementById('edit-password').value;
+    //     const confirmPassword = document.getElementById('confirm-password').value;
+
+    //     if (!name) {
+    //         nameError.textContent = `Please enter a name`;
+    //         return
+    //     }
+
+    //     if (!email) {
+    //         emailError.textContent = `Please enter an email address`
+    //         return
+    //     }
+
+    //     if (editPassword !== confirmPassword) {
+    //         passwordError.textContent = `Passwords do not match!`;
+    //         return
+    //     }
+
+    //     const updatedUser = {
+    //         ...user,
+    //         name: name,
+    //         email: email,
+    //         address: {
+    //             street: street,
+    //             postal_code: postalCode,
+    //             city: city,
+    //             country: country
+    //         }
+    //     }
+
+    //     if(editPassword) {
+    //         updatedUser.password = editPassword
+    //     }
+
+    //     console.log(updatedUser)
+
+    //     const result = await updateUser(updatedUser);
+    //     const saveSuccess = document.querySelector('.save-success');
+    //     const saveError = document.querySelector('.save-error');
+
+    //     if (result) {
+    //         localStorage.setItem('user', JSON.stringify(updatedUser));
+    //         // await loadProfile()
+    //         // editSection.classList.add('hidden');
+    //         // infoSection.classList.remove('hidden');
+    //         btnEdit.textContent = "Edit Profile";
+    //         saveSuccess.textContent = `Save successful`
+    //         // console.log('message set')
+    //         // setTimeout(() => {
+    //         //     saveSuccess.textContent = ""
+    //         // }, 100000)
+    //     } else {
+    //         saveError.textContent = `Save failed. Try again later`
+    //     }
+
+    // })
+    btnSave.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const user = getCurrentUser()
+
+        const nameError = document.querySelector('.name-error');
+        const emailError = document.querySelector('.email-error');
+        const passwordError = document.querySelector('.password-error');
+
+        nameError.textContent = "";
+        emailError.textContent = "";
+        passwordError.textContent = "";
+
+        const name = document.getElementById('edit-name').value;
+        const email = document.getElementById('edit-email').value;
+        const street = document.getElementById('edit-street').value;
+        const postalCode = document.getElementById('edit-postal-code').value;
+        const city = document.getElementById('edit-city').value;
+        const country = document.getElementById('edit-country').value;
+        const editPassword = document.getElementById('edit-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!name) {
+            nameError.textContent = `Please enter a name`;
+            return
+        }
+
+        if (!email) {
+            emailError.textContent = `Please enter an email address`;
+            return
+        }
+
+        if (editPassword !== confirmPassword) {
+            passwordError.textContent = `Passwords do not match!`;
+            return
+        }
+
+        const updatedUser = {
+            ...user,
+            name: name,
+            email: email,
+            address: {
+                street: street,
+                postal_code: postalCode,
+                city: city,
+                country: country
+            }
+        }
+
+        if (editPassword) {
+            updatedUser.password = editPassword;
+        }
+
+        const result = await updateUser(updatedUser);
+        const saveSuccess = document.querySelector('.save-success');
+        const saveError = document.querySelector('.save-error');
+
+        if (result) {
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            // NOTE: saveSuccess message and switch from edit to profile view may not be visible because
+            // Live Server reloads the page when db.json changes.
+            // This won't be an issue with the real API.
+            saveSuccess.textContent = `Save successful`
+            await loadProfile()
+            editSection.classList.add('hidden');
+            infoSection.classList.remove('hidden');
+            btnEdit.textContent = "Edit Profile";
+            setTimeout(() => {
+                saveSuccess.textContent = ""
+            }, 5000)
+        } else {
+            saveError.textContent = `Save failed. Try again later`
+        }
+
+    })
+
 }

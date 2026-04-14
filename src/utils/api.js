@@ -223,3 +223,16 @@ export async function loginUser(email, password) {
     throw error;
   }
 }
+
+//Update user data in the API
+export async function updateUser(user) {
+  const url = new URL(`users/${user.id}`, getBaseUrl()).toString(); //TODO: Update to ._id later
+
+  try {
+    const response = await axios.put(url, user);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
+}
