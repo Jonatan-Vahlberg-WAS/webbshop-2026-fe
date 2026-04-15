@@ -616,3 +616,57 @@ h1, h2 {
   background-color: #e8f5ee;
 }
 
+.how-it-works {
+  padding: 100px 20px;
+  text-align: center;
+
+  background: linear-gradient(360deg, #0b1810 0%, var(--green-main) 77%);
+  border-top: 2px solid #dce8df;
+  border-bottom: 2px solid #dce8df;
+}
+
+.how-it-works h2 {
+  font-size: 48px;
+  margin-bottom: 50px;
+  background: linear-gradient(90deg, #325B48 0%, #61D18C 77%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.step {
+  width: 260px;
+  background: white;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  border: 1px solid #e6efe8;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+}
+
+.step img {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.step h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #2f5d3a;
+}
+
+.step p {
+  font-size: 16px;
+  color: #444;
+}
