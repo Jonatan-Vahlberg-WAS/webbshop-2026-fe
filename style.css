@@ -202,6 +202,20 @@ main {
   color: #61D18C;
 }
 
+.profile-icon-container {
+    position: relative; /* krävs för ::after */
+}
+
+.profile-icon-container.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 2px;
+    background-color: #003D4D;
+}
+
 #notification-link img {
   width: 26px;
   height: 26px;
