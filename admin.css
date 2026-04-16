@@ -403,18 +403,6 @@
   box-shadow: 3px 3px 0 var(--color-accent);
 }
 
-@media print {
-  .site-header,
-  .site-footer,
-  .admin-stats,
-  .tabs,
-  .order-filters,
-  #products-create-render,
-  #users-render {
-    display: none !important;
-  }
-}
-
 .order-filters #clear-filters-btn {
   padding: 8px var(--spacing-md);
   background: transparent;
@@ -498,16 +486,16 @@
   .tabs,
   .order-filters,
   #products-create-render,
-  #users-render {
+  #users-render{
     display: none !important;
   }
 
-  #orders-render {
-    display: block !important;
+  body.modal-open #orders-render {
+    display: none !important;
   }
 
-  .admin-container {
-    border: none !important;
+  body:not(.modal-open) .modal-overlay {
+  display: none !important;
   }
 
   .modal-overlay {

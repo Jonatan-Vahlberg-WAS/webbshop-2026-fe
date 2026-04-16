@@ -365,6 +365,8 @@ function renderUserTable(users, orders) {
       }
 
       modal.style.display = "flex";
+      document.body.classList.add("modal-open");
+      
     });
 
     Actions.append(viewOrdersBtn, flagBtn);
@@ -486,6 +488,7 @@ function renderOrderTable(products, users, orders) {
       });
 
       modal.style.display = "flex";
+      document.body.classList.add("modal-open");
     });
 
 
@@ -613,11 +616,13 @@ cancelEditBtn.addEventListener("click", (e) => {
 // Close order detail modal
 document.querySelector("#close-order-modal-btn").addEventListener("click", () => {
   document.querySelector("#order-detail-modal").style.display = "none";
+  document.body.classList.remove("modal-open");
 });
 
 document.querySelector("#order-detail-modal").addEventListener("click", (e) => {
   if (e.target.id === "order-detail-modal") {
     document.querySelector("#order-detail-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
   }
 });
 
@@ -628,11 +633,13 @@ document.querySelector("#print-order-modal-btn").addEventListener("click", () =>
 // Close user order history modal
 document.querySelector("#close-modal-btn").addEventListener("click", () => {
   document.querySelector("#user-orders-modal").style.display = "none";
+  document.body.classList.remove("modal-open");
 });
 
 document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
   if (e.target.id === "user-orders-modal") {
     document.querySelector("#user-orders-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
   }
 });
 
