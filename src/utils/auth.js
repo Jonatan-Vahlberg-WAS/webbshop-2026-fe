@@ -49,13 +49,12 @@ async function handleLogin() {
     const { user, accessToken, refreshToken } = data;
 
     localStorage.setItem("token", accessToken);
-    //To see token data in console log
-    const payload = JSON.parse(atob(accessToken.split(".")[1]));
-    console.log(payload);
-
     localStorage.setItem("refreshToken", refreshToken);
 
-    if (user.isAdmin) {
+    //decode token to see if normal user or admin
+    const decoded = decodeToken(accessToken);
+
+    if (decoded?.isAdmin) {
       window.location.href = "admin.html";
     } else {
       window.location.href = "index.html";
