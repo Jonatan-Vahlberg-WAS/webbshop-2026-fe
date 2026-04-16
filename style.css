@@ -565,6 +565,18 @@ button[type="submit"]:hover {
   background: #3d7451;
 }
 
+.hero-title-växt {
+  font-size: 64px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0px 9px rgba(0,0,0,0.3);
+  background: linear-gradient(329deg, #003E32 0%, #61D1A2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+  margin-left: 30rem;
+  margin-top: auto;
+}
 /* --- HOME PAGE --- */
 body {
   margin: 0;
