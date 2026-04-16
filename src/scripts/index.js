@@ -3,6 +3,7 @@ import { goToProduct } from "./product-detail.js";
 import { formatDateISO, countdownTimer } from "../utils/utility.js";
 
 document.addEventListener("DOMContentLoaded", loadProducts);
+const activeFilters = new Set();
 
 function getLatestDrops(products) {
   return products.filter(
@@ -28,6 +29,7 @@ async function loadProducts() {
     //Search product catalogue
     const searchInput = document.querySelector("#product-search");
 
+    //Search + debounder functions, runs only if there is a search input
     if (searchInput) {
       function searchCatalogue() {
         const searchValue = searchInput.value;
@@ -35,16 +37,18 @@ async function loadProducts() {
         //If empty
         if (!searchValue) {
           productsContainer.innerHTML = "";
-          products.forEach((product) => {
+          applyFilters(products).forEach((product) => {
             const card = createProductCard(product);
             productsContainer.appendChild(card);
           });
           return;
         }
 
-        const filteredProducts = products.filter((p) =>
+        let filteredProducts = products.filter((p) =>
           p.name.toLowerCase().includes(searchValue.toLowerCase()),
         );
+
+        filteredProducts = applyFilters(filteredProducts);
 
         productsContainer.innerHTML = "";
 
@@ -87,10 +91,51 @@ async function loadProducts() {
       toRender = products;
     }
 
-    toRender.forEach((product) => {
+    //Apply active status filters to all products products
+    const filteredProducts = applyFilters(toRender);
+
+    filteredProducts.forEach((product) => {
       const card = createProductCard(product);
       productsContainer.appendChild(card);
     });
+
+    //Filter buttons
+    const upcomingBtn = document.querySelector(".upcoming-btn");
+    const liveBtn = document.querySelector(".live-btn");
+    const soldOutBtn = document.querySelector(".soldOut-btn");
+
+    //Toggle filter function (which status, which button)
+    function toggleFilter(filter, button) {
+      if (activeFilters.has(filter)) {
+        activeFilters.delete(filter);
+        button.classList.remove("active");
+      } else {
+        activeFilters.add(filter);
+        button.classList.add("active");
+      }
+
+      //Re-trigger search (this re-renders everything)
+      if (searchInput) {
+        searchInput.dispatchEvent(new Event("input"));
+      } else {
+        // fallback (no search field)
+        productsContainer.innerHTML = "";
+        applyFilters(products).forEach((product) => {
+          const card = createProductCard(product);
+          productsContainer.appendChild(card);
+        });
+      }
+    }
+
+    upcomingBtn?.addEventListener("click", () =>
+      toggleFilter("upcoming", upcomingBtn),
+    );
+
+    liveBtn?.addEventListener("click", () => toggleFilter("live", liveBtn));
+
+    soldOutBtn?.addEventListener("click", () =>
+      toggleFilter("sold out", soldOutBtn),
+    );
 
     if (nextDrop && heroImage) {
       renderHero(nextDrop);
@@ -103,6 +148,14 @@ async function loadProducts() {
     productsContainer.innerHTML =
       "<p>Could not load products. Please try again later</p>";
   }
+}
+
+//Filter Helper Function
+function applyFilters(products) {
+  //Return All if no filter is chosen
+  if (activeFilters.size === 0) return products;
+
+  return products.filter((product) => activeFilters.has(product.status));
 }
 
 // Function to create an individual product card

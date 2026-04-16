@@ -12,7 +12,9 @@
     <!-- HEADER -->
     <header class="site-header">
       <nav>
-        <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
+        <a href="index.html" class="logo"
+          >SOLE_<span class="logo-search">SEARCH</span></a
+        >
         <ul class="nav-links">
           <li><a href="products.html" class="active">Products</a></li>
           <li><a href="cart.html" id="nav-cart">Cart</a></li>
@@ -29,14 +31,27 @@
         <h1>All Products</h1>
         <div class="products-controls">
           <div class="search-wrap">
-            <input type="text" id="product-search" placeholder="Archive_Search" autocomplete="off" />
-            <button type="button" aria-label="Search">Search</button>
+            <input
+              type="text"
+              id="product-search"
+              placeholder="Archive_Search"
+              autocomplete="off" />
           </div>
         </div>
       </div>
+
+      <div class="products-filter-section">
+        <p>Filter by:</p>
+        <button class="upcoming-btn">Upcoming</button>
+        <button class="live-btn">Live</button>
+        <button class="soldOut-btn">Sold Out</button>
+      </div>
+
       <div id="products"></div>
       <div class="load-more-wrap">
-        <button class="btn" id="load-drops"><span>Load more drops</span></button>
+        <button class="btn" id="load-drops">
+          <span>Load more drops</span>
+        </button>
       </div>
     </main>
 
@@ -46,7 +61,6 @@
         <p>&copy; 2026 Sole Search. All rights reserved.</p>
       </div>
     </footer>
-
 
     <!-- for navbar update just for permanent, will remove it after user profile is implemented -->
     <script type="module" src="./src/utils/auth.js"></script>
