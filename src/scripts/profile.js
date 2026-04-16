@@ -39,6 +39,14 @@ async function loadMyPlants(user) {
         },
       });
 
+        // Notis-ikon
+        const notifIcon = document.getElementById("notification-icon");
+
+        if (notifIcon) {
+          const hasNotification = true; // byter till backend sen
+          notifIcon.src = hasNotification ? "notis2.png" : "notis1.png";
+        }
+
       loadMyPlants(user);
     });
   });
@@ -58,14 +66,15 @@ document.addEventListener("DOMContentLoaded", () => {
     `Välkommen, ${user.name}!`;
 
   // Ändra nav-knappen till Logga ut
-  const navRight = document.querySelector(".nav-right a");
-  navRight.textContent = "Logga ut";
-  navRight.href = "#";
+  const loginBtn = document.getElementById("nav-login-btn");
+loginBtn.textContent = "Logga ut";
+loginBtn.href = "#";
 
-  navRight.addEventListener("click", () => {
-    sessionStorage.removeItem("loggedIn");
-    window.location.href = "index.html";
-  });
+loginBtn.addEventListener("click", () => {
+  sessionStorage.removeItem("loggedIn");
+  window.location.href = "index.html";
+});
+
 
   // Visa profil-ikon när man är inloggad
   const profileIconContainer = document.getElementById(
