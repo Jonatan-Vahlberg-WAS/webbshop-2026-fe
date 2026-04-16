@@ -1,4 +1,5 @@
 import { loginUser } from "../utils/api.js";
+import { decodeToken } from "../utils/utility.js";
 
 // init login form
 export function initLogin() {
@@ -38,17 +39,21 @@ async function handleLogin() {
   try {
     const data = await loginUser(email, password);
 
-    if (!data || !data.user || !data.token) {
+    if (!data || !data.user || !data.accessToken) {
       errorMsg.textContent = "Invalid email or password.";
       btn.disabled = false;
       btn.textContent = "Sign In";
       return;
     }
 
-    const { user, token } = data;
+    const { user, accessToken, refreshToken } = data;
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", accessToken);
+    //To see token data in console log
+    const payload = JSON.parse(atob(accessToken.split(".")[1]));
+    console.log(payload);
+
+    localStorage.setItem("refreshToken", refreshToken);
 
     if (user.isAdmin) {
       window.location.href = "admin.html";
@@ -71,12 +76,22 @@ export function logoutUser() {
 
 // session management functions for checking login status and user role
 export function getCurrentUser() {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+  const token = localStorage.getItem("token");
+  return decodeToken(token);
 }
 
 export function isLoggedIn() {
-  return !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const now = Date.now() / 1000;
+
+    return payload.exp > now;
+  } catch {
+    return false;
+  }
 }
 
 export function isAdmin() {

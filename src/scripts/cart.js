@@ -1,6 +1,6 @@
 import { getProducts, getVariants, postOrder } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
-import { checkIfUserHasAddress, generateObjectId } from "../utils/utility.js";
+import { checkIfUserHasAddress } from "../utils/utility.js";
 
 //Function render cart products in the cart page
 async function renderCart() {
@@ -13,7 +13,7 @@ async function renderCart() {
   try {
     const user = getCurrentUser();
     const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
-      (item) => item.userId === user.id,
+      (item) => item.userId === user.userId,
     );
     const products = await getProducts();
     const variants = await getVariants();
@@ -65,7 +65,7 @@ async function renderCart() {
           cart = cart.filter(
             (cartItem) =>
               !(
-                cartItem.userId === user.id &&
+                cartItem.userId === user.userId &&
                 cartItem.productId === item.productId &&
                 cartItem.size === item.size
               ),

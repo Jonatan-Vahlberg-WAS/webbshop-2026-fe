@@ -52,8 +52,8 @@ export async function getVariants() {
 
 //Get variant data from the API for a single product
 export async function getVariant(productId) {
-  const url = new URL("variants", getBaseUrl());
-  url.searchParams.append("productId", productId);
+  const url = new URL(`variants/${productId}`, getBaseUrl());
+  // url.searchParams.append("productId", productId);
 
   try {
     const response = await axios.get(url);
@@ -87,6 +87,37 @@ export async function getUsers() {
   } catch (error) {
     console.error("API error:", error);
     return [];
+  }
+}
+
+//Get current user's data
+export async function getMe() {
+  const token = localStorage.getItem("token");
+
+  if (!token) return null;
+
+  const url = new URL("users/me", getBaseUrl()).toString();
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error fetching user:",
+      error.response?.data || error.message,
+    );
+
+    // optional: clear invalid token
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+    }
+
+    return null;
   }
 }
 
@@ -232,14 +263,30 @@ export async function loginUser(email, password) {
 }
 
 //add item to wishlist
-export async function addWishlist(userId, wishlistedItem) {
-  const url = new URL(`users/${userId}`, getBaseUrl()).toString();
+export async function addWishlist(productId, variantId) {
+  const url = new URL(`/users/me/wishlist`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.patch(url, wishlistedItem);
+    const response = await axios.post(
+      url,
+      {
+        product: productId,
+        variant: variantId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
     return response.data;
   } catch (error) {
-    console.error("Error updating user:", error);
+    console.error(
+      "Error updating user:",
+      error.response?.data || error.message,
+    );
     return null;
   }
 }
