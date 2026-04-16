@@ -450,6 +450,7 @@ function renderOrderTable(products, users, orders) {
 
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
+    updateStatusBtn.classList.add("btn-update-status");
 
     updateStatusBtn.addEventListener("click", async (e) => {
       e.stopPropagation();
@@ -469,10 +470,13 @@ function renderOrderTable(products, users, orders) {
 
       const saveBtn = document.createElement("button");
       saveBtn.innerText = "Save";
+      saveBtn.classList.add("save-status-btn");
+
 
       // replace dropdown + save
       updateStatusBtn.replaceWith(select);
       select.after(saveBtn);
+      select.classList.add("status-select");
 
       saveBtn.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -589,6 +593,7 @@ document.querySelector(".admin-user-tbody").addEventListener("click", async (e) 
   e.stopPropagation();
   if (e.target.innerText.toLowerCase() !== "flag" && e.target.innerText.toLowerCase() !== "unflag") return;
 
+  // find the user id and current flag status
   const flagBtn = e.target;
   const tr = flagBtn.closest("tr");
   const nameCell = tr.querySelector("th:nth-child(1)");
