@@ -72,6 +72,7 @@ loginBtn.href = "#";
 
 loginBtn.addEventListener("click", () => {
   sessionStorage.removeItem("loggedIn");
+    alert("Du har loggats ut!");
   window.location.href = "index.html";
 });
 
