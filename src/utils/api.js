@@ -79,10 +79,16 @@ export async function deleteVariant(id) {
 
 //Get user data from the API
 export async function getUsers() {
-  const url = new URL("users", getBaseUrl());
+  const url = new URL("admin/users", getBaseUrl());
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("API error:", error);
