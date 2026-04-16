@@ -260,6 +260,34 @@
           </table>
         </div>
       </div>
+      <div id="product-detail-modal" class="modal-overlay" style="display:none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div>
+            <h2 id="modal-product-name"></h2>
+            <p id="modal-product-status"></p>
+          </div>
+          <button id="close-product-modal-btn">✕</button>
+        </div>
+
+        <div class="modal-section">
+          <img id="modal-product-image" style="width:120px; height:120px; object-fit:cover; border: 2px solid black;" />
+          <p><strong>Price:</strong> <span id="modal-product-price"></span></p>
+          <p><strong>Description:</strong> <span id="modal-product-description"></span></p>
+          <p><strong>Drop Date:</strong> <span id="modal-product-dropdate"></span></p>
+        </div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody id="modal-product-variants"></tbody>
+        </table>
+      </div>
+    </div>
     </main>
 
     <!-- FOOTER -->
