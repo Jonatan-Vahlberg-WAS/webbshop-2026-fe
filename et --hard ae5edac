@@ -1,90 +1,14 @@
-[33m39c65a1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m HEAD@{0}: reset: moving to 39c65a1c2e4755c3eb0223c083c9f94f9decb2df
-[33mae5edac[m HEAD@{1}: checkout: moving from develop to develop
-[33mae5edac[m HEAD@{2}: checkout: moving from develop to develop
-[33mae5edac[m HEAD@{3}: checkout: moving from develop to develop
-[33mae5edac[m HEAD@{4}: checkout: moving from featrue/home-page to develop
-[33m2199364[m[33m ([m[1;31morigin/featrue/home-page[m[33m, [m[1;32mfeatrue/home-page[m[33m)[m HEAD@{5}: checkout: moving from develop to featrue/home-page
-[33mae5edac[m HEAD@{6}: commit (merge): Merge branch 'featrue/home-page' into develop
-[33m9017e6a[m HEAD@{7}: checkout: moving from develop to develop
-[33m9017e6a[m HEAD@{8}: checkout: moving from featrue/home-page to develop
-[33m2199364[m[33m ([m[1;31morigin/featrue/home-page[m[33m, [m[1;32mfeatrue/home-page[m[33m)[m HEAD@{9}: checkout: moving from featrue/home-page to featrue/home-page
-[33m2199364[m[33m ([m[1;31morigin/featrue/home-page[m[33m, [m[1;32mfeatrue/home-page[m[33m)[m HEAD@{10}: commit: !
-[33m3c9f963[m HEAD@{11}: checkout: moving from develop to featrue/home-page
-[33m9017e6a[m HEAD@{12}: commit: !
-[33m3efa585[m HEAD@{13}: checkout: moving from develop to develop
-[33m3efa585[m HEAD@{14}: checkout: moving from featrue/home-page to develop
-[33m3c9f963[m HEAD@{15}: checkout: moving from featrue/home-page to featrue/home-page
-[33m3c9f963[m HEAD@{16}: checkout: moving from develop to featrue/home-page
-[33m3efa585[m HEAD@{17}: checkout: moving from featrue/home-page to develop
-[33m3c9f963[m HEAD@{18}: checkout: moving from develop to featrue/home-page
-[33m3efa585[m HEAD@{19}: commit (merge): Merge branch 'develop' of https://github.com/Emaniooo/webbshop-2026-fe into develop
-[33m3c9f963[m HEAD@{20}: pull --tags origin featrue/home-page: Fast-forward
-[33m3c447c2[m HEAD@{21}: checkout: moving from featrue/home-page to develop
-[33m3c9f963[m HEAD@{22}: commit: added styling to "our idea" section
-[33md4d7a8b[m HEAD@{23}: commit: repositioned "how it works" section and changed its style
-[33m8fda2d5[m HEAD@{24}: checkout: moving from featrue/logga-in to featrue/home-page
-[33mc7220f8[m[33m ([m[1;31morigin/featrue/logga-in[m[33m, [m[1;32mfeatrue/logga-in[m[33m)[m HEAD@{25}: checkout: moving from featrue/home-page to featrue/logga-in
-[33m8fda2d5[m HEAD@{26}: commit: added a comment
-[33m6a1895f[m HEAD@{27}: commit: added styling to "Hur det funkar" section
-[33mb1213b9[m HEAD@{28}: commit: added styling to undertext and CTA buttons
-[33m5c3bf8f[m HEAD@{29}: commit: added hero styling
-[33m72088b9[m HEAD@{30}: commit: added body, h1 and h2 styling
-[33me36d268[m HEAD@{31}: commit: added images and html
-[33m5c5a9ed[m HEAD@{32}: commit: deleted old unused codes
-[33m5f5714d[m HEAD@{33}: checkout: moving from featrue/logga-in to featrue/home-page
-[33mc7220f8[m[33m ([m[1;31morigin/featrue/logga-in[m[33m, [m[1;32mfeatrue/logga-in[m[33m)[m HEAD@{34}: checkout: moving from feature/mina-vaxter to featrue/logga-in
-[33m5d64719[m[33m ([m[1;31morigin/feature/mina-vaxter[m[33m, [m[1;32mfeature/mina-vaxter[m[33m)[m HEAD@{35}: checkout: moving from feature/show-plant-on-map to feature/mina-vaxter
-[33mea01709[m[33m ([m[1;32mfeature/show-plant-on-map[m[33m)[m HEAD@{36}: checkout: moving from featrue/logga-in to feature/show-plant-on-map
-[33mc7220f8[m[33m ([m[1;31morigin/featrue/logga-in[m[33m, [m[1;32mfeatrue/logga-in[m[33m)[m HEAD@{37}: pull --tags origin featrue/profil: Merge made by the 'ort' strategy.
-[33m1efc5d8[m[33m ([m[1;31morigin/feature/connect-backend[m[33m)[m HEAD@{38}: checkout: moving from featrue/profil to featrue/logga-in
-[33m24f30ee[m[33m ([m[1;31morigin/featrue/profil[m[33m, [m[1;32mfeatrue/profil[m[33m)[m HEAD@{39}: checkout: moving from featrue/logga-in to featrue/profil
-[33m1efc5d8[m[33m ([m[1;31morigin/feature/connect-backend[m[33m)[m HEAD@{40}: checkout: moving from develop to featrue/logga-in
-[33m3c447c2[m HEAD@{41}: checkout: moving from featrue/logga-in to develop
-[33m1efc5d8[m[33m ([m[1;31morigin/feature/connect-backend[m[33m)[m HEAD@{42}: checkout: moving from featrue/profil to featrue/logga-in
-[33m24f30ee[m[33m ([m[1;31morigin/featrue/profil[m[33m, [m[1;32mfeatrue/profil[m[33m)[m HEAD@{43}: checkout: moving from feature/show-plant-on-map to featrue/profil
-[33mea01709[m[33m ([m[1;32mfeature/show-plant-on-map[m[33m)[m HEAD@{44}: checkout: moving from featrue/profil to feature/show-plant-on-map
-[33m24f30ee[m[33m ([m[1;31morigin/featrue/profil[m[33m, [m[1;32mfeatrue/profil[m[33m)[m HEAD@{45}: checkout: moving from develop to featrue/profil
-[33m3c447c2[m HEAD@{46}: pull --tags origin develop: Merge made by the 'ort' strategy.
-[33m24f30ee[m[33m ([m[1;31morigin/featrue/profil[m[33m, [m[1;32mfeatrue/profil[m[33m)[m HEAD@{47}: pull --tags origin featrue/profil: Fast-forward
-[33mcefdfd2[m HEAD@{48}: checkout: moving from featrue/profil to develop
-[33m24f30ee[m[33m ([m[1;31morigin/featrue/profil[m[33m, [m[1;32mfeatrue/profil[m[33m)[m HEAD@{49}: commit: added welcome text styling
-[33mbe243e9[m HEAD@{50}: commit: added hover effects and edited underlines
-[33m28c3598[m HEAD@{51}: commit: added function to tab
-[33mae9fe44[m HEAD@{52}: commit: added placeholder data
-[33mdb179e0[m HEAD@{53}: commit: added underline effect
-[33md8de9a4[m HEAD@{54}: commit: added hover to tabs
-[33m6deee2b[m HEAD@{55}: commit: added profile tabs
-[33m9afbb24[m HEAD@{56}: commit: added icon styling
-[33me85edaf[m HEAD@{57}: commit: added open and close dropdown function
-[33me2ef783[m HEAD@{58}: commit: added user info
-[33ma4e1ee5[m HEAD@{59}: commit: icon shows when logged in and added css
-[33m0c0a08f[m HEAD@{60}: commit: added profil icon
-[33m7c9effa[m HEAD@{61}: commit: added welcome user and logout button
-[33m916996d[m HEAD@{62}: commit: deleted unused file
-[33m2e26aa4[m HEAD@{63}: commit: rewrote file name
-[33mcefdfd2[m HEAD@{64}: checkout: moving from featrue/logga-in to featrue/profil
-[33m1efc5d8[m[33m ([m[1;31morigin/feature/connect-backend[m[33m)[m HEAD@{65}: checkout: moving from featrue/profil to featrue/logga-in
-[33mcefdfd2[m HEAD@{66}: checkout: moving from featrue/logga-in to featrue/profil
-[33m1efc5d8[m[33m ([m[1;31morigin/feature/connect-backend[m[33m)[m HEAD@{67}: pull --tags origin feature/connect-backend: Fast-forward
-[33mfac8c7e[m HEAD@{68}: checkout: moving from develop to featrue/logga-in
-[33mcefdfd2[m HEAD@{69}: pull --tags origin develop: Fast-forward
-[33mfac8c7e[m HEAD@{70}: checkout: moving from featrue/logga-in to develop
-[33mfac8c7e[m HEAD@{71}: checkout: moving from develop to featrue/logga-in
-[33mfac8c7e[m HEAD@{72}: pull --tags origin featrue/logga-in: Fast-forward
-[33m3ed154b[m HEAD@{73}: checkout: moving from featrue/logga-in to develop
-[33mfac8c7e[m HEAD@{74}: commit: rewrote postions for the corner imgs
-[33m060203c[m HEAD@{75}: pull --tags origin develop: Merge made by the 'ort' strategy.
-[33mce9c898[m HEAD@{76}: commit: added a pic
-[33m1e532ef[m HEAD@{77}: checkout: moving from develop to featrue/logga-in
-[33m3ed154b[m HEAD@{78}: commit: fixed plant margin
-[33m7570857[m HEAD@{79}: checkout: moving from featrue/logga-in to develop
-[33m1e532ef[m HEAD@{80}: checkout: moving from develop to featrue/logga-in
-[33m7570857[m HEAD@{81}: pull --tags origin develop: Fast-forward
-[33m1718b98[m HEAD@{82}: checkout: moving from develop to develop
-[33m1718b98[m HEAD@{83}: checkout: moving from featrue/logga-in to develop
-[33m1e532ef[m HEAD@{84}: checkout: moving from develop to featrue/logga-in
-[33m1718b98[m HEAD@{85}: checkout: moving from featrue/logga-in to develop
-[33m1e532ef[m HEAD@{86}: checkout: moving from develop to featrue/logga-in
-[33m1718b98[m HEAD@{87}: pull --tags origin develop: Fast-forward
-[33m1e532ef[m HEAD@{88}: pull --tags origin featrue/logga-in: Fast-forward
-[33m600e2c1[m HEAD@{89}: checkout: moving from featr
+
+                   SSUUMMMMAARRYY OOFF LLEESSSS CCOOMMMMAANNDDSS
+
+      Commands marked with * may be preceded by a number, _N.
+      Notes in parentheses indicate the behavior if _N is given.
+      A key preceded by a caret indicates the Ctrl key; thus ^K is ctrl-K.
+
+  h  H                 Display this help.
+  q  :q  Q  :Q  ZZ     Exit.
+ ---------------------------------------------------------------------------
+
+                           MMOOVVIINNGG
+
+  e  ^E  j  ^N  CR  *  Forward  one line   (or _N lines).
