@@ -93,6 +93,12 @@
   </footer>
 
   <script type="module" src="./src/scripts/profile.js"></script>
+  <script>
+  if (window.location.pathname.includes("profil.html")) {
+    document.getElementById("profile-icon-container").classList.add("active");
+  }
+</script>
+
 </body>
 
 </html>
