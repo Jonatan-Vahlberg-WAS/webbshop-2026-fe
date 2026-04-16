@@ -42,6 +42,46 @@
   --shadow-hover: 0 8px 24px rgba(45, 90, 61, 0.12);
 }
  */
+
+/* 🌿 Primary green */
+:root {
+  --green-main: #2f5d3a;
+  --green-hover: #3a7448;
+}
+/* Addplant PAGE */
+/* Confirmation buttons */
+#confirmation button {
+  display: block;
+  width: 260px;
+  margin: 10px auto;
+  padding: 14px 20px;
+
+  background-color: var(--green-main);
+  color: white;
+
+  border: none;
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#confirmation button:hover {
+  background-color: var(--green-hover);
+  transform: translateY(-2px);
+}
+
+#confirmation button:active {
+  transform: scale(0.97);
+  background-color: var(--green-main);
+}
+
+
+
+
 * {
   box-sizing: border-box;
 }
@@ -493,4 +533,120 @@ button[type="submit"]:hover {
 .plot-footer-bottom p {
   margin: 0;
   font-size: 18px;
+}
+
+/* --- PROFILIKON + DROPDOWN --- */
+.profile-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 27px;
+  right: -7px;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  width: 180px;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.profile-dropdown p {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+}
+
+/* --- PROFILE --- */
+.main-content-profile {
+    max-width: 1200px;
+    margin: 4rem auto;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    background-color: #A2BF8F;
+}
+
+#welcome-text {
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+/* --- PROFILE TABS --- */
+.profile-tabs {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  padding: 5px 0;
+  color: white;
+  transition: color 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: #447a44;
+}
+.tab-btn:hover::after {
+  width: 100%;
+  background-color: #447a44;
+}
+
+.tab-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background-color: #304130;
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.tab-btn.active {
+  color: #304130;
+}
+.tab-btn.active::after {
+  width: 100%;
+  background-color: #304130;
+}
+
+
+/* Content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* List styling */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  background: #A2BF8F;
+  border: 2px solid white;
 }
