@@ -8,6 +8,7 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
+  updateOrder,
   flagUser,
 } from "../utils/api.js";
 import { generateObjectId } from "../utils/utility.js";
@@ -490,9 +491,67 @@ function renderOrderTable(products, users, orders) {
 
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
-    const refundBtn = document.createElement("button");
-    refundBtn.innerText = "Refund";
-    Actions.append(viewOrderBtn, updateStatusBtn, refundBtn);
+    updateStatusBtn.classList.add("btn-update-status");
+
+    updateStatusBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+
+      // create dropdown for changing order status
+      const validStatuses = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
+      const currentStatus = status.innerText;
+
+      const select = document.createElement("select");
+      validStatuses.forEach((s) => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.innerText = s.charAt(0).toUpperCase() + s.slice(1);
+        if (s === currentStatus) option.selected = true;
+        select.append(option);
+      });
+
+      const saveBtn = document.createElement("button");
+      saveBtn.innerText = "Save";
+      saveBtn.classList.add("save-status-btn");
+
+
+      // replace dropdown + save
+      updateStatusBtn.replaceWith(select);
+      select.after(saveBtn);
+      select.classList.add("status-select");
+
+      saveBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const newStatus = select.value;
+
+        if (newStatus === currentStatus) {
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+          return;
+        }
+
+        // confirm status delivered and cancelled because they are irreversible
+        if (newStatus === "delivered" || newStatus === "cancelled") {
+          const confirmed = window.confirm(`Are you sure you want to mark this order as "${newStatus}"?`);
+          if (!confirmed) return;
+        }
+
+        const result = await updateOrder(order._id, { status: newStatus });
+
+        if (result) {
+          status.innerText = newStatus;
+          order.status = newStatus;
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+          alert(`Order status updated to ${newStatus}.`);
+        } else {
+          alert("Failed to update order status. Please try again.");
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+        }
+      });
+    });
+
+    Actions.append(viewOrderBtn, updateStatusBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
@@ -586,6 +645,7 @@ document.querySelector(".admin-user-tbody").addEventListener("click", async (e) 
   e.stopPropagation();
   if (e.target.innerText.toLowerCase() !== "flag" && e.target.innerText.toLowerCase() !== "unflag") return;
 
+  // find the user id and current flag status
   const flagBtn = e.target;
   const tr = flagBtn.closest("tr");
   const nameCell = tr.querySelector("th:nth-child(1)");
