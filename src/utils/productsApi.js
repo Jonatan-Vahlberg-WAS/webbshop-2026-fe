@@ -22,3 +22,10 @@ export async function createProduct(product) {
   const err = await response.json().catch(() => ({}));
   throw new Error(err.errors?.[0]?.msg || "Failed to create product");
 }
+
+//plants from backend
+export async function getPlants() {
+  let response = await fetch("https://plottwistgrupp11.vercel.app/plants");
+  let json = await response.json();
+  return json
+}
