@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logga in</title>
+  <title>PLOT TWIST</title>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
     rel="stylesheet">
@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
 
   <!-- PLot Twist - HEADER -->
   <header class="header">
@@ -34,35 +33,57 @@
     </nav>
 
   </header>
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <h1>Logga in</h1>
-    <div id="register-container" class="register-wrapper">
-      <form id="registerForm" class="register-form">
 
-        <img src="topleftpic.png" class="form-img-top-right">
-        <img src="downrightpic.png" class="form-img-bottom-left">
+  <main>
+    <section class="add-plant-container">
 
+      <form id="plantForm" class="add-plant-form">
+        <h2>Lägg till din växt</h2>
+
+        <!-- NAME -->
         <div class="form-group">
-          <label for="name">Namn</label>
-          <input type="text" id="name" required />
+          <label for="plantName">Namn</label>
+          <input id="plantName" type="text" id="plantName" placeholder="Ex: Monstera" required />
         </div>
+
+        <!-- IMAGE -->
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required />
+          <label for="plantImage">Bild (URL)</label>
+          <input id="plantImage" type="text" id="plantImage" placeholder="Klistra in bildlänk" required />
         </div>
+
+        <!-- LOCATION -->
         <div class="form-group">
-          <label for="password">Lösenord</label>
-          <input type="password" id="password" required />
+          <label for="plantLocation">Plats</label>
+          <input id="plantLocation" type="text" id="plantLocation" placeholder="Ex: Stockholm" required />
         </div>
-        <a class="forgot-password" href="#">Glömt lösenord?</a>
-        <button type="submit">Logga in</button>
-        <a class="skapa-konto" href="#">Skapa konto</a>
+
+        <!-- LIGHT -->
+        <div class="form-group">
+          <label for="lightLevel">Ljusnivå</label>
+          <select id="lightLevel">
+            <option value="1">Låg☀️</option>
+            <option value="2">Medium☀️☀️</option>
+            <option value="3">Hög☀️☀️☀️</option>
+          </select>
+        </div>
+
+        <button type="submit">Ladda upp</button>
       </form>
-    </div>
+
+      <div id="confirmation" style="display: none; text-align: center; margin-top: 20px;">
+        <h2>🌱 Växt tillagd!</h2>
+        <p>Din växt har sparats.</p>
+        <p>Vad vill du göra nu?</p>
+
+        <button id="goMap">Se på karta</button>
+        <button id="goHome">Till startsidan</button>
+      </div>
+
+    </section>
   </main>
 
-  <!-- FOOTER -->
+  <!-- PLot Twist - FOOTER -->
   <footer class="plot-footer">
 
     <!-- Top section -->
@@ -86,7 +107,8 @@
 
   </footer>
 
-  <script type="module" src="./src/scripts/login.js"></script>
+  <!-- <script type="module" src="./src/scripts/admin.js"></script> -->
+  <script type="module" src="./src/scripts/addplant.js"></script>
 </body>
 
 </html>
