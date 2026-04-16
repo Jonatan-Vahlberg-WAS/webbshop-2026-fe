@@ -238,3 +238,58 @@
     font-style: italic;
     padding: 1rem 0;
 }
+
+/* ORDER HISTORY */
+
+.order-card__body {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.order-card__body p {
+    margin: 5px 0;
+}
+
+.order-date {
+  font-weight: bold;
+}
+
+.order-status-badge {
+    color: white;
+    padding: 3px 7px;
+    border-radius: 4px;
+}
+
+.order-status--pending {
+    background-color: #f0ad4e;
+}
+
+.order-status--confirmed {
+    background-color: #5cb85c;
+}
+
+.order-status--shipped {
+    background-color: #5bc0de;
+}
+
+.order-status--cancelled {
+    background-color: #d9534f;
+}
+
+.order-total {
+    font-weight: bold;
+}
+
+#wishlist-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.wishlist-card__image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+}

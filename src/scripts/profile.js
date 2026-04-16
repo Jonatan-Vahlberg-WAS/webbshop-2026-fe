@@ -65,22 +65,39 @@ function createOrderCard(order) {
     orderCard.className = "order-card__body";
 
     const orderDate = document.createElement('p');
+    orderDate.className = "order-date";
     orderDate.textContent = formatDateISO(order.createdAt);
     orderCard.appendChild(orderDate);
 
-    order.products.forEach(product => {
-        const productName = document.createElement("p");
-        productName.textContent = product.name;
-        orderCard.appendChild(productName);
-    })
-
-    const orderStatus = document.createElement("p");
+    const orderStatus = document.createElement("span");
+    orderStatus.className = "order-status-badge";
     orderStatus.textContent = order.status;
+
+    if (order.status === "pending") {
+        orderStatus.classList.add("order-status--pending");
+    } else if (order.status === "confirmed") {
+        orderStatus.classList.add("order-status--confirmed");
+    } else if (order.status === "shipped") {
+        orderStatus.classList.add("order-status--shipped");
+    } else if (order.status === "cancelled") {
+        orderStatus.classList.add("order-status--cancelled");
+    }
+
+    orderStatus.style.color = "#ffff";
+    orderStatus.style.padding = "3px 7px";
+    orderStatus.style.borderRadius = "4px";
     orderCard.appendChild(orderStatus);
 
-    const orderQuantity = document.createElement("p");
-    orderQuantity.textContent = `Amount: ${order.numOfItems}`;
-    orderCard.appendChild(orderQuantity);
+    order.products.forEach(product => {
+        const productInfo = document.createElement("p");
+        productInfo.textContent = `${product.name} — Size ${product.size} — $${product.price.toFixed(2)}`;
+        orderCard.appendChild(productInfo);
+    })
+
+    const orderTotal = document.createElement('p');
+    orderTotal.className = "order-total";
+    orderTotal.textContent = `Total: $${order.totalCost.toFixed(2)} (${order.numOfItems} items)`;
+    orderCard.appendChild(orderTotal);
 
     return orderCard;
 }
