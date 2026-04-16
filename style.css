@@ -620,10 +620,10 @@ h1, h2 {
 .how-it-works {
   padding: 100px 20px;
   text-align: center;
-  background: linear-gradient(10deg, #003D4D 0%, #61D18C 100%);
+  background: linear-gradient(-4deg, #003D4D 0%, #61D18C 100%);
 }
 
-.how-it-works h2 {
+.how-it-works h2, .our-idea h2 {
   font-size: 48px;
   margin-bottom: 50px;
   color: white;
@@ -664,4 +664,28 @@ h1, h2 {
 .step p {
   font-size: 16px;
   color: #444;
+}
+
+.our-idea {
+  padding: 115px 20px;
+  text-align: center;
+  background: linear-gradient(190deg, #003D4D 0%, #61D18C 100%);
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.our-idea p {
+  max-width: 900px;
+  margin: 0 auto;
+
+  background: white;
+  padding: 40px 50px;
+  border-radius: 20px;
+
+  font-size: 20px;
+  line-height: 1.7;
+  color: #333;
+
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  border: 1px solid #e6efe8;
 }
