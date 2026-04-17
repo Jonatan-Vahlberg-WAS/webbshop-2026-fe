@@ -38,7 +38,7 @@ navigator.geolocation.getCurrentPosition(
   },
   (err) => {
     console.log("Location error:", err);
-  }
+  },
 );
 
 // FORM
@@ -72,6 +72,9 @@ form.addEventListener("submit", async function (e) {
   };
 
   try {
+    console.log("TOKEN:", localStorage.getItem("token"));
+   
+
     const res = await fetch(BASE_URL + "plants", {
       method: "POST",
       headers: {
@@ -106,7 +109,6 @@ form.addEventListener("submit", async function (e) {
     document.getElementById("goMap").onclick = () => {
       window.location.href = "/map.html";
     };
-
   } catch (error) {
     console.error("Error saving plant:", error);
   }
