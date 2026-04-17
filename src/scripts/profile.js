@@ -286,13 +286,11 @@ function createWishlistCard(product, variant) {
         image.src = product.image;
         image.alt = product.name;
         image.loading = "lazy";
-        
         imageSectionWishlist.appendChild(image);
     } else {
         const image = document.createElement('div');
         image.className = "wishlist-card__image-placeholder";
         image.textContent = "👟";
-
         imageSectionWishlist.appendChild(image);
     }
 
@@ -337,7 +335,11 @@ function createWishlistCard(product, variant) {
     const wishlistCardBody = document.createElement('div');
     wishlistCardBody.className = "wishlist-card__body";
 
+    const removeBtn = document.createElement('button');
+    removeBtn.className = "wishlist-card__removeBtn";
+    removeBtn.textContent = "Remove product";
     const name = document.createElement('h3');
+    name.className = "wishlist-card__name";
     name.textContent = product.name;
     const price = document.createElement('p');
     price.className = "wishlist-card__price";
@@ -346,6 +348,7 @@ function createWishlistCard(product, variant) {
     size.className = "wishlist-card__size";
     size.textContent = `Size: ${variant.size}`;
 
+    wishlistCardBody.appendChild(removeBtn);
     wishlistCardBody.appendChild(name);
     wishlistCardBody.appendChild(price);
     wishlistCardBody.appendChild(size);
@@ -353,6 +356,33 @@ function createWishlistCard(product, variant) {
     
     wishlistCard.appendChild(imageSectionWishlist);
     wishlistCard.appendChild(wishlistCardBody);
+
+    // Fake db version
+    removeBtn.addEventListener('click', async () => {
+        const user = getCurrentUser();
+
+        const updatedWishlist = user.wishlist.filter(
+            item => !(item.productId === product.id && item.variantId === variant.id)
+        );
+
+        const updatedUser = { ...user, wishlist: updatedWishlist };
+
+        await updateUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+
+        wishlistCard.remove();
+
+    })
+
+    //API version
+    // removeBtn.addEventListener('click', async () => {
+    //     const token = localStorage.getItem('token');
+    //     const result = await removeFromWishlist(token, product.id, variant.id);
+
+    //     if (result) {
+    //         wishlistCard.remove();
+    //     }
+    // });
     
     return wishlistCard;
 }

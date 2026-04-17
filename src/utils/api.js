@@ -266,6 +266,21 @@ export async function addWishlist(userId, wishlistedItem) {
   }
 }
 
+//API: remove item from wishlist
+// export async function removeFromWishlist(token, productId, variantId) {
+//   const url = new URL("users/me/wishlist", getBaseUrl().toString());
+//   try {
+//     const response = await axios.delete(url, {
+//       headers: { Authorization: `Bearer ${token}`},
+//       data: { product: productId, variant: variantId }
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error removing from wishlist:", error);
+//     return null;
+//   }
+// }
+
 export async function updateOrder(id, data) {
   const url = new URL(`orders/${id}`, getBaseUrl()).toString();
 
