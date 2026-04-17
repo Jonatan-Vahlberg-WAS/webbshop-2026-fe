@@ -1,4 +1,78 @@
+import { getPlants } from "./productsApi.js";
+
 export let map = L.map('map');
+
+
+async function loadPlants() {
+    try {
+        const plants = await getPlants();
+
+        plants.forEach((plant, index) => {
+            // safety check
+            if (!plant.coordinates || plant.coordinates.length < 2) return;
+
+            const lat = plant.coordinates[0];
+            const lng = plant.coordinates[1];
+
+            const marker = L.marker([lat, lng], {tags: [`Ljusbehov: ${plant.light === 1? "Låg" : plant.light === 2 ? "Medel" : plant.light === 3 ? "Hög" : "Okänd"}`, `Vattenbehov: ${plant.water === 1? "Låg" : plant.water === 2? "Medel" : plant.water === 3? "Hög" : "Okänd"}` ]}).addTo(map);
+
+            // safer current user check (since backend auth not ready)
+            const isOwner = false;
+
+            marker.bindPopup(
+            `
+            <div class="popup-content">
+            <h3>${plant.plantName || "Okänd växt"}</h3>
+        
+            <p>${plant.description || "Ingen beskrivning"}</p>
+        
+            <p>Ljusbehov: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medel" : plant.light === 3? "Hög" : "Okänd"}</p>
+            <p>Vattenbehov: ${plant.water === 1? "Låg" : plant.water ===2 ? "Medel" : plant.water === 3? "Hög" : "Okänd"}</p>
+
+        
+            <p>Ägare: ${plant.ownerName || "Okänd"}</p>
+        
+            ${plant.imageUrl
+                            ? `<img 
+                src="${plant.imageUrl && plant.imageUrl !== 'https://example.com/monstera.jpg'
+                                ? plant.imageUrl
+                                : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6'
+                            }"
+                    class="popup-img"
+                    />`
+                            : ""
+                        }
+        
+            ${isOwner
+                            ? `
+                    <button class="edit-btn">Redigera</button>
+                    <button class="delete-btn">Ta bort</button>
+                `
+                            : `
+                    <button class="trade-btn">Begär byte</button>
+                `
+                        }
+            </div>
+            `,
+                {
+                    maxWidth: 220,
+                    minWidth: 160,
+                },
+            );
+
+            // focus first marker
+            if (index === 0) {
+                marker.openPopup();
+                map.setView([lat, lng], 13);
+            }
+        });
+    } catch (error) {
+        console.error("Error loading plants:", error);
+    }
+}
+
+loadPlants();
+
 map.setView([59.325441, 18.071614], 13);
 
 /* map.addControl(new L.Control.FullScreen()); */
@@ -16,11 +90,11 @@ let marker, circle, zoomed;
 function success(pos) {
     console.log(pos);
 
-    const lat = pos.coords.latitude; 
-    const lng = pos.coords.longitude; 
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
     const accuracy = pos.coords.accuracy;
 
-    if(marker) {
+    if (marker) {
         map.removeLayer(marker);
         map.removeLayer(circle);
     }
@@ -34,7 +108,7 @@ function success(pos) {
         fillOpacity: 0.5,
     }).addTo(map);
 
-    if(!zoomed && circle) {
+    if (!zoomed && circle) {
         zoomed = map.fitBounds(circle.getBounds());
     }
 
@@ -42,10 +116,95 @@ function success(pos) {
 }
 
 function error(err) {
-    if(err.code === 1) {
+    if (err.code === 1) {
         alert("Accept Plot Twist to access your current location");
     } else {
         alert("Cannot get current location");
     }
 }
 
+
+// easy button external plugin
+// L.easyButton('fa-solid fa-slider', function () {
+//     // window.location.href = NEW_DOCS_LOCATION;
+//     window.location.href = "index.html";
+// }).addTo(map);
+
+
+//filter sunlight for plants
+L.control.tagFilterButton({
+    data: ['Ljusbehov: Låg', 'Ljusbehov: Medel', 'Ljusbehov: Hög'],
+    icon: '<i class="fa-solid fa-sun"></i>',
+    filterOnEveryClick: true
+}).addTo(map);
+
+//filter plants type
+L.control.tagFilterButton({
+    data: ['Vattenbehov: Låg', 'Vattenbehov: Medel', 'Vattenbehov: Hög'],
+    icon: '<i class="fa-solid fa-filter"></i>',
+    filterOnEveryClick: true
+}).addTo(map);
+
+
+
+// L.marker([59.423183, 17.837015], { tags: ['Växt: kaktus', 'Ljusnivå: hög'] }).bindPopup('Växt: kaktus, Ljusnivå: hög, Ägs av: Jasmine').addTo(map); 
+
+// L.marker([59.336440, 18.073259], { tags: ['Växt: kaktus', 'Ljusnivå: hög'] }).bindPopup('Växt: kaktus, Ljusnivå: hög, Ägs av: Maja').addTo(map); 
+// L.marker([59.341474, 18.061715], { tags: ['Växt: kaktus', 'Ljusnivå: hög'] }).bindPopup('Växt: kaktus, Ljusnivå: hög, Ägs av: Anders').addTo(map);
+// L.marker([59.454435, 17.807011], { tags: ['Växt: kaktus', 'Ljusnivå: hög'] }).bindPopup('Växt: kaktus, Ljusnivå: hög, Ägs av: Eman').addTo(map);
+// L.marker([59.297004, 18.052816], { tags: ['Växt: orkidé', 'Ljusnivå: medium'] }).bindPopup('Växt: orkidé, Ljusnivå: medium, Ägs av: Bertil').addTo(map);
+// L.marker([59.321276, 17.987813], { tags: ['Växt: orkidé', 'Ljusnivå: medium'] }).bindPopup('Växt: orkidé, Ljusnivå: medium, Ägs av: Ing-Marie').addTo(map);
+// L.marker([59.360204, 18.006290], { tags: ['Växt: monstera', 'Ljusnivå: låg'] }).bindPopup('Växt: monstera, Ljusnivå: låg, Ägs av: Pontus').addTo(map);
+// L.marker([59.401562, 18.090409], { tags: ['Växt: monstera', 'Ljusnivå: låg'] }).bindPopup('Växt: monstera, Ljusnivå: låg, Ägs av: Waraporn').addTo(map);
+
+// display none on filter container if clicked another
+// document.querySelectorAll('.easy-button-button').forEach(function (button) {
+//     button.addEventListener('click', function () {
+//         const targets = Array.from(document.querySelectorAll('.easy-button-button'))
+//             .filter(el => el !== this);
+
+//         targets.forEach(target => {
+//             const container = target.parentElement.querySelector('.tag-filter-tags-container');
+//             if (container) {
+//                 container.style.display = 'none';
+//             }
+//         });
+//     });
+// });
+
+jQuery('.easy-button-button').click(function () {
+    let target = jQuery('.easy-button-button').not(this);
+    target.parent().find('.tag-filter-tags-container').css({
+        'display': 'none',
+    });
+});
+
+
+document.querySelectorAll(".easy-button-button").forEach(function (button) {
+    button.addEventListener("toggle", function () {
+        let targets = Array.from(document.querySelectorAll('.easy-button-button'))
+            .filter(el => el !== this);
+
+        targets.forEach(target => {
+            const container = target.parentElement.querySelector('.tag-filter-tags-container');
+            if (container) {
+                container.style.display = 'none';
+            }
+        });
+    });
+});
+
+
+//searchLayer is a L.LayerGroup contains searched markers
+let searchLayer = L.layerGroup().addTo(map);
+//... adding data in searchLayer ...
+map.addControl( new L.Control.Search({layer: searchLayer}) );
+
+require(["leaflet", "leafletSearch"],function(L, LeafletSearch) {
+
+	//... initialize leaflet map and dataLayer ...
+
+	map.addControl( new LeafletSearch({
+		layer: dataLayer
+	}) );
+});
