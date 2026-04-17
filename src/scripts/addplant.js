@@ -1,60 +1,113 @@
+import { getBaseUrl } from "../utils/api.js";
 
-const form = document.getElementById("plantForm");
+// MAP SETUP
+const selectMap = L.map("select-map").setView([59.33, 18.06], 13);
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+}).addTo(selectMap);
 
-  // get values
-  const name = document.getElementById("plantName").value;
-  const image = document.getElementById("plantImage").value;
-  const location = document.getElementById("plantLocation").value;
-  const light = document.getElementById("lightLevel").value;
+// MAP INTERACTION
+let selectedCoordinates = null;
+let selectedMarker;
 
-  // create object
-  const newPlant = {
-    name,
-    image,
-    location,
-    light
-  };
+// click to select location
+selectMap.on("click", function (e) {
+  const { lat, lng } = e.latlng;
 
-  // get existing plants
-  const plants = JSON.parse(localStorage.getItem("plants")) || [];
+  selectedCoordinates = [lat, lng];
 
-  // add new plant
-  plants.push(newPlant);
+  console.log("Selected:", selectedCoordinates);
 
-  // save back
-  localStorage.setItem("plants", JSON.stringify(plants));
-
-  console.log("Saved plant:", newPlant);
-
-  // reset form
-  form.reset();
-
-  // hide form
-  form.style.display = "none";
-
-  // show confirmation
-  const confirmation = document.getElementById("confirmation");
-  if (confirmation) {
-    confirmation.style.display = "block";
+  if (selectedMarker) {
+    selectMap.removeLayer(selectedMarker);
   }
+
+  selectedMarker = L.marker([lat, lng]).addTo(selectMap);
+  selectedMarker.bindPopup("Vald plats 🌱").openPopup();
 });
 
+// USER LOCATION
+navigator.geolocation.getCurrentPosition(
+  (pos) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
 
-// navigation buttons
-const goMapBtn = document.getElementById("goMap");
-const goHomeBtn = document.getElementById("goHome");
+    L.marker([lat, lng]).addTo(selectMap).bindPopup("Du är här 📍");
+    selectMap.setView([lat, lng], 14);
+  },
+  (err) => {
+    console.log("Location error:", err);
+  }
+);
 
-if (goMapBtn) {
-  goMapBtn.addEventListener("click", () => {
-    window.location.href = "/map.html";
-  });
-}
+// FORM
+const form = document.getElementById("plantForm");
 
-if (goHomeBtn) {
-  goHomeBtn.addEventListener("click", () => {
-    window.location.href = "/index.html";
-  });
-}
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const BASE_URL = getBaseUrl();
+
+  const plantName = document.getElementById("plantName").value;
+  const imageUrl = document.getElementById("plantImage").value;
+  const light = Number(document.getElementById("lightLevel").value);
+
+  if (!selectedCoordinates) {
+    alert("Välj en plats på kartan 📍");
+    return;
+  }
+
+  const newPlant = {
+    plantName,
+    description: "Fin växt 🌱",
+    light,
+    water: 1,
+    imageUrl: imageUrl.includes("?")
+      ? imageUrl
+      : imageUrl + "?w=400&h=300&fit=crop",
+    coordinates: selectedCoordinates,
+    meetingTime: new Date().toISOString(),
+    available: true,
+  };
+
+  try {
+    const res = await fetch(BASE_URL + "plants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(newPlant),
+    });
+
+    if (!res.ok) {
+      alert("Kunde inte spara växt ❌");
+      return;
+    }
+
+    // CONFIRMATION UI
+    form.innerHTML = `
+      <div class="confirmation-box">
+        <h2>🌱 Växt tillagd!</h2>
+        <p>Din växt finns nu på kartan</p>
+
+        <div class="confirmation-buttons">
+          <button id="goHome">Gå till Hem</button>
+          <button id="goMap">Se på karta</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("goHome").onclick = () => {
+      window.location.href = "/index.html";
+    };
+
+    document.getElementById("goMap").onclick = () => {
+      window.location.href = "/map.html";
+    };
+
+  } catch (error) {
+    console.error("Error saving plant:", error);
+  }
+});

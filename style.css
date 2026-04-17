@@ -278,6 +278,34 @@ button[type="submit"]:hover {
   background-color: #3d7451;
 }
 
+/* Popup Content */
+.popup-content {
+  text-align: center;
+}
+
+.popup-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.trade-btn {
+  background-color: #2d5a3d; /* your current dark green */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.trade-btn:hover {
+  background-color: #3d7451;
+}
+
+
 
 /* Logga in / Register */
 .main-content {
@@ -444,6 +472,59 @@ button[type="submit"]:hover {
   font-size: 18px;
 }
 
+/* =========================
+   CONFIRMATION UI
+========================= */
+.confirmation-box {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.confirmation-box h2 {
+  margin-bottom: 10px;
+}
+
+.confirmation-box p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* buttons container */
+.confirmation-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* buttons style (match your theme) */
+.confirmation-buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* primary (map) */
+#goMap {
+  background: #2d5a3d;
+  color: white;
+}
+
+#goMap:hover {
+  background: #3d7451;
+}
+
+/* secondary (home) */
+#goHome {
+  background: #ccc;
+  color: #333;
+}
+
+#goHome:hover {
+  background: #bbb;
+}
 /* --- PROFILIKON + DROPDOWN --- */
 .profile-icon-container {
   position: relative;

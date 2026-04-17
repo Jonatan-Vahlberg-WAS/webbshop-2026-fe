@@ -75,7 +75,7 @@ loadPlants();
 
 map.setView([59.325441, 18.071614], 13);
 
-map.addControl(new L.Control.FullScreen());
+/* map.addControl(new L.Control.FullScreen()); */
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
