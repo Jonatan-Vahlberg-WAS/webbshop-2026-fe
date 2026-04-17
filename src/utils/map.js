@@ -14,7 +14,7 @@ async function loadPlants() {
             const lat = plant.coordinates[0];
             const lng = plant.coordinates[1];
 
-            const marker = L.marker([lat, lng], {tags: [`Ljusnivå: ${plant.light === 1? "Låg" : plant.light === 2 ? "Medel" : plant.light === 3 ? "Hög" : "Okänd"}`, `water: ${plant.water}` ]}).addTo(map);
+            const marker = L.marker([lat, lng], {tags: [`Ljusbehov: ${plant.light === 1? "Låg" : plant.light === 2 ? "Medel" : plant.light === 3 ? "Hög" : "Okänd"}`, `Vattenbehov: ${plant.water === 1? "Låg" : plant.water === 2? "Medel" : plant.water === 3? "Hög" : "Okänd"}` ]}).addTo(map);
 
             // safer current user check (since backend auth not ready)
             const isOwner = false;
@@ -26,7 +26,9 @@ async function loadPlants() {
         
             <p>${plant.description || "Ingen beskrivning"}</p>
         
-            <p>Ljusnivå: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medium" : "Hög"}</p>
+            <p>Ljusbehov: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medel" : plant.light === 3? "Hög" : "Okänd"}</p>
+            <p>Vattenbehov: ${plant.water === 1? "Låg" : plant.water ===2 ? "Medel" : plant.water === 3? "Hög" : "Okänd"}</p>
+
         
             <p>Ägare: ${plant.ownerName || "Okänd"}</p>
         
@@ -131,14 +133,14 @@ function error(err) {
 
 //filter sunlight for plants
 L.control.tagFilterButton({
-    data: ['Ljusnivå: Låg', 'Ljusnivå: Medel', 'Ljusnivå: Hög'],
+    data: ['Ljusbehov: Låg', 'Ljusbehov: Medel', 'Ljusbehov: Hög'],
     icon: '<i class="fa-solid fa-sun"></i>',
     filterOnEveryClick: true
 }).addTo(map);
 
 //filter plants type
 L.control.tagFilterButton({
-    data: ['water: 1', 'water: 2', 'water: 3'],
+    data: ['Vattenbehov: Låg', 'Vattenbehov: Medel', 'Vattenbehov: Hög'],
     icon: '<i class="fa-solid fa-filter"></i>',
     filterOnEveryClick: true
 }).addTo(map);
@@ -192,3 +194,17 @@ document.querySelectorAll(".easy-button-button").forEach(function (button) {
     });
 });
 
+
+//searchLayer is a L.LayerGroup contains searched markers
+let searchLayer = L.layerGroup().addTo(map);
+//... adding data in searchLayer ...
+map.addControl( new L.Control.Search({layer: searchLayer}) );
+
+require(["leaflet", "leafletSearch"],function(L, LeafletSearch) {
+
+	//... initialize leaflet map and dataLayer ...
+
+	map.addControl( new LeafletSearch({
+		layer: dataLayer
+	}) );
+});
