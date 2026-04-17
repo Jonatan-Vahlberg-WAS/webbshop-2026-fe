@@ -22,9 +22,9 @@ async function loadPlants() {
             marker.bindPopup(
             `
             <div class="popup-content">
-            <h3>${plant.plantName || "Okänd växt"}</h3>
+            <h3>Namn: ${plant.plantName || "Okänd växt"}</h3>
         
-            <p>${plant.description || "Ingen beskrivning"}</p>
+            <p>Beskrivning: ${plant.description || "Ingen beskrivning"}</p>
         
             <p>Ljusnivå: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medium" : "Hög"}</p>
         
@@ -192,3 +192,25 @@ document.querySelectorAll(".easy-button-button").forEach(function (button) {
     });
 });
 
+//search button
+//searchLayer is a L.LayerGroup contains searched markers
+let searchLayer = L.layerGroup().addTo(map);
+//... adding data in searchLayer ...
+map.addControl( new L.Control.Search({layer: searchLayer}) );
+
+// require(["leaflet", "leafletSearch"],function(L, LeafletSearch) {
+
+// 	//... initialize leaflet map and dataLayer ...
+// 	map.addControl( new LeafletSearch({
+// 		layer: dataLayer
+// 	}) );
+// });
+
+
+
+// L.control.search({
+//     layer: poiLayers,
+//     initial: false,
+//     propertyName: "Namn: " // Specify which property is searched into.
+//   })
+//   .addTo(map);
