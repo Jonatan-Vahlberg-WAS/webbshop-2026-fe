@@ -249,11 +249,13 @@ function renderProductTable(products, variants) {
 //function to view all users
 function renderUserTable(users, orders) {
   const userList = document.querySelector(".admin-user-tbody");
+  userList.innerHTML = "";
 
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => o.user?._id === user._id);
+    const userOrders = orders.filter((o) => o.user?.id === user._id);
+    console.log(user.name, "→ orders:", userOrders.length);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -287,7 +289,7 @@ function renderUserTable(users, orders) {
         modalAddress.innerText = "No address on file";
       }
 
-      const userOrders = orders.filter((o) => o.user?._id === user._id);
+      const userOrders = orders.filter((o) => o.user?.id === user._id);
 
       if (userOrders.length === 0) {
         const tr = document.createElement("tr");
