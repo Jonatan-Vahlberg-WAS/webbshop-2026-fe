@@ -255,7 +255,6 @@ function renderUserTable(users, orders) {
 
   onlyUsers.forEach((user) => {
     const userOrders = orders.filter((o) => o.user?.id === user._id);
-    console.log(user.name, "→ orders:", userOrders.length);
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
