@@ -646,7 +646,7 @@ async function editProduct() {
     updatedAt: new Date().toISOString(),
   };
 
-  await updateProduct(product);
+  await updateProduct(editingProductId, product);
 
   editingProductId = null;
 

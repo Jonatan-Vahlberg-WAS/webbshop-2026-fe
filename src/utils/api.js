@@ -192,7 +192,7 @@ export async function getMyOrders(userId) {
 
 //Create product data in the API
 export async function addProduct(product) {
-  const url = new URL("/admin/products", getBaseUrl()).toString();
+  const url = new URL("admin/products", getBaseUrl()).toString();
   const token = localStorage.getItem("token");
 
   try {
@@ -210,10 +210,15 @@ export async function addProduct(product) {
 
 //Update product data in the API
 export async function updateProduct(id, data) {
-  const url = new URL(`products/${id}`, getBaseUrl()).toString();
+  const url = new URL(`admin/products/${id}`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.patch(url, data);
+    const response = await axios.put(url, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating product:", error);
@@ -223,7 +228,7 @@ export async function updateProduct(id, data) {
 
 //Create variant data in the API
 export async function addVariant(variant) {
-  const url = new URL("/admin/variants", getBaseUrl()).toString();
+  const url = new URL("admin/variants", getBaseUrl()).toString();
   const token = localStorage.getItem("token");
 
   try {
