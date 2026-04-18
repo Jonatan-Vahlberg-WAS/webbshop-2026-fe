@@ -9,7 +9,22 @@ import {
   updateVariant,
   deleteVariant,
 } from "../utils/api.js";
-import { generateObjectId } from "../utils/utility.js";
+import { generateObjectId, decodeToken } from "../utils/utility.js";
+
+//Guard against manually going to admin page by a user
+function checkIfAdmin() {
+  const token = localStorage.getItem("token");
+  const decodedToken = decodeToken(token);
+
+  if (decodedToken.isAdmin === false) {
+    document.body.innerHTML = "You Can't be here! Begone!";
+    return false;
+  }
+
+  return true;
+}
+
+if (!checkIfAdmin()) throw new Error("Not admin");
 
 let editingProductId = null;
 let cancelEditBtn = document.createElement("button");
