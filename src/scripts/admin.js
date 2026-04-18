@@ -115,7 +115,13 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateVariant(variant._id, { stock: newStock });
+        const result = await updateVariant(variant._id, { stock: newStock });
+
+        //Guard so that the stock display doesn't change if updatevariant fails
+        if (!result) {
+          alert("Failed to update stock. Please try again.");
+          return;
+        }
 
         stockText.innerText = newStock;
         stockText.style.color = getStockColor(newStock);

@@ -246,9 +246,20 @@ export async function addVariant(variant) {
 
 //Update variant data in the API
 export async function updateVariant(id, data) {
-  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
-  const response = await axios.patch(url, data);
-  return response.data;
+  const url = new URL(`admin/variants/${id}/stock`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await axios.put(url, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding product:", error);
+    return null;
+  }
 }
 
 // Register new user
