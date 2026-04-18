@@ -143,12 +143,17 @@ export async function getOrders() {
 //Port order data to the API
 export async function postOrder(order) {
   const url = new URL("orders", getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.post(url, order);
+    const response = await axios.post(url, order, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error adding product:", error);
+    console.error("Full error response:", error.response?.data);
     return null;
   }
 }

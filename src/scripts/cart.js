@@ -1,4 +1,4 @@
-import { getProducts, getVariants, postOrder } from "../utils/api.js";
+import { getProducts, getVariants, postOrder, getMe } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress } from "../utils/utility.js";
 
@@ -149,6 +149,8 @@ function validateInputs() {
 //Function that runs when confirm purchase button is pressed, creates order in backend
 async function createOrder() {
   const user = getCurrentUser();
+  const fullUser = await getMe();
+  console.log("USER FROM TOKEN:", user);
   let isValid = true;
   //Only validate form if user has no saved address
   if (!user.address) {
@@ -159,7 +161,7 @@ async function createOrder() {
   try {
     //Filter cart belonging to user id
     const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
-      (item) => item.userId === user.id,
+      (item) => item.userId === user.userId,
     );
     //Stops function fom running if cart is empty
     if (!cart || cart.length === 0) {
@@ -191,7 +193,7 @@ async function createOrder() {
         name: product.name,
         size: variant.size,
         price: product.price,
-        image: product.image,
+        quantity: 1,
       };
     });
 
@@ -209,7 +211,7 @@ async function createOrder() {
       address = { ...user.address };
     } else {
       address = {
-        fullName: document.querySelector(".fullname-input").value,
+        name: document.querySelector(".fullname-input").value,
         street: document.querySelector(".street-input").value,
         city: document.querySelector(".city-input").value,
         postalCode: document.querySelector(".postal-code-input").value,
@@ -218,20 +220,22 @@ async function createOrder() {
     }
 
     const order = {
-      _id: generateObjectId(),
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
+        id: user.userId,
+        name: fullUser.name,
+        email: fullUser.email,
         address: address,
       },
       products: productDetails,
       numOfItems: cart.length,
-      totalCost,
       status: "pending",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      totalCost,
     };
+
+    console.log("CART:", cart);
+    console.log("VARIANTS:", variants);
+    console.log("PRODUCT DETAILS:", productDetails);
+    console.log("ORDER BEING SENT:", JSON.stringify(order, null, 2));
 
     const result = await postOrder(order);
 
