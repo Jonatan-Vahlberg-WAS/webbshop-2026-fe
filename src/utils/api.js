@@ -192,10 +192,15 @@ export async function getMyOrders(userId) {
 
 //Create product data in the API
 export async function addProduct(product) {
-  const url = new URL("products", getBaseUrl()).toString();
+  const url = new URL("/admin/products", getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.post(url, product);
+    const response = await axios.post(url, product, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error adding product:", error);
@@ -218,10 +223,15 @@ export async function updateProduct(id, data) {
 
 //Create variant data in the API
 export async function addVariant(variant) {
-  const url = new URL("variants", getBaseUrl()).toString();
+  const url = new URL("/admin/variants", getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.post(url, variant);
+    const response = await axios.post(url, variant, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error adding product:", error);

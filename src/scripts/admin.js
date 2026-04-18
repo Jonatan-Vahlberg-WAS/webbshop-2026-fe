@@ -541,7 +541,6 @@ async function createProduct() {
   const price = document.querySelector("#price");
   const imageURL = document.querySelector("#image");
   const releaseDate = document.querySelector("#release-date");
-  const id = generateObjectId();
 
   let emptyFields = [];
   let otherErrors = [];
@@ -588,16 +587,12 @@ async function createProduct() {
   }
 
   const product = {
-    _id: id,
     name: name.value,
     description: description.value,
     price: Number(price.value),
     image: imageURL.value,
     dropDate: new Date(releaseDate.value).toISOString(),
     status: "upcoming",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    __v: 0,
   };
 
   await addProduct(product);
@@ -691,7 +686,6 @@ async function createVariant() {
   const size = document.querySelector("#size");
   const stock = document.querySelector("#stock");
   const productSelect = document.querySelector("#choose-product");
-  const id = generateObjectId();
 
   const variants = await getVariants();
 
@@ -747,13 +741,9 @@ async function createVariant() {
   }
 
   const variant = {
-    _id: id,
     productId: productSelect.value,
     size: size.value,
     stock: stock.value,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    __v: 0,
   };
 
   await addVariant(variant);
