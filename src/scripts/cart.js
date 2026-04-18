@@ -150,7 +150,6 @@ function validateInputs() {
 async function createOrder() {
   const user = getCurrentUser();
   const fullUser = await getMe();
-  console.log("USER FROM TOKEN:", user);
   let isValid = true;
   //Only validate form if user has no saved address
   if (!user.address) {
@@ -169,40 +168,6 @@ async function createOrder() {
       return;
     }
 
-    const products = await getProducts();
-    const variants = await getVariants();
-
-    //Take cart information and use product & variant to get name,price and size
-    const productDetails = cart.map((item) => {
-      const product = products.find((p) => p._id === item.productId);
-      const variant = variants.find((v) => v._id === item.variantId);
-
-      if (!product || !variant) {
-        console.error("Invalid cart item:", {
-          item,
-          productFound: !!product,
-          variantFound: !!variant,
-        });
-
-        throw new Error("Invalid cart item");
-      }
-
-      return {
-        productId: item.productId,
-        variantId: item.variantId,
-        name: product.name,
-        size: variant.size,
-        price: product.price,
-        quantity: 1,
-      };
-    });
-
-    //To get total price
-    const subtotal = productDetails.reduce((sum, item) => sum + item.price, 0);
-    const taxRate = 0.25;
-    const taxes = subtotal * taxRate;
-    const totalCost = subtotal + taxes;
-
     //Get address that is saved for user or from inputs
     let address = null;
 
@@ -219,32 +184,41 @@ async function createOrder() {
       };
     }
 
-    const order = {
-      user: {
-        id: user.userId,
-        name: fullUser.name,
-        email: fullUser.email,
-        address: address,
-      },
-      products: productDetails,
-      numOfItems: cart.length,
-      status: "pending",
-      totalCost,
-    };
+    // const order = {
+    //   products: cart.map((item) => ({
+    //     productId: item.productId,
+    //     variantId: item.variantId,
+    //     quantity: 1,
+    //   })),
+    //   address,
+    // };
 
-    console.log("CART:", cart);
-    console.log("VARIANTS:", variants);
-    console.log("PRODUCT DETAILS:", productDetails);
-    console.log("ORDER BEING SENT:", JSON.stringify(order, null, 2));
+    // const result = await postOrder(order);
 
-    const result = await postOrder(order);
+    // if (!result) {
+    //   console.error("Order failed");
+    //   return;
+    // }
 
-    if (!result) {
-      console.error("Order failed");
-      return;
+    // console.log("Order success");
+
+    //Code that works with old order Schema
+    let lastResult = null;
+
+    for (const item of cart) {
+      const order = {
+        product: item.productId,
+        variant: item.variantId,
+        quantity: 1,
+        shippingAddress: address,
+      };
+
+      lastResult = await postOrder(order);
+      if (!lastResult) {
+        console.error("Order failed for item:", item);
+        return;
+      }
     }
-
-    console.log("Order success");
 
     //Clear Cart
     localStorage.setItem(
@@ -256,7 +230,7 @@ async function createOrder() {
       ),
     );
 
-    summaryModal(order);
+    // summaryModal(result);
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err.message);
     console.error(err);
@@ -310,7 +284,7 @@ function summaryModal(order) {
     const productSize = document.createElement("p");
     const productPrice = document.createElement("p");
 
-    productImg.src = product.image;
+    // productImg.src = product.image;
     productName.innerText = product.name;
     productSize.innerText = product.size;
     productPrice.innerText = `$ ${product.price}`;
