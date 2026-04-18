@@ -277,85 +277,92 @@ function createWishlistCard(product, variant) {
     const wishlistCard = document.createElement('div');
     wishlistCard.className = "wishlist-card";
 
-    const imageSectionWishlist = document.createElement('div');
-    imageSectionWishlist.className = "image-wrapper-wishlist";
-
-    if (product.image) {
-        const image = document.createElement('img');
-        image.className = "wishlist-card__image";
-        image.src = product.image;
-        image.alt = product.name;
-        image.loading = "lazy";
-        imageSectionWishlist.appendChild(image);
-    } else {
-        const image = document.createElement('div');
-        image.className = "wishlist-card__image-placeholder";
-        image.textContent = "👟";
-        imageSectionWishlist.appendChild(image);
+    if (product.status !== "upcoming" && product.status !== "live") {
+        wishlistCard.classList.add("wishlist-card--sold-out");
     }
+
+    let imageElement;
+    if (product.image) {
+        imageElement = document.createElement('img');
+        imageElement.className = "wishlist-card__image";
+        imageElement.src = product.image;
+        imageElement.alt = product.name;
+        imageElement.loading = "lazy";
+    } else {
+        imageElement = document.createElement('div');
+        imageElement.className = "wishlist-card__image";
+        imageElement.textContent = "👟";
+    }
+
+    const info = document.createElement('div');
+    info.className = "wishlist-card__info";
+
+    const name = document.createElement('h3');
+    name.className = "wishlist-card__name";
+    name.textContent = product.name;
+
+    const meta = document.createElement('div');
+    meta.className = "wishlist-card__meta";
+
+    const priceSpan = document.createElement('span');
+    priceSpan.innerHTML = `<label>Price</label><span class="value">$${product.price.toFixed(2)}</span>`;
+
+    const sizeSpan = document.createElement('span');
+    sizeSpan.innerHTML = `<label>Size</label><span class="value">US ${variant.size}</span>`;
+
+    meta.appendChild(priceSpan);
+    meta.appendChild(sizeSpan);
+
+    info.appendChild(name);
+    info.appendChild(meta);
+
+    const statusColumn = document.createElement('div');
+    statusColumn.className = "wishlist-card__status-column";
 
     let statusElement;
     if (product.status === "upcoming") {
         statusElement = document.createElement("p");
-        statusElement.className = "drop-timer";
-        //Add timer to product card
+        statusElement.className = "wishlist-card__countdown";
         countdownTimer(product.dropDate, statusElement);
     } else if (product.status === "live") {
         statusElement = document.createElement("button");
-        statusElement.className = "status-btn";
+        statusElement.className = "btn btn--primary";
         statusElement.textContent = "Buy Now";
 
         statusElement.addEventListener('click', () => {
             const result = addToCart(product.id, variant.id, variant.size);
-            console.log(result);
 
             if(result.success) {
                 statusElement.textContent = "Added to Cart";
                 statusElement.disabled = true;
+                statusElement.classList.add("btn--added");
                 setTimeout(() => {
                     statusElement.textContent = "Buy Now";
                     statusElement.disabled = false;
+                    statusElement.classList.remove("btn--added");
                 }, 3000)
             } else if (result.error === "duplicate_size") {
                 statusElement.textContent = "Already in Cart";
                 statusElement.disabled = true;
+                statusElement.classList.add("btn--added");
                 setTimeout(() => {
                     statusElement.textContent = "Buy Now";
                     statusElement.disabled = false;
-                }, 3000)
+                    statusElement.classList.remove("btn--added");
+                }, 3000);
             }
-        })
+        });
     } else {
-        statusElement = document.createElement("button");
-        statusElement.className = "status-btn";
-        statusElement.disabled = true;
-        statusElement.textContent = `Sold Out`;
+        statusElement = document.createElement("span");
+        statusElement.className = "wishlist-card__badge wishlist-card__badge--sold-out";
+        statusElement.textContent = "Sold Out";
     }
-
-    const wishlistCardBody = document.createElement('div');
-    wishlistCardBody.className = "wishlist-card__body";
+    statusColumn.appendChild(statusElement);
 
     const removeBtn = document.createElement('button');
-    removeBtn.className = "wishlist-card__removeBtn";
-    removeBtn.textContent = "Remove product";
-    const name = document.createElement('h3');
-    name.className = "wishlist-card__name";
-    name.textContent = product.name;
-    const price = document.createElement('p');
-    price.className = "wishlist-card__price";
-    price.textContent = `$${product.price.toFixed(2)}`;
-    const size = document.createElement('p');
-    size.className = "wishlist-card__size";
-    size.textContent = `Size: ${variant.size}`;
-
-    wishlistCardBody.appendChild(removeBtn);
-    wishlistCardBody.appendChild(name);
-    wishlistCardBody.appendChild(price);
-    wishlistCardBody.appendChild(size);
-    wishlistCardBody.appendChild(statusElement);
-    
-    wishlistCard.appendChild(imageSectionWishlist);
-    wishlistCard.appendChild(wishlistCardBody);
+    removeBtn.className = "wishlist-card__remove";
+    removeBtn.textContent = "×";
+    removeBtn.title = "Remove from wishlist";
 
     // Fake db version
     removeBtn.addEventListener('click', async () => {
@@ -383,6 +390,11 @@ function createWishlistCard(product, variant) {
     //         wishlistCard.remove();
     //     }
     // });
+
+    wishlistCard.appendChild(imageElement);
+    wishlistCard.appendChild(info);
+    wishlistCard.appendChild(statusColumn);
+    wishlistCard.appendChild(removeBtn);
     
     return wishlistCard;
 }
