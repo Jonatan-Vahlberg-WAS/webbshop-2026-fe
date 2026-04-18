@@ -375,7 +375,8 @@ function renderOrderTable(products, variants, users, orders) {
       ? order.products
       : [order.products];
 
-    const orderUser = users.find((u) => u._id === order.user?._id);
+    const orderUser = users.find((u) => u._id === order.user?.id);
+    if (!orderUser) return false;
 
     const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
     const matchProduct = productItems.some((item) => {
@@ -414,7 +415,8 @@ function renderOrderTable(products, variants, users, orders) {
     //   const product = products.find((p) => p._id === item.productId);
     // });
 
-    const orderUser = users.find((u) => u._id === order.user?._id);
+    const orderUser = users.find((u) => u._id === order.user?.id);
+    if (!orderUser) return false;
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");

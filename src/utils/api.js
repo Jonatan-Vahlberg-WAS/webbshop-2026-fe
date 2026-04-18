@@ -66,10 +66,15 @@ export async function getVariant(productId) {
 
 //Delete variant data in the API
 export async function deleteVariant(id) {
-  const url = new URL(`variants/${id}`, getBaseUrl()).toString();
+  const url = new URL(`admin/variants/${id}`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.delete(url);
+    const response = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error deleting variant:", error);
@@ -129,10 +134,15 @@ export async function getMe() {
 
 //Get order data from the API
 export async function getOrders() {
-  const url = new URL("orders", getBaseUrl());
+  const url = new URL("admin/orders", getBaseUrl());
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("API error:", error);
