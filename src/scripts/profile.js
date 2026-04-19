@@ -62,42 +62,65 @@ function renderMyOrders(orders) {
 
 function createOrderCard(order) {
     const orderCard = document.createElement('div');
-    orderCard.className = "order-card__body";
+    orderCard.className = "order-card";
 
-    const orderDate = document.createElement('p');
-    orderDate.className = "order-date";
-    orderDate.textContent = formatDateISO(order.createdAt);
-    orderCard.appendChild(orderDate);
+    const header = document.createElement('div');
+    header.className = "order-card__header";
 
-    const orderStatus = document.createElement("span");
-    orderStatus.className = "order-status-badge";
-    orderStatus.textContent = order.status;
+    const date = document.createElement('span');
+    date.className = "order-card__date";
+    date.textContent = formatDateISO(order.createdAt);
+
+    const status = document.createElement('span');
+    status.className = "order-card__status";
+    status.textContent = order.status;
 
     if (order.status === "pending") {
-        orderStatus.classList.add("order-status--pending");
+        status.classList.add("order-card__status--pending");
     } else if (order.status === "confirmed") {
-        orderStatus.classList.add("order-status--confirmed");
+        status.classList.add("order-card__status--confirmed");
     } else if (order.status === "shipped") {
-        orderStatus.classList.add("order-status--shipped");
+        status.classList.add("order-card__status--shipped");
     } else if (order.status === "cancelled") {
-        orderStatus.classList.add("order-status--cancelled");
+        status.classList.add("order-card__status--cancelled");
     }
 
-    orderStatus.style.color = "#ffff";
-    orderStatus.style.padding = "3px 7px";
-    orderStatus.style.borderRadius = "4px";
-    orderCard.appendChild(orderStatus);
+    const total = document.createElement('span');
+    total.className = "order-card__total";
+    total.textContent = `$${order.totalCost.toFixed(2)}  ·  ${order.numOfItems} items`;
+
+    header.appendChild(date);
+    header.appendChild(status);
+    header.appendChild(total);
+
+    const productList = document.createElement('ul');
+    productList.className = "order-card__products";
 
     order.products.forEach(product => {
-        const productInfo = document.createElement("p");
-        productInfo.textContent = `${product.name} — Size ${product.size} — $${product.price.toFixed(2)}`;
-        orderCard.appendChild(productInfo);
-    })
+        const item = document.createElement('li');
+        item.className = "order-card__product";
 
-    const orderTotal = document.createElement('p');
-    orderTotal.className = "order-total";
-    orderTotal.textContent = `Total: $${order.totalCost.toFixed(2)} (${order.numOfItems} items)`;
-    orderCard.appendChild(orderTotal);
+        const nameSpan = document.createElement('span');
+        nameSpan.className = "order-card__product-name";
+        nameSpan.textContent = product.name;
+
+        const sizeSpan = document.createElement('span');
+        sizeSpan.className = "order-card__product-size";
+        sizeSpan.textContent = `Size ${product.size}`;
+
+        const priceSpan = document.createElement('span');
+        priceSpan.className = "order-card__product-price";
+        priceSpan.textContent = `$${product.price.toFixed(2)}`;
+
+        item.appendChild(nameSpan);
+        item.appendChild(sizeSpan);
+        item.appendChild(priceSpan);
+
+        productList.appendChild(item);
+    });
+
+    orderCard.appendChild(header);
+    orderCard.appendChild(productList);
 
     return orderCard;
 }
