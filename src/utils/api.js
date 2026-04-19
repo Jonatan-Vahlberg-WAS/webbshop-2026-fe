@@ -356,10 +356,13 @@ export async function addWishlist(productId, variantId) {
 // }
 
 export async function updateOrder(id, data) {
-  const url = new URL(`orders/${id}`, getBaseUrl()).toString();
+  const url = new URL(`admin/orders/${id}/status`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.patch(url, data);
+    const response = await axios.put(url, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating order:", error);
