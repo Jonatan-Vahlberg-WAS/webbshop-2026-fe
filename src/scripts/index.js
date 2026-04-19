@@ -18,7 +18,6 @@ async function loadProducts() {
 
   try {
     const products = await getProducts();
-    console.log(products);
     productsContainer.innerHTML = "";
 
     const nextDrop = getNextDrop(products);

@@ -284,7 +284,6 @@ export async function loginUser(email, password) {
       email,
       password,
     });
-    console.log({ email, password });
 
     return response.data; // { token, user }
   } catch (error) {

@@ -123,8 +123,6 @@ export function addToCart(productId, variantId, size) {
 //Checks if the user has a saved address or not
 export function checkUserAddress() {
   const user = getCurrentUser();
-  console.log("USER:", user);
-
   return !!user?.address;
 }
 

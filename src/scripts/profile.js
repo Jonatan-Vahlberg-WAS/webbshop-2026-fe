@@ -325,7 +325,6 @@ function createWishlistCard(product, variant) {
 
     statusElement.addEventListener("click", () => {
       const result = addToCart(product.id, variant.id, variant.size);
-      console.log(result);
 
       if (result.success) {
         statusElement.textContent = "Added to Cart";
