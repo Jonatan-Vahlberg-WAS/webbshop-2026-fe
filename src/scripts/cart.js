@@ -184,53 +184,33 @@ async function createOrder() {
       };
     }
 
-    // const order = {
-    //   products: cart.map((item) => ({
-    //     productId: item.productId,
-    //     variantId: item.variantId,
-    //     quantity: 1,
-    //   })),
-    //   address,
-    // };
-
-    // const result = await postOrder(order);
-
-    // if (!result) {
-    //   console.error("Order failed");
-    //   return;
-    // }
-
-    // console.log("Order success");
-
-    //Code that works with old order Schema
-    let lastResult = null;
-
-    for (const item of cart) {
-      const order = {
-        product: item.productId,
-        variant: item.variantId,
+    const order = {
+      products: cart.map((item) => ({
+        productId: item.productId,
+        variantId: item.variantId,
         quantity: 1,
-        shippingAddress: address,
-      };
+      })),
+      address,
+    };
 
-      lastResult = await postOrder(order);
-      if (!lastResult) {
-        console.error("Order failed for item:", item);
-        return;
-      }
+    const result = await postOrder(order);
+
+    if (!result) {
+      console.error("Order failed");
+      return;
     }
 
-    //Clear Cart
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(
-        JSON.parse(localStorage.getItem("cart")).filter(
-          (item) => item.userId !== user.id,
-        ),
-      ),
-    );
+    console.log("Order success");
 
-    // summaryModal(result);
+    //Clear Cart
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = existingCart.filter(
+      (item) => item.userId !== user.userId,
+    );
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    renderCart();
+
+    summaryModal(result);
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err.message);
     console.error(err);
