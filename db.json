@@ -115,15 +115,13 @@
     },
     {
       "id": "663000000000000000000002",
-      "_id": "663000000000000000000002",
       "name": "Bob Smith",
       "email": "bob@example.com",
       "password": "Bob@1234",
       "isAdmin": false,
-      "isFlagged": false,
       "address": {
         "street": "742 Maple Avenue",
-        "postal_code": "10012",
+        "postal_code": "111 11",
         "city": "New York",
         "country": "USA"
       },
@@ -144,10 +142,7 @@
           "productId": "661000000000000000000003",
           "variantId": "662000000000000000000005"
         }
-      ],
-      "createdAt": "2026-03-02T08:00:00.000Z",
-      "updatedAt": "2026-03-02T08:00:00.000Z",
-      "__v": 0
+      ]
     },
     {
       "id": "663000000000000000000003",
@@ -273,6 +268,66 @@
       "status": "shipped",
       "createdAt": "2026-03-05T09:00:00.000Z",
       "updatedAt": "2026-03-05T09:00:00.000Z",
+      "__v": 0
+    },
+    {
+      "id": "664000000000000000000004",
+      "_id": "664000000000000000000004",
+      "user": {
+        "id": "663000000000000000000002",
+        "name": "Bob Smith",
+        "email": "bob@example.com",
+        "address": {
+          "street": "742 Maple Avenue",
+          "postal_code": "10012",
+          "city": "New York",
+          "country": "USA"
+        }
+      },
+      "products": [
+        {
+          "productId": "661000000000000000000001",
+          "variantId": "662000000000000000000001",
+          "name": "Air Zoom Runner",
+          "size": 8,
+          "price": 120.99
+        }
+      ],
+      "numOfItems": 1,
+      "totalCost": 120.99,
+      "status": "pending",
+      "createdAt": "2026-04-15T16:42:00.000Z",
+      "updatedAt": "2026-04-15T16:42:00.000Z",
+      "__v": 0
+    },
+    {
+      "id": "664000000000000000000005",
+      "_id": "664000000000000000000005",
+      "user": {
+        "id": "663000000000000000000002",
+        "name": "Bob Smith",
+        "email": "bob@example.com",
+        "address": {
+          "street": "742 Maple Avenue",
+          "postal_code": "10012",
+          "city": "New York",
+          "country": "USA"
+        }
+      },
+      "products": [
+        {
+          "productId": "661000000000000000000002",
+          "variantId": "662000000000000000000004",
+          "name": "StreetFlex High",
+          "size": 10,
+          "price": 89.5
+        }
+      ],
+      "numOfItems": 1,
+      "totalCost": 89.5,
+      "status": "cancelled",
+      "createdAt": "2026-02-18T11:15:00.000Z",
+      "updatedAt": "2026-02-22T09:30:00.000Z",
       "__v": 0
     }
   ],

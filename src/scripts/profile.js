@@ -260,6 +260,13 @@ function editProfile() {
 
     })
 
+    const addAddressBtn = document.querySelector('.add-address button');
+    if (addAddressBtn) {
+        addAddressBtn.addEventListener('click', () => {
+            btnEdit.click();
+        });
+    }
+
     document.getElementById('edit-password').addEventListener('input', checkEditPasswordRules);
     const toggleEditPw = document.getElementById('toggle-edit-password');
     toggleEditPw.addEventListener('click', () => togglePassword('edit-password', toggleEditPw));
@@ -328,10 +335,22 @@ function createWishlistCard(product, variant) {
     meta.className = "wishlist-card__meta";
 
     const priceSpan = document.createElement('span');
-    priceSpan.innerHTML = `<label>Price</label><span class="value">$${product.price.toFixed(2)}</span>`;
+    const priceLabel = document.createElement('label');
+    priceLabel.textContent = "Price";
+    const priceValue = document.createElement('span');
+    priceValue.className = "value";
+    priceValue.textContent = `$${product.price.toFixed(2)}`;
+    priceSpan.appendChild(priceLabel);
+    priceSpan.appendChild(priceValue);
 
     const sizeSpan = document.createElement('span');
-    sizeSpan.innerHTML = `<label>Size</label><span class="value">US ${variant.size}</span>`;
+    const sizeLabel = document.createElement('label');
+    sizeLabel.textContent = "Size";
+    const sizeValue = document.createElement('span');
+    sizeValue.className = "value";
+    sizeValue.textContent = `US ${variant.size}`;
+    sizeSpan.appendChild(sizeLabel);
+    sizeSpan.appendChild(sizeValue);
 
     meta.appendChild(priceSpan);
     meta.appendChild(sizeSpan);

@@ -42,64 +42,91 @@
         <div class="profile-container">
 
             <!-- PROFILE INFO-->
-            <div class="profile-section" id="profile-info-section">
+            <section class="profile-section" id="profile-info-section">
                 <h2 class="profile-section-title">My Profile</h2>
-                <h3>Email</h3>
-                <div class="profile-email"></div>
-                <h3>Address</h3>
-                <div class="profile-address"></div>
-                <div class="add-address">
-                    <button class="btn btn--outline">Add Address</button>
+
+                <div class="profile-field">
+                    <span class="profile-field__label">Email</span>
+                    <div class="profile-field__value profile-email"></div>
                 </div>
-                <h3>Password</h3>
-                <div class="profile-password"></div>
-            </div>
+
+                <div class="profile-field">
+                    <span class="profile-field__label">Address</span>
+                    <div class="profile-field__value profile-address"></div>
+                    <div class="add-address">
+                        <button class="btn btn--outline">Add Address</button>
+                    </div>
+                </div>
+
+                <div class="profile-field">
+                    <span class="profile-field__label">Password</span>
+                    <div class="profile-field__value profile-password"></div>
+                </div>
+            </section>
 
             <!-- PROFILE INFO EDIT-->
-            <div class="profile-section hidden" id="profile-edit-section">
+            <section class="profile-section hidden" id="profile-edit-section">
                 <h2 class="profile-section-title">Edit Profile</h2>
-                <form>
-                    <h3>Name</h3>
-                    <label for="edit-name">Name</label>
-                    <input type="text" id="edit-name"/>
-                    <p class="name-error"></p>
 
-                    <h3>Email</h3>
-                    <label for="edit-email">Email</label>
-                    <input type="email" id="edit-email"/>
-                    <p class="email-error"></p>
+                <form class="profile-edit-form">
 
-                    <h3>Address</h3>
-                    <label for="edit-street">Street</label>
-                    <input type="text" id="edit-street"/>
-                    <label for="edit-postal-code">Postal Code</label>
-                    <input type="text" id="edit-postal-code"/>
-                    <label for="edit-city">City</label>
-                    <input type="text" id="edit-city"/>
-                    <label for="edit-country">Country</label>
-                    <input type="text" id="edit-country"/>
-
-                    <h3>Password</h3>
-                    <label for="edit-password">New Password</label>
-                    <div class="input-wrap">
-                        <input type="password" id="edit-password">
-                        <button type="button" class="toggle-pw" id="toggle-edit-password">Show</button>
+                    <div class="profile-field">
+                        <label for="edit-name" class="profile-field__label">Name</label>
+                        <input type="text" id="edit-name" class="profile-field__input"/>
+                        <p class="profile-field__error name-error"></p>
                     </div>
-                    <ul class="pw-requirements">
-                        <li id="edit-req-length">Minimum 8 characters</li>
-                        <li id="edit-req-upper">At least one capital letter</li>
-                        <li id="edit-req-number">At least one number</li>
-                        <li id="edit-req-special">At least one special character (! @ # $ % & *)</li>
-                    </ul>
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password">
-                    <p class="password-error"></p>
 
-                    <button type="button" id="save-profile-btn">Save</button>
-                    <p class="save-error"></p>
-                    <button type="button" id="cancel-edit-btn">Cancel</button>
+                    <div class="profile-field">
+                        <label for="edit-email" class="profile-field__label">Email</label>
+                        <input type="email" id="edit-email" class="profile-field__input"/>
+                        <p class="profile-field__error email-error"></p>
+                    </div>
+
+                    <fieldset class="profile-field profile-field--group">
+                        <legend class="profile-field__label">Address</legend>
+
+                        <label for="edit-street">Street</label>
+                        <input type="text" id="edit-street" class="profile-field__input"/>
+
+                        <label for="edit-postal-code">Postal Code</label>
+                        <input type="text" id="edit-postal-code" class="profile-field__input"/>
+
+                        <label for="edit-city">City</label>
+                        <input type="text" id="edit-city" class="profile-field__input"/>
+
+                        <label for="edit-country">Country</label>
+                        <input type="text" id="edit-country" class="profile-field__input"/>
+                    </fieldset>
+
+                    <div class="profile-field">
+                        <label for="edit-password" class="profile-field__label">New Password</label>
+                        
+                        <div class="input-wrap">
+                            <input type="password" id="edit-password" class="profile-field__input">
+                            <button type="button" class="toggle-pw" id="toggle-edit-password">Show</button>
+                        </div>
+
+                        <ul class="pw-requirements">
+                            <li id="edit-req-length">Minimum 8 characters</li>
+                            <li id="edit-req-upper">At least one capital letter</li>
+                            <li id="edit-req-number">At least one number</li>
+                            <li id="edit-req-special">At least one special character (! @ # $ % & *)</li>
+                        </ul>
+
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="profile-field__input">
+                        <p class="profile-field__error password-error"></p>
+                    </div>
+
+                    <div class="profile-edit-form__actions">
+                        <button type="button" id="save-profile-btn" class="btn btn--primary">Save</button>
+                        <button type="button" id="cancel-edit-btn" class="btn btn--outline">Cancel</button>
+                    </div>
+
+                    <p class="profile-field__error save-error"></p>
+
                 </form>
-            </div>
+            </section>
             
 
             <!-- ORDER HISTORY -->
