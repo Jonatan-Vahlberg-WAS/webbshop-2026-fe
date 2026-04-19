@@ -238,7 +238,7 @@ function renderHero(product) {
   //Hero Timer
   countdownTimer(product.dropDate, heroProductTimer);
 
-  heroBtn.addEventListener("click", () => goToProduct(product.id));
+  heroBtn.addEventListener("click", () => goToProduct(product._id));
 }
 
 function getNextDrop(products) {
