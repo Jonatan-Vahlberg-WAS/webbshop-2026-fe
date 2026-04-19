@@ -34,6 +34,7 @@
             </div>
             <div class="profile-hero-actions">
             <button class="btn btn--outline" id="edit-profile-btn">Edit Profile</button>
+            <p class="save-success"></p>
             <!--<button class="btn btn--primary" id="logout-btn">Log Out</button>-->
             </div>
         </section>
@@ -41,7 +42,68 @@
         <div class="profile-container">
 
             <!-- LEFT COLUMN -->
-            <div class="profile-left">
+            <!-- <div class="profile-left"> -->
+
+            <!-- PROFILE INFO-->
+            <div class="profile-section" id="profile-info-section">
+                <h2 class="profile-section-title">My Profile</h2>
+                <h3>Email</h3>
+                <div class="profile-email"></div>
+                <h3>Address</h3>
+                <div class="profile-address"></div>
+                <div class="add-address">
+                    <button class="btn btn--outline">Add Address</button>
+                </div>
+                <h3>Password</h3>
+                <div class="profile-password"></div>
+            </div>
+
+            <!-- PROFILE INFO EDIT-->
+            <div class="profile-section hidden" id="profile-edit-section">
+                <h2 class="profile-section-title">Edit Profile</h2>
+                <form>
+                    <h3>Name</h3>
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name"/>
+                    <p class="name-error"></p>
+
+                    <h3>Email</h3>
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email"/>
+                    <p class="email-error"></p>
+
+                    <h3>Address</h3>
+                    <label for="edit-street">Street</label>
+                    <input type="text" id="edit-street"/>
+                    <label for="edit-postal-code">Postal Code</label>
+                    <input type="text" id="edit-postal-code"/>
+                    <label for="edit-city">City</label>
+                    <input type="text" id="edit-city"/>
+                    <label for="edit-country">Country</label>
+                    <input type="text" id="edit-country"/>
+
+                    <h3>Password</h3>
+                    <label for="edit-password">New Password</label>
+                    <div class="input-wrap">
+                        <input type="password" id="edit-password">
+                        <button type="button" class="toggle-pw" id="toggle-edit-password">Show</button>
+                    </div>
+                    <ul class="pw-requirements">
+                        <li id="edit-req-length">Minimum 8 characters</li>
+                        <li id="edit-req-upper">At least one capital letter</li>
+                        <li id="edit-req-number">At least one number</li>
+                        <li id="edit-req-special">At least one special character (! @ # $ % & *)</li>
+                    </ul>
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password">
+                    <p class="password-error"></p>
+
+                    <button type="button" id="save-profile-btn">Save</button>
+                    <p class="save-error"></p>
+                    <button type="button" id="cancel-edit-btn">Cancel</button>
+                </form>
+            </div>
+            
 
             <!-- ORDER HISTORY -->
             <section class="profile-section" id="order-history-section">
@@ -62,7 +124,7 @@
             </div>
 
             <!-- RIGHT COLUMN -->
-            <div class="profile-right">
+            <!-- <div class="profile-right"> -->
 
             </div>
         </div>

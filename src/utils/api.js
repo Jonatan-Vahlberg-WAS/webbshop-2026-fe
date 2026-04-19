@@ -173,11 +173,10 @@ export async function postOrder(order) {
 //Temp version
 export async function getMyOrders(userId) {
   const url = new URL("orders", getBaseUrl());
-  url.searchParams.append("userId", userId);
 
   try {
     const response = await axios.get(url);
-    return response.data;
+    return response.data.filter((order) => order.user.id === userId);
   } catch (error) {
     console.error("API error:", error);
     return [];
@@ -309,6 +308,19 @@ export async function loginUser(email, password) {
   }
 }
 
+//Update user data in the API
+export async function updateUser(user) {
+  const url = new URL(`users/${user.id}`, getBaseUrl()).toString(); //TODO: Update to ._id later
+
+  try {
+    const response = await axios.put(url, user);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return null;
+  }
+}
+
 //add item to wishlist
 export async function addWishlist(productId, variantId) {
   const url = new URL(`/users/me/wishlist`, getBaseUrl()).toString();
@@ -334,6 +346,45 @@ export async function addWishlist(productId, variantId) {
       "Error updating user:",
       error.response?.data || error.message,
     );
+    return null;
+  }
+}
+
+//API: remove item from wishlist
+// export async function removeFromWishlist(token, productId, variantId) {
+//   const url = new URL("users/me/wishlist", getBaseUrl().toString());
+//   try {
+//     const response = await axios.delete(url, {
+//       headers: { Authorization: `Bearer ${token}`},
+//       data: { product: productId, variant: variantId }
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error removing from wishlist:", error);
+//     return null;
+//   }
+// }
+
+export async function updateOrder(id, data) {
+  const url = new URL(`orders/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating order:", error);
+    return null;
+  }
+}
+
+export async function flagUser(id, isFlagged) {
+  const url = new URL(`users/${id}`, getBaseUrl()).toString();
+
+  try {
+    const response = await axios.patch(url, { isFlagged });
+    return response.data;
+  } catch (error) {
+    console.error("Error flagging user:", error);
     return null;
   }
 }

@@ -162,7 +162,7 @@ export async function renderProductDetail() {
 
       wishlist = currentUser?.wishlist || [];
 
-      // ✅ proper duplicate check
+      //Duplicate check
       const alreadyExists = wishlist.some(
         (item) =>
           item.product === product._id && item.variant === selectedVariant._id,

@@ -8,6 +8,8 @@ import {
   updateProduct,
   updateVariant,
   deleteVariant,
+  updateOrder,
+  flagUser,
 } from "../utils/api.js";
 import { generateObjectId, decodeToken } from "../utils/utility.js";
 
@@ -27,10 +29,6 @@ function checkIfAdmin() {
 if (!checkIfAdmin()) throw new Error("Not admin");
 
 let editingProductId = null;
-let cancelEditBtn = document.createElement("button");
-cancelEditBtn.innerText = "Cancel";
-cancelEditBtn.type = "button";
-cancelEditBtn.style.display = "none";
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
@@ -192,6 +190,9 @@ function renderProductTable(products, variants) {
       statusBtn.addEventListener("click", async () => {
         await updateProduct(product._id, { status: "live" });
         await onPageLoad();
+        dropStatus.innerText = "live";
+        statusBtn.innerText = "Mark Sold Out";
+        statusBtn.style.backgroundColor = "orange";
       });
 
       productActions.append(editBtn, statusBtn);
@@ -204,6 +205,10 @@ function renderProductTable(products, variants) {
       statusBtn.addEventListener("click", async () => {
         await updateProduct(product._id, { status: "sold out" });
         await onPageLoad();
+        product.status = "sold out";
+        dropStatus.innerText = "sold out";
+        statusBtn.innerText = "Go Live";
+        statusBtn.style.backgroundColor = "green";
       });
 
       productActions.append(editBtn, statusBtn);
@@ -227,11 +232,64 @@ function renderProductTable(products, variants) {
 
         await updateProduct(product._id, { status: "live" });
         await onPageLoad();
+        product.status = "live";
+        dropStatus.innerText = "live";
+        statusBtn.innerText = "Mark Sold Out";
+        statusBtn.style.backgroundColor = "orange";
       });
 
       productActions.append(editBtn, statusBtn);
       variantActions.append(updateStockBtn, deleteBtn);
     }
+
+    // Row clickable — show product detail modal
+    tr.style.cursor = "pointer";
+
+    tr.addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON" || e.target.tagName === "INPUT") return;
+
+      const modal = document.querySelector("#product-detail-modal");
+      const modalVariants = document.querySelector("#modal-product-variants");
+
+      modalVariants.innerHTML = "";
+
+      const formatDate = (dateStr) => {
+        const d = new Date(dateStr);
+        return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+      };
+
+      document.querySelector("#modal-product-name").innerText = product.name;
+      document.querySelector("#modal-product-status").innerText =
+        product.status;
+      document.querySelector("#modal-product-price").innerText =
+        `$${product.price}`;
+      document.querySelector("#modal-product-description").innerText =
+        product.description;
+      document.querySelector("#modal-product-dropdate").innerText = formatDate(
+        product.dropDate,
+      );
+      document.querySelector("#modal-product-image").src =
+        product.image || "https://placehold.co/120x120";
+
+      // show details for this product
+      const productVariants = variants.filter(
+        (v) => v.productId === product._id,
+      );
+      productVariants.forEach((v) => {
+        const tr = document.createElement("tr");
+        const size = document.createElement("th");
+        const stock = document.createElement("th");
+
+        size.innerText = v.size;
+        stock.innerText = v.stock;
+        stock.style.color = getStockColor(v.stock);
+
+        tr.append(size, stock);
+        modalVariants.append(tr);
+      });
+
+      modal.style.display = "flex";
+    });
 
     tr.append(
       name,
@@ -257,19 +315,29 @@ function renderUserTable(users, orders) {
     const userOrders = orders.filter((o) => o.user?.id === user._id);
 
     const tr = document.createElement("tr");
+    tr.dataset.userId = user._id;
     const name = document.createElement("th");
     const email = document.createElement("th");
     const numOfOrders = document.createElement("th");
+    const numOfWishlists = document.createElement("th");
     const Actions = document.createElement("th");
 
-    name.innerText = user.name;
+    name.innerText = user.isFlagged ? `🚩 ${user.name}` : user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
+    numOfWishlists.innerText = user.wishlist?.length ?? 0;
+
+    if (user.isFlagged) {
+      tr.style.backgroundColor = "#ffe0e0";
+    }
 
     const flagBtn = document.createElement("button");
-    flagBtn.innerText = "Flag";
+    flagBtn.innerText = user.isFlagged ? "Unflag" : "Flag";
+    flagBtn.style.backgroundColor = user.isFlagged ? "gray" : "red";
+    flagBtn.style.color = "white";
+
     const viewOrdersBtn = document.createElement("button");
-    viewOrdersBtn.innerText = "View Orders";
+    viewOrdersBtn.innerText = "Order History";
 
     viewOrdersBtn.addEventListener("click", () => {
       const modal = document.querySelector("#user-orders-modal");
@@ -331,33 +399,41 @@ function renderUserTable(users, orders) {
       modal.style.display = "flex";
     });
 
-    // Close modal
-    document.querySelector("#close-modal-btn").addEventListener("click", () => {
-      document.querySelector("#user-orders-modal").style.display = "none";
-    });
+    //Assuming this is old code, but didn't know if i should remove it
+    // // Close modal
+    // document.querySelector("#close-modal-btn").addEventListener("click", () => {
+    //   document.querySelector("#user-orders-modal").style.display = "none";
+    // });
 
-    // Close modal when clicking outside
-    document
-      .querySelector("#user-orders-modal")
-      .addEventListener("click", (e) => {
-        if (e.target._id === "user-orders-modal") {
-          document.querySelector("#user-orders-modal").style.display = "none";
-        }
-      });
-    // Print modal
-    document.querySelector("#print-modal-btn").addEventListener("click", () => {
-      window.print();
-    });
+    // // Close modal when clicking outside
+    // document
+    //   .querySelector("#user-orders-modal")
+    //   .addEventListener("click", (e) => {
+    //     if (e.target._id === "user-orders-modal") {
+    //       document.querySelector("#user-orders-modal").style.display = "none";
+    //     }
+    //   });
+    // // Print modal
+    // document.querySelector("#print-modal-btn").addEventListener("click", () => {
+    //   window.print();
+    // });
+
+    // Actions.append(viewOrdersBtn, flagBtn);
+
+    // tr.append(name, email, numOfOrders, Actions);
+    //   document.body.classList.add("modal-open");
+
+    // });
 
     Actions.append(viewOrdersBtn, flagBtn);
 
-    tr.append(name, email, numOfOrders, Actions);
+    tr.append(name, email, numOfOrders, numOfWishlists, Actions);
     userList.append(tr);
   });
 }
 
 //function to view all orders
-function renderOrderTable(products, variants, users, orders) {
+function renderOrderTable(products, users, orders) {
   const orderList = document.querySelector(".admin-order-tbody");
 
   // filter logic
@@ -379,7 +455,8 @@ function renderOrderTable(products, variants, users, orders) {
     const orderUser = users.find((u) => u._id === order.user?.id);
     if (!orderUser) return false;
 
-    const matchCustomer = orderUser.name.toLowerCase().includes(customerFilter);
+    const matchCustomer =
+      orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
     const matchProduct = productItems.some((item) => {
       const product = products.find((p) => p._id === item.productId);
       return product?.name.toLowerCase().includes(productFilter);
@@ -435,13 +512,119 @@ function renderOrderTable(products, variants, users, orders) {
     date.innerText = new Date(order.createdAt).toLocaleDateString();
     status.innerText = order.status;
 
-    const viewOrder = document.createElement("button");
-    viewOrder.innerText = "View Order";
+    const viewOrderBtn = document.createElement("button");
+    viewOrderBtn.innerText = "Order Detail";
+
+    viewOrderBtn.addEventListener("click", () => {
+      const modal = document.querySelector("#order-detail-modal");
+      const modalTbody = document.querySelector("#modal-order-products");
+
+      modalTbody.innerHTML = "";
+
+      document.querySelector("#modal-order-id").innerText =
+        `Order #${order._id}`;
+      document.querySelector("#modal-order-date").innerText = new Date(
+        order.createdAt,
+      ).toLocaleDateString();
+      document.querySelector("#modal-order-customer").innerText =
+        order.user.name;
+      document.querySelector("#modal-order-status").innerText = order.status;
+      document.querySelector("#modal-order-total").innerText =
+        `$${order.totalCost}`;
+
+      const address = order.user.address;
+      document.querySelector("#modal-order-address").innerText = address
+        ? `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`
+        : "No address on file";
+
+      order.products.forEach((product) => {
+        const tr = document.createElement("tr");
+        const productName = document.createElement("th");
+        const size = document.createElement("th");
+        const price = document.createElement("th");
+
+        productName.innerText = product.name;
+        size.innerText = product.size;
+        price.innerText = `$${product.price}`;
+
+        tr.append(productName, size, price);
+        modalTbody.append(tr);
+      });
+
+      modal.style.display = "flex";
+      document.body.classList.add("modal-open");
+    });
+
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
-    const refundBtn = document.createElement("button");
-    refundBtn.innerText = "Refund";
-    Actions.append(viewOrder, updateStatusBtn, refundBtn);
+    updateStatusBtn.classList.add("btn-update-status");
+
+    updateStatusBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+
+      // create dropdown for changing order status
+      const validStatuses = [
+        "pending",
+        "confirmed",
+        "shipped",
+        "delivered",
+        "cancelled",
+      ];
+      const currentStatus = status.innerText;
+
+      const select = document.createElement("select");
+      validStatuses.forEach((s) => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.innerText = s.charAt(0).toUpperCase() + s.slice(1);
+        if (s === currentStatus) option.selected = true;
+        select.append(option);
+      });
+
+      const saveBtn = document.createElement("button");
+      saveBtn.innerText = "Save";
+      saveBtn.classList.add("save-status-btn");
+
+      // replace dropdown + save
+      updateStatusBtn.replaceWith(select);
+      select.after(saveBtn);
+      select.classList.add("status-select");
+
+      saveBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const newStatus = select.value;
+
+        if (newStatus === currentStatus) {
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+          return;
+        }
+
+        // confirm status delivered and cancelled because they are irreversible
+        if (newStatus === "delivered" || newStatus === "cancelled") {
+          const confirmed = window.confirm(
+            `Are you sure you want to mark this order as "${newStatus}"?`,
+          );
+          if (!confirmed) return;
+        }
+
+        const result = await updateOrder(order._id, { status: newStatus });
+
+        if (result) {
+          status.innerText = newStatus;
+          order.status = newStatus;
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+          alert(`Order status updated to ${newStatus}.`);
+        } else {
+          alert("Failed to update order status. Please try again.");
+          select.replaceWith(updateStatusBtn);
+          saveBtn.remove();
+        }
+      });
+    });
+
+    Actions.append(viewOrderBtn, updateStatusBtn);
 
     tr.append(orderId, date, userName, numOfItems, price, status, Actions);
     orderList.append(tr);
@@ -476,54 +659,137 @@ async function onPageLoad() {
 
   renderProductTable(products, variants);
   renderUserTable(users, orders);
-  renderOrderTable(products, variants, users, orders);
+  renderOrderTable(products, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
-
-  const form = document.querySelector(".create-product-form");
-  form.append(cancelEditBtn);
-  cancelEditBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    cancelEdit();
-  });
 }
 
 onPageLoad();
+
+// Close product detail modal
+document
+  .querySelector("#close-product-modal-btn")
+  .addEventListener("click", () => {
+    document.querySelector("#product-detail-modal").style.display = "none";
+  });
+
+document
+  .querySelector("#product-detail-modal")
+  .addEventListener("click", (e) => {
+    if (e.target.id === "product-detail-modal") {
+      document.querySelector("#product-detail-modal").style.display = "none";
+    }
+  });
+
+const cancelEditBtn = document.querySelector("#cancel-edit-btn");
+cancelEditBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  cancelEdit();
+});
+
+// Close order detail modal
+document
+  .querySelector("#close-order-modal-btn")
+  .addEventListener("click", () => {
+    document.querySelector("#order-detail-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
+  });
+
+document.querySelector("#order-detail-modal").addEventListener("click", (e) => {
+  if (e.target.id === "order-detail-modal") {
+    document.querySelector("#order-detail-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
+});
+
+document
+  .querySelector("#print-order-modal-btn")
+  .addEventListener("click", () => {
+    window.print();
+  });
+
+// Close user order history modal
+document.querySelector("#close-modal-btn").addEventListener("click", () => {
+  document.querySelector("#user-orders-modal").style.display = "none";
+  document.body.classList.remove("modal-open");
+});
+
+document.querySelector("#user-orders-modal").addEventListener("click", (e) => {
+  if (e.target.id === "user-orders-modal") {
+    document.querySelector("#user-orders-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
+});
+
+document.querySelector("#print-modal-btn").addEventListener("click", () => {
+  window.print();
+});
+
+document
+  .querySelector(".admin-user-tbody")
+  .addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (
+      e.target.innerText.toLowerCase() !== "flag" &&
+      e.target.innerText.toLowerCase() !== "unflag"
+    )
+      return;
+
+    // find the user id and current flag status
+    const flagBtn = e.target;
+    const tr = flagBtn.closest("tr");
+    const nameCell = tr.querySelector("th:nth-child(1)");
+    const isFlagged = flagBtn.innerText.toLowerCase() === "unflag";
+    const userId = tr.dataset.userId;
+
+    try {
+      await flagUser(userId, !isFlagged);
+      flagBtn.innerText = !isFlagged ? "Unflag" : "Flag";
+      flagBtn.style.backgroundColor = !isFlagged ? "gray" : "red";
+      tr.style.backgroundColor = !isFlagged ? "#ffe0e0" : "";
+      nameCell.innerText = !isFlagged
+        ? `🚩 ${nameCell.innerText}`
+        : nameCell.innerText.replace("🚩 ", "");
+    } catch (error) {
+      alert("Failed to flag account. Please try again.");
+    }
+  });
 
 // Filter listeners — outside onPageLoad to avoid re-attaching on every reload
 document
   .querySelector("#filter-customer")
   .addEventListener("input", async () => {
     const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-product")
   .addEventListener("input", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-status")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-date-from")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
   .querySelector("#filter-date-to")
   .addEventListener("change", async () => {
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 document
@@ -534,8 +800,8 @@ document
     document.querySelector("#filter-date-from").value = "";
     document.querySelector("#filter-date-to").value = "";
     document.querySelector("#filter-status").value = "";
-    const { products, variants, users, orders } = await fetchData();
-    renderOrderTable(products, variants, users, orders);
+    const { products, users, orders } = await fetchData();
+    renderOrderTable(products, users, orders);
   });
 
 // Print button
@@ -681,6 +947,7 @@ createProductBtn.addEventListener("click", () => {
 //Render all products so admin can choose which product to add variants to
 function renderProductSelect(products) {
   const productSelect = document.querySelector("#choose-product");
+  productSelect.innerHTML = "";
 
   products.forEach((product) => {
     const option = document.createElement("option");
