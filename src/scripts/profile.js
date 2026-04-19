@@ -10,6 +10,7 @@ import {
   getProducts,
   getVariants,
   getMe,
+  removeFromWishlist,
 } from "../utils/api.js";
 import {
   formatDateISO,
@@ -374,32 +375,15 @@ function createWishlistCard(product, variant) {
   wishlistCard.appendChild(imageSectionWishlist);
   wishlistCard.appendChild(wishlistCardBody);
 
-  // Fake db version
+  //Remove from wishlist
   removeBtn.addEventListener("click", async () => {
-    const user = getCurrentUser();
+    const token = localStorage.getItem("token");
+    const result = await removeFromWishlist(token, product._id, variant._id);
 
-    const updatedWishlist = fullUser.wishlist.filter(
-      (item) =>
-        !(item.productId === product.id && item.variantId === variant.id),
-    );
-
-    const updatedUser = { ...user, wishlist: updatedWishlist };
-
-    await updateUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-
-    wishlistCard.remove();
+    if (result) {
+      wishlistCard.remove();
+    }
   });
-
-  //API version
-  // removeBtn.addEventListener('click', async () => {
-  //     const token = localStorage.getItem('token');
-  //     const result = await removeFromWishlist(token, product.id, variant.id);
-
-  //     if (result) {
-  //         wishlistCard.remove();
-  //     }
-  // });
 
   return wishlistCard;
 }
