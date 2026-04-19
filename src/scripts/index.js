@@ -134,7 +134,7 @@ async function loadProducts() {
     liveBtn?.addEventListener("click", () => toggleFilter("live", liveBtn));
 
     soldOutBtn?.addEventListener("click", () =>
-      toggleFilter("sold out", soldOutBtn),
+      toggleFilter("sold_out", soldOutBtn),
     );
 
     if (nextDrop && heroImage) {
