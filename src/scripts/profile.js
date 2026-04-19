@@ -118,7 +118,7 @@ function createOrderCard(order) {
   return orderCard;
 }
 
-function editProfile() {
+async function editProfile() {
   const editSection = document.getElementById("profile-edit-section");
   const infoSection = document.getElementById("profile-info-section");
 
@@ -126,23 +126,24 @@ function editProfile() {
   const btnCancel = document.getElementById("cancel-edit-btn");
   const btnSave = document.getElementById("save-profile-btn");
 
-  btnEdit.addEventListener("click", () => {
-    const user = getCurrentUser();
+  const fullUser = await getMe();
 
+  btnEdit.addEventListener("click", () => {
     if (editSection.classList.contains("hidden")) {
       editSection.classList.remove("hidden");
       infoSection.classList.add("hidden");
       btnEdit.textContent = "Cancel edit";
 
-      document.getElementById("edit-name").value = user.name;
-      document.getElementById("edit-email").value = user.email;
+      document.getElementById("edit-name").value = fullUser.name;
+      document.getElementById("edit-email").value = fullUser.email;
 
-      if (user.address) {
-        document.getElementById("edit-street").value = user.address.street;
+      if (fullUser.address) {
+        document.getElementById("edit-street").value = fullUser.address.street;
         document.getElementById("edit-postal-code").value =
-          user.address.postal_code;
-        document.getElementById("edit-city").value = user.address.city;
-        document.getElementById("edit-country").value = user.address.country;
+          fullUser.address.postalCode;
+        document.getElementById("edit-city").value = fullUser.address.city;
+        document.getElementById("edit-country").value =
+          fullUser.address.country;
       }
     } else {
       editSection.classList.add("hidden");
@@ -159,7 +160,6 @@ function editProfile() {
 
   btnSave.addEventListener("click", async (event) => {
     event.preventDefault();
-    const user = getCurrentUser();
 
     const nameError = document.querySelector(".name-error");
     const emailError = document.querySelector(".email-error");
@@ -214,23 +214,22 @@ function editProfile() {
       }
     }
 
-    const updatedUser = {
-      ...user,
+    const data = {
       name: name,
       email: email,
       address: {
         street: street,
-        postal_code: postalCode,
+        postalCode: postalCode,
         city: city,
         country: country,
       },
     };
 
     if (editPassword) {
-      updatedUser.password = editPassword;
+      data.password = editPassword;
     }
 
-    const result = await updateUser(updatedUser);
+    const result = await updateUser(fullUser._id, data);
     const saveSuccess = document.querySelector(".save-success");
     const saveError = document.querySelector(".save-error");
 

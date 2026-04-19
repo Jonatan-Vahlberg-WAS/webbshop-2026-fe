@@ -294,11 +294,16 @@ export async function loginUser(email, password) {
 }
 
 //Update user data in the API
-export async function updateUser(user) {
-  const url = new URL(`users/${user.id}`, getBaseUrl()).toString(); //TODO: Update to ._id later
+export async function updateUser(userID, data) {
+  const url = new URL(`users/${userID}`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.put(url, user);
+    const response = await axios.put(url, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
