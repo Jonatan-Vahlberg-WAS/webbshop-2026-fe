@@ -132,56 +132,14 @@ map.on("popupopen", (e) => {
   }
 }); */
 
-/* // popup interactions
-map.on("popupopen", (e) => {
-  console.log("POPUP OPENED");
 
-  const popup = e.popup._contentNode;
-
-  console.log("Popup node:", popup);
-
-  // 🌱 HANDLE ALL CLICKS INSIDE POPUP (robust solution)
-  popup.addEventListener("click", (event) => {
-    const tradeBtn = event.target.closest(".trade-btn");
-    const editBtn = event.target.closest(".edit-btn");
-    const deleteBtn = event.target.closest(".delete-btn");
-
-    // 🌱 BEGÄR BUTTON
-    if (tradeBtn) {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("Du måste logga in först");
-        return;
-      }
-
-      const plantId = tradeBtn.dataset.id;
-
-      console.log("CLICKED ✅");
-      console.log("Plant ID:", plantId);
-
-      alert("Förfrågan skickad 🌱");
-    }
-
-    // ✏️ EDIT BUTTON
-    if (editBtn) {
-      alert("Edit kommer senare");
-    }
-
-    // 🗑 DELETE BUTTON
-    if (deleteBtn) {
-      alert("Delete kommer senare");
-    }
-  });
-}); */
-
-// 🌱 GLOBAL CLICK HANDLER (robust solution)
+// 
 document.addEventListener("click", (event) => {
   const tradeBtn = event.target.closest(".trade-btn");
   const editBtn = event.target.closest(".edit-btn");
   const deleteBtn = event.target.closest(".delete-btn");
 
-  // 🌱 BEGÄR BUTTON
+  // BEGÄR BUTTON
   if (tradeBtn) {
     const token = localStorage.getItem("token");
 
@@ -198,12 +156,12 @@ document.addEventListener("click", (event) => {
     alert("Förfrågan skickad 🌱");
   }
 
-  // ✏️ EDIT
+  // 
   if (editBtn) {
     alert("Edit kommer senare");
   }
 
-  // 🗑 DELETE
+  // 
   if (deleteBtn) {
     alert("Delete kommer senare");
   }
