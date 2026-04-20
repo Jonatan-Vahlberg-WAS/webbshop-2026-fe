@@ -177,6 +177,14 @@ function createProductCard(product) {
   badge.className = "status-badge";
   badge.textContent = product.status;
 
+  if (product.status === "live") {
+    badge.classList.add("status-badge--live");
+  } else if (product.status === "upcoming") {
+    badge.classList.add("status-badge--upcoming");
+  } else {
+    badge.classList.add("status-badge--sold-out");
+  }
+
   imageSection.appendChild(badge);
 
   if (product.image) {
