@@ -14,6 +14,7 @@ async function checkLoginStatus() {
     const ddName = document.getElementById("dd-name");
     const ddEmail = document.getElementById("dd-email");
 
+// Om ingen token - visa bara login-knapp
     if (!token) {
     if (profileIconContainer) profileIconContainer.style.display = "none";
     if (notifLink) notifLink.style.display = "none";
@@ -25,6 +26,7 @@ async function checkLoginStatus() {
     return;
     }
 
+// Hämta användardata
     try {
     const res = await fetch(BASE_URL + "user/me", {
       headers: { Authorization: `Bearer ${token}` }
@@ -34,8 +36,13 @@ async function checkLoginStatus() {
       localStorage.removeItem("token");
       return;
     }
-
     const user = await res.json();
-  
 }
+
+// Visa profil-ikon + notiser
+    if (profileIconContainer) profileIconContainer.style.display = "block";
+    if (notifLink) notifLink.style.display = "block";
+
+    if (ddName) ddName.textContent = user.name;
+    if (ddEmail) ddEmail.textContent = user.email;
 }
