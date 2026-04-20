@@ -25,4 +25,17 @@ async function checkLoginStatus() {
     return;
     }
 
+    try {
+    const res = await fetch(BASE_URL + "user/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      localStorage.removeItem("token");
+      return;
+    }
+
+    const user = await res.json();
+  
+}
 }
