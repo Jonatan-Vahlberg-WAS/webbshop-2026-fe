@@ -195,30 +195,7 @@ document.querySelectorAll(".easy-button-button").forEach(function (button) {
 });
 
 
-//searchLayer is a L.LayerGroup contains searched markers
-let searchLayer = L.layerGroup().addTo(map);
-//... adding data in searchLayer ...
-/* Test to comment out as JS crashed */
-/* map.addControl( new L.Control.Search({layer: searchLayer}) ); */
-/* Test to comment out as JS crashed*/
-/* require(["leaflet", "leafletSearch"],function(L, LeafletSearch) {
 
-	//... initialize leaflet map and dataLayer ...
 
-	map.addControl( new LeafletSearch({
-		layer: dataLayer
-	}) );
-}); */
 
-// ===== TEMP SAFE SEARCH BLOCK (Waraporn test) =====
-try {
-  if (window.L && L.Control && L.Control.Search) {
-    console.log("Search plugin loaded ✅");
-    map.addControl(new L.Control.Search({ layer: searchLayer }));
-  } else {
-    console.warn("Search plugin not available (safe skip)");
-  }
-} catch (err) {
-  console.warn("Search crashed but app continues:", err);
-}
-// ===== END TEMP BLOCK =====
+
