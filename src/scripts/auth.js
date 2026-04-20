@@ -59,7 +59,19 @@ async function checkLoginStatus() {
         }
     });
     }
-    
+
+// Logga ut-knapp
+    if (loginBtn) {
+        loginBtn.textContent = "Logga ut";
+        loginBtn.href = "#";
+        
+        loginBtn.addEventListener("click", () => {
+            alert("Du har loggats ut!"); 
+        localStorage.removeItem("token");
+        window.location.reload();
+      });
+    }
+
     } catch (err) {
     console.error("Auth check error:", err);
   }
