@@ -293,8 +293,8 @@ export async function loginUser(email, password) {
 }
 
 //Update user data in the API
-export async function updateUser(userID, data) {
-  const url = new URL(`users/${userID}`, getBaseUrl()).toString();
+export async function updateUser(data) {
+  const url = new URL(`users/me`, getBaseUrl()).toString();
   const token = localStorage.getItem("token");
 
   try {

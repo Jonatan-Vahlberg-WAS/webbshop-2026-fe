@@ -230,7 +230,7 @@ async function editProfile() {
       data.password = editPassword;
     }
 
-    const result = await updateUser(fullUser._id, data);
+    const result = await updateUser(data);
     const saveSuccess = document.querySelector(".save-success");
     const saveError = document.querySelector(".save-error");
 
