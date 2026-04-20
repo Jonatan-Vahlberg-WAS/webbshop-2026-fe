@@ -132,37 +132,55 @@ map.on("popupopen", (e) => {
   }
 }); */
 
-
-// 
-document.addEventListener("click", (event) => {
+//
+document.addEventListener("click", async (event) => {
   const tradeBtn = event.target.closest(".trade-btn");
-  const editBtn = event.target.closest(".edit-btn");
-  const deleteBtn = event.target.closest(".delete-btn");
+  if (!tradeBtn) return;
 
-  // BEGÄR BUTTON
-  if (tradeBtn) {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    if (!token) {
-      alert("Du måste logga in först");
+  // 🔒 BLOCK immediately if not logged in
+  if (!token) {
+    alert("Du måste logga in först");
+    return;
+  }
+
+  const plantId = tradeBtn.dataset.id;
+
+  try {
+    const res = await fetch(`${BASE_URL}trades/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ plantId }),
+    });
+
+    const data = await res.json();
+
+    // 🔒 Token exists but invalid/expired
+    if (res.status === 401) {
+      alert("Sessionen har gått ut. Logga in igen.");
+      localStorage.removeItem("token");
       return;
     }
 
-    const plantId = tradeBtn.dataset.id;
+    // ❌ Business logic error (own plant etc.)
+    if (!res.ok) {
+      if (data.message === "You cannot trade your own plant") {
+        alert("Du kan inte byta din egen växt");
+      } else {
+        alert("Kunde inte skicka förfrågan");
+      }
+      return;
+    }
 
-    console.log("CLICKED ✅");
-    console.log("Plant ID:", plantId);
-
+    // ✅ SUCCESS
     alert("Förfrågan skickad 🌱");
-  }
 
-  // 
-  if (editBtn) {
-    alert("Edit kommer senare");
-  }
-
-  // 
-  if (deleteBtn) {
-    alert("Delete kommer senare");
+  } catch (error) {
+    console.error(error);
+    alert("Något gick fel");
   }
 });
