@@ -316,6 +316,8 @@ function renderWishlist(wishlistItems) {
   }
 
   wishlistItems.forEach(({ product, variant }) => {
+    if (!product || !variant) return;
+
     const wishlistCard = createWishlistCard(product, variant);
     wishlistContainer.appendChild(wishlistCard);
   });
