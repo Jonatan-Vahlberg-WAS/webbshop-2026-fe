@@ -31,29 +31,35 @@ async function renderCart() {
 
         const cartItem = document.createElement("div");
         cartItem.classList.add("cart-item");
+
         const imgDiv = document.createElement("div");
-        imgDiv.classList.add("product-img");
+        imgDiv.classList.add("cart-item-img");
         const img = document.createElement("img");
-        const namePriceContainer = document.createElement("div");
-        namePriceContainer.classList.add("product-row");
+        img.src = product.image;
+        imgDiv.append(img);
+
+        const infoDiv = document.createElement("div");
+        infoDiv.classList.add("cart-item-info");
+
         const name = document.createElement("span");
         name.classList.add("product-name");
-        const price = document.createElement("span");
-        price.classList.add("product-price");
-        const size = document.createElement("p");
-        size.classList.add("product-size");
-        const removeItemBtn = document.createElement("button");
-        removeItemBtn.innerText = "Remove Item";
-
-        img.src = product.image;
         name.textContent = product.name;
-        price.textContent = `$${product.price}`;
+
+        const size = document.createElement("span");
+        size.classList.add("product-size");
         size.textContent = `Size: ${variant.size} US`;
 
-        imgDiv.append(img);
-        namePriceContainer.append(name, price);
-        cartItem.append(imgDiv, namePriceContainer, size, removeItemBtn);
+        const removeItemBtn = document.createElement("button");
+        removeItemBtn.classList.add("remove-btn");
+        removeItemBtn.innerText = "Remove";
 
+        infoDiv.append(name, size, removeItemBtn);
+
+        const price = document.createElement("span");
+        price.classList.add("product-price");
+        price.textContent = `$${product.price}`;
+
+        cartItem.append(imgDiv, infoDiv, price);
         cartContainer.append(cartItem);
 
         subtotal += product.price;
