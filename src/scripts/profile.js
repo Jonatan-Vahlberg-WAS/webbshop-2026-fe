@@ -79,42 +79,65 @@ function renderMyOrders(orders) {
 
 function createOrderCard(order) {
   const orderCard = document.createElement("div");
-  orderCard.className = "order-card__body";
+  orderCard.className = "order-card";
 
-  const orderDate = document.createElement("p");
-  orderDate.className = "order-date";
-  orderDate.textContent = formatDateISO(order.createdAt);
-  orderCard.appendChild(orderDate);
+  const header = document.createElement("div");
+  header.className = "order-card__header";
 
-  const orderStatus = document.createElement("span");
-  orderStatus.className = "order-status-badge";
-  orderStatus.textContent = order.status;
+  const date = document.createElement("span");
+  date.className = "order-card__date";
+  date.textContent = formatDateISO(order.createdAt);
+
+  const status = document.createElement("span");
+  status.className = "order-card__status";
+  status.textContent = order.status;
 
   if (order.status === "pending") {
-    orderStatus.classList.add("order-status--pending");
+    status.classList.add("order-card__status--pending");
   } else if (order.status === "confirmed") {
-    orderStatus.classList.add("order-status--confirmed");
+    status.classList.add("order-card__status--confirmed");
   } else if (order.status === "shipped") {
-    orderStatus.classList.add("order-status--shipped");
+    status.classList.add("order-card__status--shipped");
   } else if (order.status === "cancelled") {
-    orderStatus.classList.add("order-status--cancelled");
+    status.classList.add("order-card__status--cancelled");
   }
 
-  orderStatus.style.color = "#ffff";
-  orderStatus.style.padding = "3px 7px";
-  orderStatus.style.borderRadius = "4px";
-  orderCard.appendChild(orderStatus);
+  const total = document.createElement("span");
+  total.className = "order-card__total";
+  total.textContent = `$${order.totalCost.toFixed(2)}  ·  ${order.numOfItems} items`;
+
+  header.appendChild(date);
+  header.appendChild(status);
+  header.appendChild(total);
+
+  const productList = document.createElement("ul");
+  productList.className = "order-card__products";
 
   order.products.forEach((product) => {
-    const productInfo = document.createElement("p");
-    productInfo.textContent = `${product.name} — Size ${product.size} — $${product.price.toFixed(2)}`;
-    orderCard.appendChild(productInfo);
+    const item = document.createElement("li");
+    item.className = "order-card__product";
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "order-card__product-name";
+    nameSpan.textContent = product.name;
+
+    const sizeSpan = document.createElement("span");
+    sizeSpan.className = "order-card__product-size";
+    sizeSpan.textContent = `Size ${product.size}`;
+
+    const priceSpan = document.createElement("span");
+    priceSpan.className = "order-card__product-price";
+    priceSpan.textContent = `$${product.price.toFixed(2)}`;
+
+    item.appendChild(nameSpan);
+    item.appendChild(sizeSpan);
+    item.appendChild(priceSpan);
+
+    productList.appendChild(item);
   });
 
-  const orderTotal = document.createElement("p");
-  orderTotal.className = "order-total";
-  orderTotal.textContent = `Total: $${order.totalCost.toFixed(2)} (${order.numOfItems} items)`;
-  orderCard.appendChild(orderTotal);
+  orderCard.appendChild(header);
+  orderCard.appendChild(productList);
 
   return orderCard;
 }
@@ -235,7 +258,7 @@ async function editProfile() {
     const saveError = document.querySelector(".save-error");
 
     if (result) {
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(result));
       // NOTE: saveSuccess message and switch from edit to profile view may not be visible because
       // Live Server reloads the page when db.json changes.
       // This won't be an issue with the real API.
@@ -251,6 +274,13 @@ async function editProfile() {
       saveError.textContent = `Save failed. Try again later`;
     }
   });
+
+  const addAddressBtn = document.querySelector(".add-address button");
+  if (addAddressBtn) {
+    addAddressBtn.addEventListener("click", () => {
+      btnEdit.click();
+    });
+  }
 
   document
     .getElementById("edit-password")
@@ -295,32 +325,68 @@ function createWishlistCard(product, variant) {
   const wishlistCard = document.createElement("div");
   wishlistCard.className = "wishlist-card";
 
-  const imageSectionWishlist = document.createElement("div");
-  imageSectionWishlist.className = "image-wrapper-wishlist";
-
-  if (product.image) {
-    const image = document.createElement("img");
-    image.className = "wishlist-card__image";
-    image.src = product.image;
-    image.alt = product.name;
-    image.loading = "lazy";
-    imageSectionWishlist.appendChild(image);
-  } else {
-    const image = document.createElement("div");
-    image.className = "wishlist-card__image-placeholder";
-    image.textContent = "👟";
-    imageSectionWishlist.appendChild(image);
+  if (product.status !== "upcoming" && product.status !== "live") {
+    wishlistCard.classList.add("wishlist-card--sold-out");
   }
+
+  let imageElement;
+  if (product.image) {
+    imageElement = document.createElement("img");
+    imageElement.className = "wishlist-card__image";
+    imageElement.src = product.image;
+    imageElement.alt = product.name;
+    imageElement.loading = "lazy";
+  } else {
+    imageElement = document.createElement("div");
+    imageElement.className = "wishlist-card__image";
+    imageElement.textContent = "👟";
+  }
+
+  const info = document.createElement("div");
+  info.className = "wishlist-card__info";
+
+  const name = document.createElement("h3");
+  name.className = "wishlist-card__name";
+  name.textContent = product.name;
+
+  const meta = document.createElement("div");
+  meta.className = "wishlist-card__meta";
+
+  const priceSpan = document.createElement("span");
+  const priceLabel = document.createElement("label");
+  priceLabel.textContent = "Price";
+  const priceValue = document.createElement("span");
+  priceValue.className = "value";
+  priceValue.textContent = `$${product.price.toFixed(2)}`;
+  priceSpan.appendChild(priceLabel);
+  priceSpan.appendChild(priceValue);
+
+  const sizeSpan = document.createElement("span");
+  const sizeLabel = document.createElement("label");
+  sizeLabel.textContent = "Size";
+  const sizeValue = document.createElement("span");
+  sizeValue.className = "value";
+  sizeValue.textContent = `US ${variant.size}`;
+  sizeSpan.appendChild(sizeLabel);
+  sizeSpan.appendChild(sizeValue);
+
+  meta.appendChild(priceSpan);
+  meta.appendChild(sizeSpan);
+
+  info.appendChild(name);
+  info.appendChild(meta);
+
+  const statusColumn = document.createElement("div");
+  statusColumn.className = "wishlist-card__status-column";
 
   let statusElement;
   if (product.status === "upcoming") {
     statusElement = document.createElement("p");
-    statusElement.className = "drop-timer";
-    //Add timer to product card
+    statusElement.className = "wishlist-card__countdown";
     countdownTimer(product.dropDate, statusElement);
   } else if (product.status === "live") {
     statusElement = document.createElement("button");
-    statusElement.className = "status-btn";
+    statusElement.className = "btn btn--primary";
     statusElement.textContent = "Buy Now";
 
     statusElement.addEventListener("click", () => {
@@ -329,52 +395,37 @@ function createWishlistCard(product, variant) {
       if (result.success) {
         statusElement.textContent = "Added to Cart";
         statusElement.disabled = true;
+        statusElement.classList.add("btn--added");
         setTimeout(() => {
           statusElement.textContent = "Buy Now";
           statusElement.disabled = false;
+          statusElement.classList.remove("btn--added");
         }, 3000);
       } else if (result.error === "duplicate_size") {
         statusElement.textContent = "Already in Cart";
         statusElement.disabled = true;
+        statusElement.classList.add("btn--added");
         setTimeout(() => {
           statusElement.textContent = "Buy Now";
           statusElement.disabled = false;
+          statusElement.classList.remove("btn--added");
         }, 3000);
       }
     });
   } else {
-    statusElement = document.createElement("button");
-    statusElement.className = "status-btn";
-    statusElement.disabled = true;
-    statusElement.textContent = `Sold Out`;
+    statusElement = document.createElement("span");
+    statusElement.className =
+      "wishlist-card__badge wishlist-card__badge--sold-out";
+    statusElement.textContent = "Sold Out";
   }
-
-  const wishlistCardBody = document.createElement("div");
-  wishlistCardBody.className = "wishlist-card__body";
+  statusColumn.appendChild(statusElement);
 
   const removeBtn = document.createElement("button");
-  removeBtn.className = "wishlist-card__removeBtn";
-  removeBtn.textContent = "Remove product";
-  const name = document.createElement("h3");
-  name.className = "wishlist-card__name";
-  name.textContent = product.name;
-  const price = document.createElement("p");
-  price.className = "wishlist-card__price";
-  price.textContent = `$${product.price.toFixed(2)}`;
-  const size = document.createElement("p");
-  size.className = "wishlist-card__size";
-  size.textContent = `Size: ${variant.size}`;
+  removeBtn.className = "wishlist-card__remove";
+  removeBtn.textContent = "×";
+  removeBtn.title = "Remove from wishlist";
 
-  wishlistCardBody.appendChild(removeBtn);
-  wishlistCardBody.appendChild(name);
-  wishlistCardBody.appendChild(price);
-  wishlistCardBody.appendChild(size);
-  wishlistCardBody.appendChild(statusElement);
-
-  wishlistCard.appendChild(imageSectionWishlist);
-  wishlistCard.appendChild(wishlistCardBody);
-
-  //Remove from wishlist
+  //remove from wishlist
   removeBtn.addEventListener("click", async () => {
     const token = localStorage.getItem("token");
     const result = await removeFromWishlist(token, product._id, variant._id);
@@ -383,6 +434,11 @@ function createWishlistCard(product, variant) {
       wishlistCard.remove();
     }
   });
+
+  wishlistCard.appendChild(imageElement);
+  wishlistCard.appendChild(info);
+  wishlistCard.appendChild(statusColumn);
+  wishlistCard.appendChild(removeBtn);
 
   return wishlistCard;
 }
