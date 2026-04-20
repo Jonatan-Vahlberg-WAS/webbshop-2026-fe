@@ -47,6 +47,10 @@ async function loadProducts() {
           p.name.toLowerCase().includes(searchValue.toLowerCase()),
         );
 
+        filteredProducts = filteredProducts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
+
         filteredProducts = applyFilters(filteredProducts);
 
         productsContainer.innerHTML = "";
@@ -89,6 +93,10 @@ async function loadProducts() {
     } else {
       toRender = products;
     }
+
+    toRender = toRender.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
 
     //Apply active status filters to all products products
     const filteredProducts = applyFilters(toRender);
