@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -22,9 +23,9 @@
 
     <nav class="navbar">
       <div class="nav-left">
-        <a href="index.html" class="nav-link active">Hem</a>
+        <a href="index.html" class="nav-link">Hem</a>
         <a href="map.html" class="nav-link">Karta</a>
-        <a href="addplant.html" class="nav-link">Lägg Till</a>
+        <a href="addplant.html" class="nav-link active">Lägg Till</a>
       </div>
 
       <div class="nav-right">
@@ -68,6 +69,9 @@
           </select>
         </div>
 
+        <!-- MAP HERE -->
+        <div id="select-map" style="height: 300px; "></div>
+
         <button type="submit">Ladda upp</button>
       </form>
 
@@ -109,6 +113,7 @@
 
   <!-- <script type="module" src="./src/scripts/admin.js"></script> -->
   <script type="module" src="./src/scripts/addplant.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </body>
 
 </html>

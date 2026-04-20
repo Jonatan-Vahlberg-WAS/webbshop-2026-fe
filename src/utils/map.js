@@ -2,6 +2,28 @@ import { getPlants } from "./productsApi.js";
 
 export let map = L.map('map');
 
+/* ----------------------------search here-------------------------------------------------------------- */
+var markersLayer = new L.LayerGroup();	//layer contain searched elements
+
+map.addLayer(markersLayer);
+
+
+var controlSearch = new L.Control.Search({
+    position: 'topleft',
+    layer: markersLayer,
+    initial: false,
+    zoom: 18,
+    marker: false,
+    moveToLocation: (latLng, title, map) => {
+        map.setView(latLng, 18);
+        latLng.layer.fireEvent('click');
+    }
+});
+
+
+map.addControl(controlSearch);
+
+/* ----------------------------search end here-------------------------------------------------------------- */
 
 async function loadPlants() {
     try {
@@ -14,10 +36,13 @@ async function loadPlants() {
             const lat = plant.coordinates[0];
             const lng = plant.coordinates[1];
 
-            const marker = L.marker([lat, lng], {tags: 
-            [`Ljusnivå: ${plant.light === 1? "Låg" : plant.light === 2? "Medel" : plant.light === 3? "Hög" : "Okänd"}`,
-            `Vattenbehov: ${plant.water === 1? "Låg" : plant.water === 2? "Medel" : plant.water === 3? "Hög" : "Okänd"}` ]})
-            .addTo(map);
+            const marker = L.marker([lat, lng], {
+                tags: [
+                    `Ljusbehov: ${plant.light === 1 ? "Låg" : plant.light === 2 ? "Medel": plant.light === 3 ? "Hög"  : "Okänd"}`,
+                    `Vattenbehov: ${plant.water === 1 ? "Låg" : plant.water === 2 ? "Medel" : plant.water === 3 ? "Hög" : "Okänd"}`
+                ],
+                    title: plant.plantName
+                }).addTo(map);
 
             // safer current user check (since backend auth not ready)
             const isOwner = false;
@@ -25,13 +50,13 @@ async function loadPlants() {
             marker.bindPopup(
             `
             <div class="popup-content">
-            <h3>${plant.plantName || "Okänd växt"}</h3>
+            <h3>Namn: ${plant.plantName || "Okänd växt"}</h3>
         
-            <p>${plant.description || "Ingen beskrivning"}</p>
+            <p>Beskrivning: ${plant.description || "Ingen beskrivning"}</p>
         
-            <p>Ljusnivå: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medium" : plant.light === 3? "Hög" : "Okänd"}</p>
+            <p>Ljusbehov: ${plant.light === 1? "Låg" : plant.light ===2 ? "Medel" : plant.light === 3? "Hög" : "Okänd"}</p>
+            <p>Vattenbehov: ${plant.water === 1? "Låg" : plant.water ===2 ? "Medel" : plant.water === 3? "Hög" : "Okänd"}</p>
 
-            <p>Vattenbehov: ${plant.water === 1? "Låg" : plant.water ===2? "Medium" : plant.water === 3? "Hög" : "Okänd"}</p>
         
             <p>Ägare: ${plant.ownerName || "Okänd"}</p>
         
@@ -63,6 +88,8 @@ async function loadPlants() {
                 },
             );
 
+            markersLayer.addLayer(marker);
+
             // focus first marker
             if (index === 0) {
                 marker.openPopup();
@@ -78,7 +105,7 @@ loadPlants();
 
 map.setView([59.325441, 18.071614], 13);
 
-map.addControl(new L.Control.FullScreen());
+/* map.addControl(new L.Control.FullScreen()); */
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -127,16 +154,9 @@ function error(err) {
 }
 
 
-// easy button external plugin
-// L.easyButton('fa-solid fa-slider', function () {
-//     // window.location.href = NEW_DOCS_LOCATION;
-//     window.location.href = "index.html";
-// }).addTo(map);
-
-
 //filter sunlight for plants
 L.control.tagFilterButton({
-    data: ['Ljusnivå: Låg', 'Ljusnivå: Medel', 'Ljusnivå: Hög'],
+    data: ['Ljusbehov: Låg', 'Ljusbehov: Medel', 'Ljusbehov: Hög'],
     icon: '<i class="fa-solid fa-sun"></i>',
     filterOnEveryClick: true
 }).addTo(map);
@@ -170,4 +190,9 @@ document.querySelectorAll(".easy-button-button").forEach(function (button) {
         });
     });
 });
+
+
+
+
+
 
