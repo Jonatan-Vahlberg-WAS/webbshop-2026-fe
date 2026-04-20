@@ -12,7 +12,13 @@ import {
   flagUser,
   deleteProduct,
 } from "../utils/api.js";
-import { generateObjectId, decodeToken } from "../utils/utility.js";
+import {
+  generateObjectId,
+  decodeToken,
+  updateCartBadge,
+} from "../utils/utility.js";
+
+updateCartBadge();
 
 //Guard against manually going to admin page by a user
 function checkIfAdmin() {

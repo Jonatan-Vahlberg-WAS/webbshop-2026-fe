@@ -188,3 +188,19 @@ export function decodeToken(token) {
     return null;
   }
 }
+
+//bande count for cart
+export function updateCartBadge() {
+  const badge = document.querySelector(".cart-badge");
+  if (!badge) return;
+
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const count = cart.length;
+
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
+  }
+}

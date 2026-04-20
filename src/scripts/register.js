@@ -1,20 +1,23 @@
-import { registerUser, loginUser } from "../utils/api.js" 
-import { initLogin, togglePassword } from "../utils/auth.js" 
+import { registerUser, loginUser } from "../utils/api.js";
+import { initLogin, togglePassword } from "../utils/auth.js";
+import { updateCartBadge } from "../utils/utility.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  initRegister()
-  initLogin()      // from auth.js
-})
+updateCartBadge();
+
+document.addEventListener("DOMContentLoaded", () => {
+  initRegister();
+  initLogin(); // from auth.js
+});
 
 //Shows the register form and hides the login form
 function showRegister() {
-  document.getElementById('login-section').classList.add('hidden')
-  document.getElementById('register-section').classList.remove('hidden')
+  document.getElementById("login-section").classList.add("hidden");
+  document.getElementById("register-section").classList.remove("hidden");
 }
 
 function showLogin() {
-  document.getElementById('register-section').classList.add('hidden')
-  document.getElementById('login-section').classList.remove('hidden')
+  document.getElementById("register-section").classList.add("hidden");
+  document.getElementById("login-section").classList.remove("hidden");
 }
 
 // Initializes event listeners for the registration form
@@ -26,21 +29,36 @@ function initRegister() {
     handleRegister();
   });
 
-  document.getElementById("go-to-register-btn")
-    .addEventListener("click", showRegister)
+  document
+    .getElementById("go-to-register-btn")
+    .addEventListener("click", showRegister);
 
-  document.getElementById("go-to-login-btn")
-    .addEventListener("click", showLogin)
+  document
+    .getElementById("go-to-login-btn")
+    .addEventListener("click", showLogin);
 
   // toggle password buttons
-  document.getElementById("toggle-register-password")
-    .addEventListener("click", () => togglePassword("register-password", document.getElementById("toggle-register-password")));
+  document
+    .getElementById("toggle-register-password")
+    .addEventListener("click", () =>
+      togglePassword(
+        "register-password",
+        document.getElementById("toggle-register-password"),
+      ),
+    );
 
-  document.getElementById("toggle-register-confirm")
-    .addEventListener("click", () => togglePassword("register-confirm", document.getElementById("toggle-register-confirm")));
+  document
+    .getElementById("toggle-register-confirm")
+    .addEventListener("click", () =>
+      togglePassword(
+        "register-confirm",
+        document.getElementById("toggle-register-confirm"),
+      ),
+    );
 
-    // real-time password check
-  document.getElementById("register-password")
+  // real-time password check
+  document
+    .getElementById("register-password")
     .addEventListener("input", checkPasswordRules);
 }
 
@@ -49,9 +67,9 @@ function checkPasswordRules() {
   const password = document.getElementById("register-password").value;
 
   const rules = {
-    "req-length":  password.length >= 8,
-    "req-upper":   /[A-Z]/.test(password),
-    "req-number":  /[0-9]/.test(password),
+    "req-length": password.length >= 8,
+    "req-upper": /[A-Z]/.test(password),
+    "req-number": /[0-9]/.test(password),
     "req-special": /[!@#$%&*]/.test(password),
   };
 
@@ -60,7 +78,7 @@ function checkPasswordRules() {
     if (passed) {
       el.style.color = passed ? "green" : "red";
     } else {
-      el.style.color = "";  // reset to default
+      el.style.color = ""; // reset to default
     }
   }
 }
@@ -90,7 +108,8 @@ async function handleRegister() {
     return;
   }
   if (!/[!@#$%&*]/.test(password)) {
-    errorMsg.textContent = "Password must contain at least one special character (! @ # $ % & *).";
+    errorMsg.textContent =
+      "Password must contain at least one special character (! @ # $ % & *).";
     return;
   }
   if (password !== confirm) {
@@ -106,18 +125,21 @@ async function handleRegister() {
     const user = users[0];
     const fakeToken = "mock-token-" + user.id;
     localStorage.setItem("token", fakeToken);
-    localStorage.setItem("user", JSON.stringify({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      address: user.address,
-      wishlist: user.wishlist,
-    }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        address: user.address,
+        wishlist: user.wishlist,
+      }),
+    );
 
     window.location.href = "index.html";
-
   } catch (error) {
-    errorMsg.textContent = error.message || "Registration failed. Please try again.";
+    errorMsg.textContent =
+      error.message || "Registration failed. Please try again.";
   }
 }
