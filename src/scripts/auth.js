@@ -37,7 +37,7 @@ async function checkLoginStatus() {
       return;
     }
     const user = await res.json();
-}
+
 
 // Visa profil-ikon + notiser
     if (profileIconContainer) profileIconContainer.style.display = "block";
@@ -45,4 +45,24 @@ async function checkLoginStatus() {
 
     if (ddName) ddName.textContent = user.name;
     if (ddEmail) ddEmail.textContent = user.email;
+
+// Dropdown-logik 
+    if (profileIcon && profileDropdown) {
+        profileIcon.addEventListener("click", () => {
+            profileDropdown.style.display =
+            profileDropdown.style.display === "block" ? "none" : "block";
+        });
+
+    document.addEventListener("click", (e) => {
+        if (!profileIconContainer.contains(e.target)) {
+            profileDropdown.style.display = "none";
+        }
+    });
+    }
+    
+    } catch (err) {
+    console.error("Auth check error:", err);
+  }
 }
+
+document.addEventListener("DOMContentLoaded", checkLoginStatus);
