@@ -188,7 +188,7 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct(product._id, { status: "live" });
+        await updateProduct(product._id, { ...product, status: "live" });
         await onPageLoad();
         dropStatus.innerText = "live";
         statusBtn.innerText = "Mark Sold Out";
@@ -203,7 +203,10 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct(product._id, { status: "sold out" });
+        await updateProduct(product._id, {
+          ...product,
+          status: "sold_out",
+        });
         await onPageLoad();
         product.status = "sold out";
         dropStatus.innerText = "sold out";
@@ -230,7 +233,7 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateProduct(product._id, { status: "live" });
+        await updateProduct(product._id, { ...product, status: "live" });
         await onPageLoad();
         product.status = "live";
         dropStatus.innerText = "live";
