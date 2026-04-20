@@ -380,3 +380,19 @@ export async function flagUser(id, isFlagged) {
     return null;
   }
 }
+
+//Delete Product
+export async function deleteProduct(id) {
+  const url = new URL(`admin/products/${id}`, getBaseUrl()).toString();
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await axios.delete(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return null;
+  }
+}

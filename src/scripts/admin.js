@@ -10,6 +10,7 @@ import {
   deleteVariant,
   updateOrder,
   flagUser,
+  deleteProduct,
 } from "../utils/api.js";
 import { generateObjectId, decodeToken } from "../utils/utility.js";
 
@@ -1035,6 +1036,23 @@ const addVariantBtn = document.querySelector("#create-variant-btn");
 addVariantBtn.addEventListener("click", () => {
   createVariant();
 });
+
+//Function to delete product
+async function removeProduct() {
+  const productSelect = document.querySelector("#choose-product");
+  const productId = productSelect.value;
+  const result = await deleteProduct(productId);
+
+  if (result) {
+    const selectedOption = productSelect.querySelector(
+      `option[value="${productId}"]`,
+    );
+    selectedOption.remove();
+  }
+}
+
+const deleteProductBtn = document.querySelector("#delete-product-btn");
+deleteProductBtn.addEventListener("click", removeProduct);
 
 //For tabs rendering
 const tabButtons = document.querySelectorAll(".tabs button");
