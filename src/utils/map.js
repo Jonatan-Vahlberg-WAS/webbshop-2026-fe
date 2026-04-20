@@ -195,16 +195,7 @@ document.querySelectorAll(".easy-button-button").forEach(function (button) {
 });
 
 
-//searchLayer is a L.LayerGroup contains searched markers
-let searchLayer = L.layerGroup().addTo(map);
-//... adding data in searchLayer ...
-map.addControl( new L.Control.Search({layer: searchLayer}) );
 
-require(["leaflet", "leafletSearch"],function(L, LeafletSearch) {
 
-	//... initialize leaflet map and dataLayer ...
 
-	map.addControl( new LeafletSearch({
-		layer: dataLayer
-	}) );
-});
+
