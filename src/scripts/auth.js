@@ -63,7 +63,7 @@ async function checkLoginStatus() {
 // Logga ut-knapp
     if (loginBtn) {
         loginBtn.textContent = "Logga ut";
-        loginBtn.href = "#";
+        loginBtn.href = "index.html";
         
         loginBtn.addEventListener("click", () => {
             alert("Du har loggats ut!"); 
