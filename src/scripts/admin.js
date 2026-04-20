@@ -11,7 +11,22 @@ import {
   updateOrder,
   flagUser,
 } from "../utils/api.js";
-import { generateObjectId } from "../utils/utility.js";
+import { generateObjectId, decodeToken } from "../utils/utility.js";
+
+//Guard against manually going to admin page by a user
+function checkIfAdmin() {
+  const token = localStorage.getItem("token");
+  const decodedToken = decodeToken(token);
+
+  if (decodedToken.isAdmin === false) {
+    document.body.innerHTML = "You Can't be here! Begone!";
+    return false;
+  }
+
+  return true;
+}
+
+if (!checkIfAdmin()) throw new Error("Not admin");
 
 let editingProductId = null;
 
@@ -98,7 +113,13 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateVariant(variant.id, { stock: newStock });
+        const result = await updateVariant(variant._id, { stock: newStock });
+
+        //Guard so that the stock display doesn't change if updatevariant fails
+        if (!result) {
+          alert("Failed to update stock. Please try again.");
+          return;
+        }
 
         stockText.innerText = newStock;
         stockText.style.color = getStockColor(newStock);
@@ -167,7 +188,8 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct({ ...product, status: "live" });
+        await updateProduct(product._id, { status: "live" });
+        await onPageLoad();
         dropStatus.innerText = "live";
         statusBtn.innerText = "Mark Sold Out";
         statusBtn.style.backgroundColor = "orange";
@@ -181,7 +203,8 @@ function renderProductTable(products, variants) {
       statusBtn.style.color = "white";
 
       statusBtn.addEventListener("click", async () => {
-        await updateProduct({ ...product, status: "sold out" });
+        await updateProduct(product._id, { status: "sold out" });
+        await onPageLoad();
         product.status = "sold out";
         dropStatus.innerText = "sold out";
         statusBtn.innerText = "Go Live";
@@ -207,7 +230,8 @@ function renderProductTable(products, variants) {
           return;
         }
 
-        await updateProduct({ ...product, status: "live" });
+        await updateProduct(product._id, { status: "live" });
+        await onPageLoad();
         product.status = "live";
         dropStatus.innerText = "live";
         statusBtn.innerText = "Mark Sold Out";
@@ -219,45 +243,53 @@ function renderProductTable(products, variants) {
     }
 
     // Row clickable — show product detail modal
-      tr.style.cursor = "pointer";
+    tr.style.cursor = "pointer";
 
-      tr.addEventListener("click", (e) => {
-        if (e.target.tagName === "BUTTON" || e.target.tagName === "INPUT") return;
+    tr.addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON" || e.target.tagName === "INPUT") return;
 
-        const modal = document.querySelector("#product-detail-modal");
-        const modalVariants = document.querySelector("#modal-product-variants");
+      const modal = document.querySelector("#product-detail-modal");
+      const modalVariants = document.querySelector("#modal-product-variants");
 
-        modalVariants.innerHTML = "";
+      modalVariants.innerHTML = "";
 
-        const formatDate = (dateStr) => {
-          const d = new Date(dateStr);
-          return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
-        };
+      const formatDate = (dateStr) => {
+        const d = new Date(dateStr);
+        return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+      };
 
-        document.querySelector("#modal-product-name").innerText = product.name;
-        document.querySelector("#modal-product-status").innerText = product.status;
-        document.querySelector("#modal-product-price").innerText = `$${product.price}`;
-        document.querySelector("#modal-product-description").innerText = product.description;
-        document.querySelector("#modal-product-dropdate").innerText = formatDate(product.dropDate);
-        document.querySelector("#modal-product-image").src = product.image || "https://placehold.co/120x120";
+      document.querySelector("#modal-product-name").innerText = product.name;
+      document.querySelector("#modal-product-status").innerText =
+        product.status;
+      document.querySelector("#modal-product-price").innerText =
+        `$${product.price}`;
+      document.querySelector("#modal-product-description").innerText =
+        product.description;
+      document.querySelector("#modal-product-dropdate").innerText = formatDate(
+        product.dropDate,
+      );
+      document.querySelector("#modal-product-image").src =
+        product.image || "https://placehold.co/120x120";
 
-        // show details for this product
-        const productVariants = variants.filter((v) => v.productId === product._id);
-        productVariants.forEach((v) => {
-          const tr = document.createElement("tr");
-          const size = document.createElement("th");
-          const stock = document.createElement("th");
+      // show details for this product
+      const productVariants = variants.filter(
+        (v) => v.productId === product._id,
+      );
+      productVariants.forEach((v) => {
+        const tr = document.createElement("tr");
+        const size = document.createElement("th");
+        const stock = document.createElement("th");
 
-          size.innerText = v.size;
-          stock.innerText = v.stock;
-          stock.style.color = getStockColor(v.stock);
+        size.innerText = v.size;
+        stock.innerText = v.stock;
+        stock.style.color = getStockColor(v.stock);
 
-          tr.append(size, stock);
-          modalVariants.append(tr);
-        });
-
-        modal.style.display = "flex";
+        tr.append(size, stock);
+        modalVariants.append(tr);
       });
+
+      modal.style.display = "flex";
+    });
 
     tr.append(
       name,
@@ -280,7 +312,7 @@ function renderUserTable(users, orders) {
   const onlyUsers = users.filter((u) => u.isAdmin === false);
 
   onlyUsers.forEach((user) => {
-    const userOrders = orders.filter((o) => o.user.id === user._id);
+    const userOrders = orders.filter((o) => o.user?.id === user._id);
 
     const tr = document.createElement("tr");
     tr.dataset.userId = user._id;
@@ -296,7 +328,7 @@ function renderUserTable(users, orders) {
     numOfWishlists.innerText = user.wishlist?.length ?? 0;
 
     if (user.isFlagged) {
-    tr.style.backgroundColor = "#ffe0e0";
+      tr.style.backgroundColor = "#ffe0e0";
     }
 
     const flagBtn = document.createElement("button");
@@ -319,12 +351,12 @@ function renderUserTable(users, orders) {
       // address
       const address = user.address;
       if (address) {
-        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postal_code}, ${address.country}`;
+        modalAddress.innerText = `${address.street}, ${address.city}, ${address.postalCode}, ${address.country}`;
       } else {
         modalAddress.innerText = "No address on file";
       }
 
-      const userOrders = orders.filter((o) => o.user.id === user._id);
+      const userOrders = orders.filter((o) => o.user?.id === user._id);
 
       if (userOrders.length === 0) {
         const tr = document.createElement("tr");
@@ -365,9 +397,33 @@ function renderUserTable(users, orders) {
       }
 
       modal.style.display = "flex";
-      document.body.classList.add("modal-open");
-      
     });
+
+    //Assuming this is old code, but didn't know if i should remove it
+    // // Close modal
+    // document.querySelector("#close-modal-btn").addEventListener("click", () => {
+    //   document.querySelector("#user-orders-modal").style.display = "none";
+    // });
+
+    // // Close modal when clicking outside
+    // document
+    //   .querySelector("#user-orders-modal")
+    //   .addEventListener("click", (e) => {
+    //     if (e.target._id === "user-orders-modal") {
+    //       document.querySelector("#user-orders-modal").style.display = "none";
+    //     }
+    //   });
+    // // Print modal
+    // document.querySelector("#print-modal-btn").addEventListener("click", () => {
+    //   window.print();
+    // });
+
+    // Actions.append(viewOrdersBtn, flagBtn);
+
+    // tr.append(name, email, numOfOrders, Actions);
+    //   document.body.classList.add("modal-open");
+
+    // });
 
     Actions.append(viewOrdersBtn, flagBtn);
 
@@ -396,9 +452,11 @@ function renderOrderTable(products, users, orders) {
       ? order.products
       : [order.products];
 
-    const orderUser = users.find((u) => u._id === order.user.id);
+    const orderUser = users.find((u) => u._id === order.user?.id);
+    if (!orderUser) return false;
 
-    const matchCustomer = orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
+    const matchCustomer =
+      orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
     const matchProduct = productItems.some((item) => {
       const product = products.find((p) => p._id === item.productId);
       return product?.name.toLowerCase().includes(productFilter);
@@ -435,7 +493,8 @@ function renderOrderTable(products, users, orders) {
     //   const product = products.find((p) => p._id === item.productId);
     // });
 
-    const orderUser = users.find((u) => u._id === order.user.id);
+    const orderUser = users.find((u) => u._id === order.user?.id);
+    if (!orderUser) return false;
 
     const tr = document.createElement("tr");
     const orderId = document.createElement("th");
@@ -462,11 +521,16 @@ function renderOrderTable(products, users, orders) {
 
       modalTbody.innerHTML = "";
 
-      document.querySelector("#modal-order-id").innerText = `Order #${order._id}`;
-      document.querySelector("#modal-order-date").innerText = new Date(order.createdAt).toLocaleDateString();
-      document.querySelector("#modal-order-customer").innerText = order.user.name;
+      document.querySelector("#modal-order-id").innerText =
+        `Order #${order._id}`;
+      document.querySelector("#modal-order-date").innerText = new Date(
+        order.createdAt,
+      ).toLocaleDateString();
+      document.querySelector("#modal-order-customer").innerText =
+        order.user.name;
       document.querySelector("#modal-order-status").innerText = order.status;
-      document.querySelector("#modal-order-total").innerText = `$${order.totalCost}`;
+      document.querySelector("#modal-order-total").innerText =
+        `$${order.totalCost}`;
 
       const address = order.user.address;
       document.querySelector("#modal-order-address").innerText = address
@@ -491,7 +555,6 @@ function renderOrderTable(products, users, orders) {
       document.body.classList.add("modal-open");
     });
 
-
     const updateStatusBtn = document.createElement("button");
     updateStatusBtn.innerText = "Update Status";
     updateStatusBtn.classList.add("btn-update-status");
@@ -500,7 +563,13 @@ function renderOrderTable(products, users, orders) {
       e.stopPropagation();
 
       // create dropdown for changing order status
-      const validStatuses = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
+      const validStatuses = [
+        "pending",
+        "confirmed",
+        "shipped",
+        "delivered",
+        "cancelled",
+      ];
       const currentStatus = status.innerText;
 
       const select = document.createElement("select");
@@ -515,7 +584,6 @@ function renderOrderTable(products, users, orders) {
       const saveBtn = document.createElement("button");
       saveBtn.innerText = "Save";
       saveBtn.classList.add("save-status-btn");
-
 
       // replace dropdown + save
       updateStatusBtn.replaceWith(select);
@@ -534,7 +602,9 @@ function renderOrderTable(products, users, orders) {
 
         // confirm status delivered and cancelled because they are irreversible
         if (newStatus === "delivered" || newStatus === "cancelled") {
-          const confirmed = window.confirm(`Are you sure you want to mark this order as "${newStatus}"?`);
+          const confirmed = window.confirm(
+            `Are you sure you want to mark this order as "${newStatus}"?`,
+          );
           if (!confirmed) return;
         }
 
@@ -597,15 +667,19 @@ async function onPageLoad() {
 onPageLoad();
 
 // Close product detail modal
-document.querySelector("#close-product-modal-btn").addEventListener("click", () => {
-  document.querySelector("#product-detail-modal").style.display = "none";
-});
-
-document.querySelector("#product-detail-modal").addEventListener("click", (e) => {
-  if (e.target.id === "product-detail-modal") {
+document
+  .querySelector("#close-product-modal-btn")
+  .addEventListener("click", () => {
     document.querySelector("#product-detail-modal").style.display = "none";
-  }
-});
+  });
+
+document
+  .querySelector("#product-detail-modal")
+  .addEventListener("click", (e) => {
+    if (e.target.id === "product-detail-modal") {
+      document.querySelector("#product-detail-modal").style.display = "none";
+    }
+  });
 
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
 cancelEditBtn.addEventListener("click", (e) => {
@@ -614,10 +688,12 @@ cancelEditBtn.addEventListener("click", (e) => {
 });
 
 // Close order detail modal
-document.querySelector("#close-order-modal-btn").addEventListener("click", () => {
-  document.querySelector("#order-detail-modal").style.display = "none";
-  document.body.classList.remove("modal-open");
-});
+document
+  .querySelector("#close-order-modal-btn")
+  .addEventListener("click", () => {
+    document.querySelector("#order-detail-modal").style.display = "none";
+    document.body.classList.remove("modal-open");
+  });
 
 document.querySelector("#order-detail-modal").addEventListener("click", (e) => {
   if (e.target.id === "order-detail-modal") {
@@ -626,9 +702,11 @@ document.querySelector("#order-detail-modal").addEventListener("click", (e) => {
   }
 });
 
-document.querySelector("#print-order-modal-btn").addEventListener("click", () => {
-  window.print();
-});
+document
+  .querySelector("#print-order-modal-btn")
+  .addEventListener("click", () => {
+    window.print();
+  });
 
 // Close user order history modal
 document.querySelector("#close-modal-btn").addEventListener("click", () => {
@@ -647,30 +725,36 @@ document.querySelector("#print-modal-btn").addEventListener("click", () => {
   window.print();
 });
 
-document.querySelector(".admin-user-tbody").addEventListener("click", async (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  if (e.target.innerText.toLowerCase() !== "flag" && e.target.innerText.toLowerCase() !== "unflag") return;
+document
+  .querySelector(".admin-user-tbody")
+  .addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (
+      e.target.innerText.toLowerCase() !== "flag" &&
+      e.target.innerText.toLowerCase() !== "unflag"
+    )
+      return;
 
-  // find the user id and current flag status
-  const flagBtn = e.target;
-  const tr = flagBtn.closest("tr");
-  const nameCell = tr.querySelector("th:nth-child(1)");
-  const isFlagged = flagBtn.innerText.toLowerCase() === "unflag";
-  const userId = tr.dataset.userId;
+    // find the user id and current flag status
+    const flagBtn = e.target;
+    const tr = flagBtn.closest("tr");
+    const nameCell = tr.querySelector("th:nth-child(1)");
+    const isFlagged = flagBtn.innerText.toLowerCase() === "unflag";
+    const userId = tr.dataset.userId;
 
-  try {
-    await flagUser(userId, !isFlagged);
-    flagBtn.innerText = !isFlagged ? "Unflag" : "Flag";
-    flagBtn.style.backgroundColor = !isFlagged ? "gray" : "red";
-    tr.style.backgroundColor = !isFlagged ? "#ffe0e0" : "";
-    nameCell.innerText = !isFlagged
-      ? `🚩 ${nameCell.innerText}`
-      : nameCell.innerText.replace("🚩 ", "");
-  } catch (error) {
-    alert("Failed to flag account. Please try again.");
-  }
-});
+    try {
+      await flagUser(userId, !isFlagged);
+      flagBtn.innerText = !isFlagged ? "Unflag" : "Flag";
+      flagBtn.style.backgroundColor = !isFlagged ? "gray" : "red";
+      tr.style.backgroundColor = !isFlagged ? "#ffe0e0" : "";
+      nameCell.innerText = !isFlagged
+        ? `🚩 ${nameCell.innerText}`
+        : nameCell.innerText.replace("🚩 ", "");
+    } catch (error) {
+      alert("Failed to flag account. Please try again.");
+    }
+  });
 
 // Filter listeners — outside onPageLoad to avoid re-attaching on every reload
 document
@@ -732,7 +816,6 @@ async function createProduct() {
   const price = document.querySelector("#price");
   const imageURL = document.querySelector("#image");
   const releaseDate = document.querySelector("#release-date");
-  const id = generateObjectId();
 
   let emptyFields = [];
   let otherErrors = [];
@@ -779,16 +862,12 @@ async function createProduct() {
   }
 
   const product = {
-    _id: id,
     name: name.value,
     description: description.value,
     price: Number(price.value),
     image: imageURL.value,
     dropDate: new Date(releaseDate.value).toISOString(),
     status: "upcoming",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    __v: 0,
   };
 
   await addProduct(product);
@@ -842,7 +921,7 @@ async function editProduct() {
     updatedAt: new Date().toISOString(),
   };
 
-  await updateProduct(product);
+  await updateProduct(editingProductId, product);
 
   editingProductId = null;
 
@@ -868,7 +947,7 @@ createProductBtn.addEventListener("click", () => {
 //Render all products so admin can choose which product to add variants to
 function renderProductSelect(products) {
   const productSelect = document.querySelector("#choose-product");
-  productSelect.innerHTML = ""
+  productSelect.innerHTML = "";
 
   products.forEach((product) => {
     const option = document.createElement("option");
@@ -883,7 +962,6 @@ async function createVariant() {
   const size = document.querySelector("#size");
   const stock = document.querySelector("#stock");
   const productSelect = document.querySelector("#choose-product");
-  const id = generateObjectId();
 
   const variants = await getVariants();
 
@@ -939,16 +1017,13 @@ async function createVariant() {
   }
 
   const variant = {
-    _id: id,
     productId: productSelect.value,
     size: size.value,
     stock: stock.value,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    __v: 0,
   };
 
-  addVariant(variant);
+  await addVariant(variant);
+  await onPageLoad();
 }
 
 //Create Variant button listener

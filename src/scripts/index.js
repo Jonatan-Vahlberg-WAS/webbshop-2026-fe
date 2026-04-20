@@ -18,7 +18,6 @@ async function loadProducts() {
 
   try {
     const products = await getProducts();
-    console.log(products);
     productsContainer.innerHTML = "";
 
     const nextDrop = getNextDrop(products);
@@ -134,7 +133,7 @@ async function loadProducts() {
     liveBtn?.addEventListener("click", () => toggleFilter("live", liveBtn));
 
     soldOutBtn?.addEventListener("click", () =>
-      toggleFilter("sold out", soldOutBtn),
+      toggleFilter("sold_out", soldOutBtn),
     );
 
     if (nextDrop && heroImage) {
@@ -222,7 +221,7 @@ function createProductCard(product) {
   element.appendChild(productCard);
 
   //Navigates to the product detail page
-  element.addEventListener("click", () => goToProduct(product.id));
+  element.addEventListener("click", () => goToProduct(product._id));
 
   return element;
 }
@@ -238,7 +237,7 @@ function renderHero(product) {
   //Hero Timer
   countdownTimer(product.dropDate, heroProductTimer);
 
-  heroBtn.addEventListener("click", () => goToProduct(product.id));
+  heroBtn.addEventListener("click", () => goToProduct(product._id));
 }
 
 function getNextDrop(products) {

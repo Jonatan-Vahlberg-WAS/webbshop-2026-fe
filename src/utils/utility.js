@@ -98,7 +98,7 @@ export function addToCart(productId, variantId, size) {
     // Check if this product & size already exist for the current user
     const exists = cart.some(
       (item) =>
-        item.userId === user.id &&
+        item.userId === user.userId &&
         item.productId === productId &&
         item.size === size,
     );
@@ -108,7 +108,7 @@ export function addToCart(productId, variantId, size) {
     }
 
     const cartItem = {
-      userId: user.id,
+      userId: user.userId,
       productId,
       variantId,
       size,
@@ -123,8 +123,6 @@ export function addToCart(productId, variantId, size) {
 //Checks if the user has a saved address or not
 export function checkUserAddress() {
   const user = getCurrentUser();
-  console.log("USER:", user);
-
   return !!user?.address;
 }
 
@@ -161,40 +159,32 @@ export function checkIfUserHasAddress(elementToHide, renderElement) {
 export async function addToWishlist(productId, variantId) {
   if (!isLoggedIn()) {
     return { success: false, error: "not_logged_in" };
-  } else {
-    const user = getCurrentUser();
-    if (!user) return;
+  }
 
-    const currentWishlist = Array.isArray(user.wishlist) ? user.wishlist : [];
+  const result = await addWishlist(productId, variantId);
 
-    const exists = currentWishlist.some(
-      (item) => item.productId === productId && item.variantId === variantId,
-    );
+  if (!result) {
+    return { success: false, error: "server_error" };
+  }
 
-    if (exists) {
-      return { success: false, error: "duplicate_size" };
-    }
+  return { success: true, user: result };
+}
 
-    const updatedWishlist = [
-      ...currentWishlist,
-      {
-        productId,
-        variantId,
-      },
-    ];
+//Token Decoder
+export function decodeToken(token) {
+  if (!token) return null;
 
-    const updatedUser = await addWishlist(user.id, {
-      wishlist: updatedWishlist,
-    });
+  try {
+    const payload = token.split(".")[1];
 
-    if (!updatedUser) {
-      return { success: false, error: "server_error" };
-    }
+    // convert base64url → base64
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
 
-    // user.wishlist = updatedUser.wishlist;
-    //Below stays for now since we are using db.json
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    const decoded = JSON.parse(atob(base64));
 
-    return { success: true };
+    return decoded;
+  } catch (err) {
+    console.error("Invalid token:", err);
+    return null;
   }
 }

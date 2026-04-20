@@ -1,4 +1,5 @@
 import { loginUser } from "../utils/api.js";
+import { decodeToken } from "../utils/utility.js";
 
 // init login form
 export function initLogin() {
@@ -36,32 +37,24 @@ async function handleLogin() {
   btn.textContent = "Signing in...";
 
   try {
-    const users = await loginUser(email, password);
+    const data = await loginUser(email, password);
 
-    if (users.length === 0) {
+    if (!data || !data.user || !data.accessToken) {
       errorMsg.textContent = "Invalid email or password.";
       btn.disabled = false;
       btn.textContent = "Sign In";
       return;
     }
 
-    const user = users[0];
-    const fakeToken = "mock-token-" + user.id;
-    localStorage.setItem("token", fakeToken);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        address: user.address,
-        //added wishlist to what is saved in LS
-        wishlist: user.wishlist,
-      }),
-    );
+    const { user, accessToken, refreshToken } = data;
 
-    if (user.isAdmin) {
+    localStorage.setItem("token", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+
+    //decode token to see if normal user or admin
+    const decoded = decodeToken(accessToken);
+
+    if (decoded?.isAdmin) {
       window.location.href = "admin.html";
     } else {
       window.location.href = "index.html";
@@ -82,12 +75,22 @@ export function logoutUser() {
 
 // session management functions for checking login status and user role
 export function getCurrentUser() {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+  const token = localStorage.getItem("token");
+  return decodeToken(token);
 }
 
 export function isLoggedIn() {
-  return !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const now = Date.now() / 1000;
+
+    return payload.exp > now;
+  } catch {
+    return false;
+  }
 }
 
 export function isAdmin() {

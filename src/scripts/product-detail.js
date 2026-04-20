@@ -1,11 +1,10 @@
-import { getProduct, getVariants } from "../utils/api.js";
+import { getProduct, getVariants, getMe } from "../utils/api.js";
 import {
   formatDateISO,
   countdownTimer,
   addToCart,
   addToWishlist,
 } from "../utils/utility.js";
-import { getCurrentUser } from "../utils/auth.js";
 
 let selectedSize = null;
 
@@ -18,13 +17,16 @@ export async function renderProductDetail() {
   //get the id from the params
   const params = new URLSearchParams(window.location.search);
   const productId = params.get("id");
+  let currentUser = null;
+  let wishlist = [];
 
   try {
     const product = await getProduct(productId);
     const allVariants = await getVariants();
     const variants = allVariants.filter((v) => v.productId === productId);
-    let currentUser = getCurrentUser();
-    let wishlist = currentUser?.wishlist || [];
+
+    const user = await getMe();
+    wishlist = user?.wishlist ?? [];
 
     //run breadcrumb function
     renderBreadcrumbs(product);
@@ -84,7 +86,7 @@ export async function renderProductDetail() {
 
       //A button press saves the size that is pressed, becomes active visually so user knows which button is pressed, if another button is pressed, active is removed from all other buttons.
       button.addEventListener("click", () => {
-        selectedSize = v.size;
+        selectedSize = Number(v.size);
 
         Array.from(sizes.children).forEach((btn) =>
           btn.classList.remove("active"),
@@ -99,7 +101,9 @@ export async function renderProductDetail() {
         message.innerText = "";
 
         //Update button state is variant size is wishlisted
-        const selectedVariant = variants.find((v) => v.size === selectedSize);
+        const selectedVariant = variants.find(
+          (v) => Number(v.size) === Number(selectedSize),
+        );
         updateWishlistState(selectedVariant);
       });
 
@@ -110,10 +114,12 @@ export async function renderProductDetail() {
 
     //add to cart event listener
     addToCartBtn.addEventListener("click", () => {
-      const selectedVariant = variants.find((v) => v.size === selectedSize);
+      const selectedVariant = variants.find(
+        (v) => Number(v.size) === Number(selectedSize),
+      );
 
       //Runs add to cart function with arguments product Id and size
-      const result = addToCart(product.id, selectedVariant.id, selectedSize);
+      const result = addToCart(product._id, selectedVariant._id, selectedSize);
 
       //Error & Success messaging/actions
       if (!result.success) {
@@ -136,7 +142,10 @@ export async function renderProductDetail() {
 
     //add to wishlist event listener
     addToWishlistBtn.addEventListener("click", async () => {
-      const selectedVariant = variants.find((v) => v.size === selectedSize);
+      const selectedVariant = variants.find(
+        (v) => Number(v.size) === Number(selectedSize),
+      );
+
       if (!selectedVariant) {
         const message = document.querySelector(".cart-message");
         message.textContent = "Please select a size first!";
@@ -144,34 +153,58 @@ export async function renderProductDetail() {
         return;
       }
 
-      //Runs add to cart function with arguments product Id and size
-      const result = await addToWishlist(product.id, selectedVariant.id);
+      // Get latest user wishlist from backend
+      currentUser = await getMe();
+      if (!currentUser) {
+        window.location.href = "auth.html";
+        return;
+      }
 
-      //Error & Success messaging/actions
+      wishlist = currentUser?.wishlist || [];
+
+      //Duplicate check
+      const alreadyExists = wishlist.some(
+        (item) =>
+          item.product === product._id && item.variant === selectedVariant._id,
+      );
+
+      if (alreadyExists) {
+        const message = document.querySelector(".cart-message");
+        message.textContent = "You already have this size in your wishlist!";
+        message.style.color = "red";
+        return;
+      }
+
+      const result = await addToWishlist(product._id, selectedVariant._id);
+      if (result.success) {
+        wishlist.push({
+          product: product._id,
+          variant: selectedVariant._id,
+        });
+      }
+
+      const message = document.querySelector(".cart-message");
+
       if (!result.success) {
-        switch (result.error) {
-          case "not_logged_in":
-            window.location.href = "auth.html";
-            break;
-          case "duplicate_size":
-            const message = document.querySelector(".cart-message");
-            message.textContent = "This variant is already in your wishlist!";
-            message.style.color = "red";
-            break;
+        if (result.error === "not_logged_in") {
+          window.location.href = "auth.html";
+          return;
         }
 
-        //update wishlist state after the add to wishlist button is pressed
-        wishlist = currentUser?.wishlist || wishlist;
-        updateWishlistState(selectedVariant);
-      } else {
-        const message = document.querySelector(".cart-message");
-        message.textContent = "Item added to wishlist!";
-        message.style.color = "green";
+        message.textContent = "Something went wrong!";
+        message.style.color = "red";
+        return;
       }
+
+      message.textContent = "Added to wishlist!";
+      message.style.color = "green";
+
+      // refresh UI state
+      updateWishlistState(selectedVariant);
     });
 
     //monitors and updates wishlist state
-    function updateWishlistState(selectedVariant) {
+    async function updateWishlistState(selectedVariant) {
       if (!selectedVariant) {
         addToWishlistBtn.textContent = "Add to Wishlist";
         addToWishlistBtn.classList.remove("active");
@@ -180,17 +213,14 @@ export async function renderProductDetail() {
 
       const isWishlisted = wishlist.some(
         (item) =>
-          item.productId === product.id &&
-          item.variantId === selectedVariant.id,
+          item.product === product._id && item.variant === selectedVariant._id,
       );
 
-      if (isWishlisted) {
-        addToWishlistBtn.textContent = "Wishlisted";
-        addToWishlistBtn.classList.add("active");
-      } else {
-        addToWishlistBtn.textContent = "Add to Wishlist";
-        addToWishlistBtn.classList.remove("active");
-      }
+      addToWishlistBtn.textContent = isWishlisted
+        ? "Wishlisted"
+        : "Add to Wishlist";
+
+      addToWishlistBtn.classList.toggle("active", isWishlisted);
     }
   } catch (error) {
     console.error(error);
