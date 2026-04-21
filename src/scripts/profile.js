@@ -1,57 +1,61 @@
 import { getBaseUrl } from "../utils/api.js";
+
 const BASE_URL = getBaseUrl();
 
 async function loadMyPlants(user) {
-  const res = await fetch(BASE_URL + "plants");
+  const res = await fetch("https://plottwistgrupp11.vercel.app/plants");
   const plants = await res.json();
-
-  const myPlants = plants;
 
   const container = document.getElementById("plant-list");
 
-  container.innerHTML = myPlants
+  container.innerHTML = plants
     .map(
       (p) => `
-    <div class="list-item">
-      <img src="${p.image || p.imageUrl}" width="60" />
-      <div>
-        <strong>${p.name || p.plantName}</strong>
-        <p>Plats: ${p.location || "Okänd"}</p>
-        <button class="delete-btn" data-id="${p._id}">Ta bort</button>
+      <div class="list-item">
+        <img src="${p.imageUrl || p.image}" width="60" />
+        <div>
+          <strong>${p.plantName || p.name}</strong>
+          <p>Plats: ${p.location || "Okänd"}</p>
+          <button class="delete-btn" data-id="${p._id}">Ta bort</button>
+        </div>
       </div>
-    </div>
-  `,
+    `
     )
     .join("");
 
-  //
+  // DELETE LOGIC
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      console.log("CLICKED");
-
       const id = btn.dataset.id;
-      console.log("Deleting:", id);
 
-      await fetch(BASE_URL + "plants/" + id, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      if (!confirm("Är du säker att du vill ta bort växten?")) return;
 
-        // Notis-ikon
-        const notifIcon = document.getElementById("notification-icon");
+      try {
+        const res = await fetch(
+          `https://plottwistgrupp11.vercel.app/plants/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-        if (notifIcon) {
-          const hasNotification = true; // byter till backend sen
-          notifIcon.src = hasNotification ? "notis2.png" : "notis1.png";
+        if (!res.ok) {
+          alert("Kunde inte ta bort växt ❌");
+          return;
         }
 
-      loadMyPlants(user);
+        alert("Växt borttagen 🌱");
+        loadMyPlants(user); // refresh
+
+      } catch (err) {
+        console.error(err);
+        alert("Något gick fel");
+      }
     });
   });
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(sessionStorage.getItem("loggedIn"));
 
@@ -133,5 +137,9 @@ loginBtn.addEventListener("click", () => {
       document.getElementById(tab).classList.add("active");
     });
   });
+  setTimeout(() => {
+  loadMyPlants(user);
+}, 0);
+
   loadMyPlants(user);
 });
