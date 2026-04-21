@@ -460,12 +460,16 @@ function renderOrderTable(products, users, orders) {
       : [order.products];
 
     const orderUser = users.find((u) => u._id === order.user?.id);
+    console.log(order._id, order.user?.id, orderUser);
+
     if (!orderUser) return false;
 
     const matchCustomer =
       orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
     const matchProduct = productItems.some((item) => {
       const product = products.find((p) => p._id === item.productId);
+      // orders with deleted products still show up
+      if (!product) return true;
       return product?.name.toLowerCase().includes(productFilter);
     });
     const matchStatus = statusFilter === "" || order.status === statusFilter;
