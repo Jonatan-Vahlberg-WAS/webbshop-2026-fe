@@ -76,6 +76,8 @@ export async function renderProductDetail() {
         productIsLive
       );
     }
+    
+    variants.sort((a, b) => Number(a.size) - Number(b.size));
 
     //Create a button for each size
     variants.forEach((v) => {
