@@ -10,11 +10,89 @@ updateCartBadge();
 
 document.addEventListener("DOMContentLoaded", loadProducts);
 const activeFilters = new Set();
+//Cache for SSR so SSE handlers can mutate them without re-fetching
+let allProducts = [];
 
 function getLatestDrops(products) {
   return products.filter(
     (product) => product.status === "live" || product.status === "upcoming",
   );
+}
+
+//SSE Function - opens a persistent one-way connection from the server to the browser at /products/events.
+//The server can then push events at any time without the client polling.
+function connectSSE() {
+  const es = new EventSource(
+    "https://webbshop-2026-be.vercel.app/products/events",
+  );
+
+  es.onmessage = (e) => {
+    //SSE Transmits data as a string, backend is sending data as an unnamed message event, not a named SSE event
+    const data = JSON.parse(e.data);
+
+    if (data.type === "product-created") {
+      allProducts.push(data.product);
+      rerenderProducts();
+    } else if (data.type === "product-updated") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? data.product : p,
+      );
+      rerenderProducts();
+    } else if (data.type === "product-deleted") {
+      allProducts = allProducts.filter((p) => p._id !== data.productId);
+      rerenderProducts();
+    } else if (data.type === "product-sold-out") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? { ...p, status: "sold_out" } : p,
+      );
+      rerenderProducts();
+    } else if (data.type === "product-published") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? { ...p, status: "live" } : p,
+      );
+      rerenderProducts();
+    }
+  };
+
+  es.onerror = () => {
+    console.warn("SSE connection lost, browser will retry…");
+  };
+}
+
+//Re-render function that runs after SSE
+function rerenderProducts() {
+  const productsContainer = document.getElementById("products");
+  const searchInput = document.querySelector("#product-search");
+  const searchValue = searchInput?.value?.toLowerCase() || "";
+
+  let toRender = document.getElementById("hero-product-image")
+    ? getLatestDrops(allProducts)
+    : allProducts;
+
+  if (searchValue) {
+    toRender = toRender.filter((p) =>
+      p.name.toLowerCase().includes(searchValue),
+    );
+  }
+
+  toRender = toRender.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
+
+  toRender = applyFilters(toRender);
+
+  productsContainer.innerHTML = "";
+
+  if (toRender.length === 0) {
+    const msg = document.createElement("p");
+    msg.textContent = searchValue ? "No Products Found" : "No products yet.";
+    productsContainer.appendChild(msg);
+    return;
+  }
+
+  toRender.forEach((product) => {
+    productsContainer.appendChild(createProductCard(product));
+  });
 }
 
 // Fetch products from API, fallback to temp data if unavailable
@@ -24,9 +102,11 @@ async function loadProducts() {
 
   try {
     const products = await getProducts();
+    //Save Products in SSE cache
+    allProducts = products;
     productsContainer.innerHTML = "";
 
-    const nextDrop = getNextDrop(products);
+    const nextDrop = getNextDrop(allProducts);
     const heroImage = document.getElementById("hero-product-image");
     const heroName = document.getElementById("hero-product-name");
     const heroTimer = document.getElementById("hero-product-timer");
@@ -42,14 +122,14 @@ async function loadProducts() {
         //If empty
         if (!searchValue) {
           productsContainer.innerHTML = "";
-          applyFilters(products).forEach((product) => {
+          applyFilters(allProducts).forEach((product) => {
             const card = createProductCard(product);
             productsContainer.appendChild(card);
           });
           return;
         }
 
-        let filteredProducts = products.filter((p) =>
+        let filteredProducts = allProducts.filter((p) =>
           p.name.toLowerCase().includes(searchValue.toLowerCase()),
         );
 
@@ -95,9 +175,9 @@ async function loadProducts() {
 
     let toRender;
     if (heroImage) {
-      toRender = getLatestDrops(products);
+      toRender = getLatestDrops(allProducts);
     } else {
-      toRender = products;
+      toRender = allProducts;
     }
 
     toRender = toRender.sort(
@@ -133,7 +213,7 @@ async function loadProducts() {
       } else {
         // fallback (no search field)
         productsContainer.innerHTML = "";
-        applyFilters(products).forEach((product) => {
+        applyFilters(allProducts).forEach((product) => {
           const card = createProductCard(product);
           productsContainer.appendChild(card);
         });
@@ -156,6 +236,9 @@ async function loadProducts() {
       heroName.textContent = "No upcoming drops";
       heroTimer.textContent = "Check back soon!";
     }
+
+    //Start SSE after first render
+    connectSSE();
   } catch (error) {
     console.error("Error fetching products:", error);
     productsContainer.innerHTML =
