@@ -224,7 +224,7 @@ async function createOrder() {
     );
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     renderCart();
-
+    updateCartBadge();
     summaryModal(result);
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err.message);
