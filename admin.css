@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap");
 
 /* ── Admin layout ── */
 .admin-main {
@@ -97,7 +97,9 @@
   background: transparent;
   color: var(--color-text-dark);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   box-shadow: none;
 }
 
@@ -194,7 +196,9 @@
   font-size: 0.875rem;
   font-weight: 400;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
   box-sizing: border-box;
 }
 
@@ -233,7 +237,10 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
 }
 
 .create-product-form button:hover {
@@ -296,7 +303,7 @@
 }
 
 .admin-table tbody tr {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   transition: background 0.12s;
 }
 
@@ -330,7 +337,10 @@
   color: var(--color-text-dark);
   cursor: pointer;
   margin-right: 4px;
-  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    box-shadow 0.12s;
 }
 
 .admin-table button:hover {
@@ -362,7 +372,9 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .order-filters input:focus,
@@ -393,7 +405,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
   margin-left: auto;
 }
 
@@ -415,7 +429,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
 }
 
 .order-filters #clear-filters-btn:hover {
@@ -424,11 +440,11 @@
   box-shadow: 3px 3px 0 var(--color-accent);
 }
 
-.admin-table thead th:nth-last-child(-n+2) {
+.admin-table thead th:nth-last-child(-n + 2) {
   text-align: center;
 }
 
-.admin-table tbody th:nth-last-child(-n+2) {
+.admin-table tbody th:nth-last-child(-n + 2) {
   text-align: center;
   vertical-align: middle;
 }
@@ -450,6 +466,11 @@
   width: 700px;
   max-height: 80vh;
   overflow-y: auto;
+}
+
+#user-orders-modal .modal-box {
+  width: 1000px;
+  max-height: 70vh;
 }
 
 .modal-header {
@@ -486,7 +507,7 @@
   .tabs,
   .order-filters,
   #products-create-render,
-  #users-render{
+  #users-render {
     display: none !important;
   }
 
@@ -495,7 +516,7 @@
   }
 
   body:not(.modal-open) .modal-overlay {
-  display: none !important;
+    display: none !important;
   }
 
   .modal-overlay {
@@ -515,7 +536,7 @@
 }
 
 #print-modal-btn {
-  background: #DEED00;
+  background: #deed00;
   color: black;
   border: 2px solid var(--color-text-dark);
   padding: 8px var(--spacing-md);
@@ -526,7 +547,9 @@
   text-transform: uppercase;
   cursor: pointer;
   margin-right: 8px;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
 }
 
 #print-modal-btn:hover {
@@ -547,7 +570,7 @@
 }
 
 #print-order-modal-btn {
-  background: #DEED00;
+  background: #deed00;
   color: black;
   border: 2px solid var(--color-text-dark);
   padding: 8px var(--spacing-md);
@@ -558,7 +581,9 @@
   text-transform: uppercase;
   cursor: pointer;
   margin-right: 8px;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
 }
 
 #print-order-modal-btn:hover {
@@ -592,7 +617,9 @@
   text-transform: uppercase;
   cursor: pointer;
   margin-left: 4px;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
 }
 
 .status-save-btn:hover {
