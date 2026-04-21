@@ -33,7 +33,7 @@ function connectSSE() {
       );
       rerenderProducts();
     } else if (data.type === "product-deleted") {
-      allProducts = allProducts.filter((p) => p._id !== data.product._id);
+      allProducts = allProducts.filter((p) => p._id !== data.productId);
       rerenderProducts();
     } else if (data.type === "product-sold-out") {
       allProducts = allProducts.map((p) =>
