@@ -1063,6 +1063,14 @@ addVariantBtn.addEventListener("click", () => {
 async function removeProduct() {
   const productSelect = document.querySelector("#choose-product");
   const productId = productSelect.value;
+  const productName = productSelect.options[productSelect.selectedIndex].text;
+
+  //Guard for delete button
+  const confirmed = window.confirm(
+    `Are you sure you want to delete "${productName}"?`,
+  );
+  if (!confirmed) return;
+
   const result = await deleteProduct(productId);
 
   if (result) {
