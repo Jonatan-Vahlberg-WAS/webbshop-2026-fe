@@ -1,5 +1,4 @@
 import { getBaseUrl } from "../utils/api.js";
-
 // MAP SETUP
 const selectMap = L.map("select-map").setView([59.33, 18.06], 13);
 
