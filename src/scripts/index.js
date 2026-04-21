@@ -20,40 +20,33 @@ function connectSSE() {
     "https://webbshop-2026-be.vercel.app/products/events",
   );
 
-  es.addEventListener("product-created", (e) => {
-    //SSE transmits data as plain text strings
-    const product = JSON.parse(e.data);
-    allProducts.push(product);
-    rerenderProducts();
-  });
+  es.onmessage = (e) => {
+    //SSE Transmits data as a string, backend is sending data as an unnamed message event, not a named SSE event
+    const data = JSON.parse(e.data);
 
-  es.addEventListener("product-updated", (e) => {
-    const updated = JSON.parse(e.data);
-    allProducts = allProducts.map((p) => (p._id === updated._id ? updated : p));
-    rerenderProducts();
-  });
-
-  es.addEventListener("product-deleted", (e) => {
-    const { id } = JSON.parse(e.data);
-    allProducts = allProducts.filter((p) => p._id !== id);
-    rerenderProducts();
-  });
-
-  es.addEventListener("product-sold-out", (e) => {
-    const { id } = JSON.parse(e.data);
-    allProducts = allProducts.map((p) =>
-      p._id === id ? { ...p, status: "sold_out" } : p,
-    );
-    rerenderProducts();
-  });
-
-  es.addEventListener("product-published", (e) => {
-    const published = JSON.parse(e.data);
-    allProducts = allProducts.map((p) =>
-      p._id === published._id ? { ...p, status: "live" } : p,
-    );
-    rerenderProducts();
-  });
+    if (data.type === "product-created") {
+      allProducts.push(data.product);
+      rerenderProducts();
+    } else if (data.type === "product-updated") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? data.product : p,
+      );
+      rerenderProducts();
+    } else if (data.type === "product-deleted") {
+      allProducts = allProducts.filter((p) => p._id !== data.product._id);
+      rerenderProducts();
+    } else if (data.type === "product-sold-out") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? { ...p, status: "sold_out" } : p,
+      );
+      rerenderProducts();
+    } else if (data.type === "product-published") {
+      allProducts = allProducts.map((p) =>
+        p._id === data.product._id ? { ...p, status: "live" } : p,
+      );
+      rerenderProducts();
+    }
+  };
 
   es.onerror = () => {
     console.warn("SSE connection lost, browser will retry…");
