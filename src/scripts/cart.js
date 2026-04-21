@@ -93,17 +93,18 @@ async function renderCart() {
     }
 
     // Extract 25% VAT from total (included in price)
-    const taxes = subtotal * 0.25;
+    const vatRate = 0.25;
+    const taxes = subtotal - subtotal / (1 + vatRate);
+    const subtotalExVat = subtotal / (1 + vatRate);
 
     const subtotalEl = document.querySelector(".subtotal");
     const taxesEl = document.querySelector(".taxes");
 
-    subtotalEl.textContent = `$ ${subtotal.toFixed(2)}`;
+    subtotalEl.textContent = `$ ${subtotalExVat.toFixed(2)}`;
     taxesEl.textContent = `$ ${taxes.toFixed(2)}`;
 
-    const totalWithTax = subtotal + taxes;
     const totalPrice = document.querySelector(".total-price");
-    totalPrice.textContent = `$${totalWithTax.toFixed(2)}`;
+    totalPrice.textContent = `$${subtotal.toFixed(2)}`;
   } catch (err) {
     console.error(err);
   }
@@ -161,7 +162,7 @@ async function createOrder() {
   const fullUser = await getMe();
   let isValid = true;
   //Only validate form if user has no saved address
-  if (!user.address) {
+  if (!fullUser.address) {
     isValid = validateInputs();
   }
   if (!isValid) return;
@@ -180,9 +181,9 @@ async function createOrder() {
     //Get address that is saved for user or from inputs
     let address = null;
 
-    if (user.address) {
+    if (fullUser.address) {
       //Save a copy of the user address
-      address = { ...user.address };
+      address = { ...fullUser.address };
     } else {
       address = {
         name: document.querySelector(".fullname-input").value,
@@ -236,7 +237,7 @@ confirmPurchaseBtn.addEventListener("click", (e) => {
 function summaryModal(order) {
   const background = document.createElement("div");
   background.classList.add("order-modal-background");
-  
+
   const modal = document.createElement("div");
   modal.classList.add("order-modal");
 
@@ -255,7 +256,9 @@ function summaryModal(order) {
   const date = document.createElement("p");
   date.classList.add("order-modal__date");
   date.innerText = new Date(order.createdAt).toLocaleDateString("en-GB", {
-    day: "numeric", month: "long", year: "numeric"
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 
   const printBtn = document.createElement("button");
