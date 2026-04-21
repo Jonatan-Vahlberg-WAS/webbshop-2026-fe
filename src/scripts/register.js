@@ -120,22 +120,12 @@ async function handleRegister() {
   errorMsg.textContent = "";
 
   try {
-    await registerUser(name, email, password);
-    const users = await loginUser(email, password);
-    const user = users[0];
-    const fakeToken = "mock-token-" + user.id;
-    localStorage.setItem("token", fakeToken);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        address: user.address,
-        wishlist: user.wishlist,
-      }),
-    );
+    const data = await registerUser(name, email, password);
+    console.log("Register response:", data);
+    const { accessToken, refreshToken } = data;
+
+    localStorage.setItem("token", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
 
     window.location.href = "index.html";
   } catch (error) {
