@@ -1,5 +1,5 @@
 import { getCurrentUser, isLoggedIn } from "../utils/auth.js";
-import { addWishlist } from "../utils/api.js";
+import { addWishlist, getMe } from "../utils/api.js";
 
 export function formatDateISO(isoString) {
   const date = new Date(isoString);
@@ -186,5 +186,28 @@ export function decodeToken(token) {
   } catch (err) {
     console.error("Invalid token:", err);
     return null;
+  }
+}
+
+//bande count for cart
+export async function updateCartBadge() {
+  const badge = document.querySelector(".cart-badge");
+  if (!badge) return;
+
+  if (!isLoggedIn()) {
+    badge.style.display = "none";
+    return;
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const user = await getMe();
+  cart = cart.filter((i) => i.userId === user._id);
+  const count = cart.length;
+
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
   }
 }

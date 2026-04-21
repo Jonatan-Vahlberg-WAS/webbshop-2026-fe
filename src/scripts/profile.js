@@ -17,7 +17,10 @@ import {
   checkIfUserHasAddress,
   countdownTimer,
   addToCart,
+  updateCartBadge,
 } from "../utils/utility.js";
+
+updateCartBadge();
 
 document.addEventListener("DOMContentLoaded", () => {
   // guard — if user is not logged in, redirect to login page
