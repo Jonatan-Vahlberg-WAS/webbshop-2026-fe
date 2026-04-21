@@ -1,6 +1,12 @@
 import { getProducts } from "../utils/api.js";
 import { goToProduct } from "./product-detail.js";
-import { formatDateISO, countdownTimer } from "../utils/utility.js";
+import {
+  formatDateISO,
+  countdownTimer,
+  updateCartBadge,
+} from "../utils/utility.js";
+
+updateCartBadge();
 
 document.addEventListener("DOMContentLoaded", loadProducts);
 const activeFilters = new Set();

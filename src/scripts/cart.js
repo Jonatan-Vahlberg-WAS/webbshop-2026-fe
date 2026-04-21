@@ -1,6 +1,8 @@
 import { getProducts, getVariants, postOrder, getMe } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
-import { checkIfUserHasAddress } from "../utils/utility.js";
+import { checkIfUserHasAddress, updateCartBadge } from "../utils/utility.js";
+
+updateCartBadge();
 
 //Function render cart products in the cart page
 async function renderCart() {
@@ -81,6 +83,7 @@ async function renderCart() {
 
           // Re-render cart
           renderCart();
+          updateCartBadge();
         });
       });
     } else {

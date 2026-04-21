@@ -4,6 +4,7 @@ import {
   countdownTimer,
   addToCart,
   addToWishlist,
+  updateCartBadge,
 } from "../utils/utility.js";
 
 let selectedSize = null;
@@ -137,6 +138,7 @@ export async function renderProductDetail() {
         const message = document.querySelector(".cart-message");
         message.textContent = "Item added to cart!";
         message.style.color = "green";
+        updateCartBadge();
       }
     });
 

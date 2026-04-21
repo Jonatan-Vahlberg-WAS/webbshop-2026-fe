@@ -1,162 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Profile — Sole Search</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="profile.css" />
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    </head>
-    <body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile — Sole Search</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="profile.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <nav>
+        <a href="index.html" class="logo"
+          >SOLE_<span class="logo-search">SEARCH</span></a
+        >
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li>
+            <a href="cart.html" id="nav-cart" class="cart-link"
+              >Cart <span class="cart-badge" style="display: none"></span>
+            </a>
+          </li>
+          <li><a href="auth.html" id="nav-login">Login</a></li>
+          <li><a href="admin.html" id="nav-admin">Admin</a></li>
+          <li><button id="nav-logout">Logout</button></li>
+        </ul>
+      </nav>
+    </header>
 
-        <!-- HEADER -->
-        <header class="site-header">
-        <nav>
-            <a href="index.html" class="logo">SOLE_<span class="logo-search">SEARCH</span></a>
-            <ul class="nav-links">
-            <li><a href="products.html">Products</a></li>
-            <li><a href="cart.html" id="nav-cart">Cart</a></li>
-            <li><a href="auth.html" id="nav-login">Login</a></li>
-            <li><a href="admin.html" id="nav-admin">Admin</a></li>
-            <li><button id="nav-logout">Logout</button></li>
-            </ul>
-        </nav>
-        </header>
+    <!-- MAIN -->
+    <main class="profile-main">
+      <!-- USER INFO -->
+      <section class="profile-hero">
+        <div class="profile-hero-info">
+          <h1 id="profile-name" class="profile-name">Name</h1>
+        </div>
+        <div class="profile-hero-actions">
+          <button class="btn btn--outline" id="edit-profile-btn">
+            Edit Profile
+          </button>
+          <p class="save-success"></p>
+          <!--<button class="btn btn--primary" id="logout-btn">Log Out</button>-->
+        </div>
+      </section>
 
-        <!-- MAIN -->
-        <main class="profile-main">
+      <div class="profile-container">
+        <!-- PROFILE INFO-->
+        <section class="profile-section" id="profile-info-section">
+          <h2 class="profile-section-title">My Profile</h2>
 
-        <!-- USER INFO -->
-        <section class="profile-hero">
-            <div class="profile-hero-info">
-            <h1 id="profile-name" class="profile-name">Name</h1>
+          <div class="profile-field">
+            <span class="profile-field__label">Email</span>
+            <div class="profile-field__value profile-email"></div>
+          </div>
+
+          <div class="profile-field">
+            <span class="profile-field__label">Address</span>
+            <div class="profile-field__value profile-address"></div>
+            <div class="add-address">
+              <button class="btn btn--outline">Add Address</button>
             </div>
-            <div class="profile-hero-actions">
-            <button class="btn btn--outline" id="edit-profile-btn">Edit Profile</button>
-            <p class="save-success"></p>
-            <!--<button class="btn btn--primary" id="logout-btn">Log Out</button>-->
-            </div>
+          </div>
+
+          <div class="profile-field">
+            <span class="profile-field__label">Password</span>
+            <div class="profile-field__value profile-password"></div>
+          </div>
         </section>
 
-        <div class="profile-container">
+        <!-- PROFILE INFO EDIT-->
+        <section class="profile-section hidden" id="profile-edit-section">
+          <h2 class="profile-section-title">Edit Profile</h2>
 
-            <!-- PROFILE INFO-->
-            <section class="profile-section" id="profile-info-section">
-                <h2 class="profile-section-title">My Profile</h2>
+          <form class="profile-edit-form">
+            <div class="profile-field">
+              <label for="edit-name" class="profile-field__label">Name</label>
+              <input type="text" id="edit-name" class="profile-field__input" />
+              <p class="profile-field__error name-error"></p>
+            </div>
 
-                <div class="profile-field">
-                    <span class="profile-field__label">Email</span>
-                    <div class="profile-field__value profile-email"></div>
-                </div>
+            <div class="profile-field">
+              <label for="edit-email" class="profile-field__label">Email</label>
+              <input
+                type="email"
+                id="edit-email"
+                class="profile-field__input" />
+              <p class="profile-field__error email-error"></p>
+            </div>
 
-                <div class="profile-field">
-                    <span class="profile-field__label">Address</span>
-                    <div class="profile-field__value profile-address"></div>
-                    <div class="add-address">
-                        <button class="btn btn--outline">Add Address</button>
-                    </div>
-                </div>
+            <fieldset class="profile-field profile-field--group">
+              <legend class="profile-field__label">Address</legend>
 
-                <div class="profile-field">
-                    <span class="profile-field__label">Password</span>
-                    <div class="profile-field__value profile-password"></div>
-                </div>
-            </section>
+              <label for="edit-street">Street</label>
+              <input
+                type="text"
+                id="edit-street"
+                class="profile-field__input" />
 
-            <!-- PROFILE INFO EDIT-->
-            <section class="profile-section hidden" id="profile-edit-section">
-                <h2 class="profile-section-title">Edit Profile</h2>
+              <label for="edit-postal-code">Postal Code</label>
+              <input
+                type="text"
+                id="edit-postal-code"
+                class="profile-field__input" />
 
-                <form class="profile-edit-form">
+              <label for="edit-city">City</label>
+              <input type="text" id="edit-city" class="profile-field__input" />
 
-                    <div class="profile-field">
-                        <label for="edit-name" class="profile-field__label">Name</label>
-                        <input type="text" id="edit-name" class="profile-field__input"/>
-                        <p class="profile-field__error name-error"></p>
-                    </div>
+              <label for="edit-country">Country</label>
+              <input
+                type="text"
+                id="edit-country"
+                class="profile-field__input" />
+            </fieldset>
 
-                    <div class="profile-field">
-                        <label for="edit-email" class="profile-field__label">Email</label>
-                        <input type="email" id="edit-email" class="profile-field__input"/>
-                        <p class="profile-field__error email-error"></p>
-                    </div>
+            <div class="profile-field">
+              <label for="edit-password" class="profile-field__label"
+                >New Password</label
+              >
 
-                    <fieldset class="profile-field profile-field--group">
-                        <legend class="profile-field__label">Address</legend>
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  id="edit-password"
+                  class="profile-field__input" />
+                <button
+                  type="button"
+                  class="toggle-pw"
+                  id="toggle-edit-password">
+                  Show
+                </button>
+              </div>
 
-                        <label for="edit-street">Street</label>
-                        <input type="text" id="edit-street" class="profile-field__input"/>
+              <ul class="pw-requirements">
+                <li id="edit-req-length">Minimum 8 characters</li>
+                <li id="edit-req-upper">At least one capital letter</li>
+                <li id="edit-req-number">At least one number</li>
+                <li id="edit-req-special">
+                  At least one special character (! @ # $ % & *)
+                </li>
+              </ul>
 
-                        <label for="edit-postal-code">Postal Code</label>
-                        <input type="text" id="edit-postal-code" class="profile-field__input"/>
+              <label for="confirm-password">Confirm Password</label>
+              <input
+                type="password"
+                id="confirm-password"
+                class="profile-field__input" />
+              <p class="profile-field__error password-error"></p>
+            </div>
 
-                        <label for="edit-city">City</label>
-                        <input type="text" id="edit-city" class="profile-field__input"/>
+            <div class="profile-edit-form__actions">
+              <button
+                type="button"
+                id="save-profile-btn"
+                class="btn btn--primary">
+                Save
+              </button>
+              <button
+                type="button"
+                id="cancel-edit-btn"
+                class="btn btn--outline">
+                Cancel
+              </button>
+            </div>
 
-                        <label for="edit-country">Country</label>
-                        <input type="text" id="edit-country" class="profile-field__input"/>
-                    </fieldset>
+            <p class="profile-field__error save-error"></p>
+          </form>
+        </section>
 
-                    <div class="profile-field">
-                        <label for="edit-password" class="profile-field__label">New Password</label>
-                        
-                        <div class="input-wrap">
-                            <input type="password" id="edit-password" class="profile-field__input">
-                            <button type="button" class="toggle-pw" id="toggle-edit-password">Show</button>
-                        </div>
+        <!-- ORDER HISTORY -->
+        <section class="profile-section" id="order-history-section">
+          <h2 class="profile-section-title">Order History</h2>
+          <div id="order-history-list" class="order-list">
+            <!-- orders rendered here by JS -->
+          </div>
+        </section>
 
-                        <ul class="pw-requirements">
-                            <li id="edit-req-length">Minimum 8 characters</li>
-                            <li id="edit-req-upper">At least one capital letter</li>
-                            <li id="edit-req-number">At least one number</li>
-                            <li id="edit-req-special">At least one special character (! @ # $ % & *)</li>
-                        </ul>
+        <!-- WISHLIST -->
+        <section class="profile-section" id="wishlist-section">
+          <h2 class="profile-section-title">Wishlist</h2>
+          <div id="wishlist-list" class="wishlist-list">
+            <!-- wishlist rendered here by JS -->
+          </div>
+        </section>
+      </div>
+    </main>
 
-                        <label for="confirm-password">Confirm Password</label>
-                        <input type="password" id="confirm-password" class="profile-field__input">
-                        <p class="profile-field__error password-error"></p>
-                    </div>
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 Sole Search. All rights reserved.</p>
+      </div>
+    </footer>
 
-                    <div class="profile-edit-form__actions">
-                        <button type="button" id="save-profile-btn" class="btn btn--primary">Save</button>
-                        <button type="button" id="cancel-edit-btn" class="btn btn--outline">Cancel</button>
-                    </div>
-
-                    <p class="profile-field__error save-error"></p>
-
-                </form>
-            </section>
-            
-
-            <!-- ORDER HISTORY -->
-            <section class="profile-section" id="order-history-section">
-                <h2 class="profile-section-title">Order History</h2>
-                <div id="order-history-list" class="order-list">
-                <!-- orders rendered here by JS -->
-                </div>
-            </section>
-
-            <!-- WISHLIST -->
-            <section class="profile-section" id="wishlist-section">
-                <h2 class="profile-section-title">Wishlist</h2>
-                <div id="wishlist-list" class="wishlist-list">
-                <!-- wishlist rendered here by JS -->
-                </div>
-            </section>
-        </div>
-
-        </main>
-
-        <!-- FOOTER -->
-        <footer class="site-footer">
-        <div class="footer-content">
-            <p>&copy; 2026 Sole Search. All rights reserved.</p>
-        </div>
-        </footer>
-
-        <script type="module" src="./src/utils/auth.js"></script>
-        <script type="module" src="./src/scripts/profile.js"></script>
-
-    </body>
+    <script type="module" src="./src/utils/auth.js"></script>
+    <script type="module" src="./src/scripts/profile.js"></script>
+  </body>
 </html>
