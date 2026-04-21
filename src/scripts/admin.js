@@ -304,7 +304,7 @@ function renderProductTable(products, variants) {
 }
 
 //function to view all users
-function renderUserTable(users, orders) {
+function renderUserTable(users, orders, products) {
   const userList = document.querySelector(".admin-user-tbody");
   userList.innerHTML = "";
 
@@ -324,7 +324,13 @@ function renderUserTable(users, orders) {
     name.innerText = user.isFlagged ? `🚩 ${user.name}` : user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
-    numOfWishlists.innerText = user.wishlist?.length ?? 0;
+
+    const validWishlistCount =
+      user.wishlist?.filter((item) =>
+        products.some((p) => p._id === item.product),
+      ).length ?? 0;
+
+    numOfWishlists.innerText = validWishlistCount;
 
     if (user.isFlagged) {
       tr.style.backgroundColor = "#ffe0e0";
@@ -659,7 +665,7 @@ async function onPageLoad() {
   const { products, variants, users, orders } = await fetchData();
 
   renderProductTable(products, variants);
-  renderUserTable(users, orders);
+  renderUserTable(users, orders, products);
   renderOrderTable(products, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
