@@ -182,8 +182,11 @@ async function createOrder() {
     let address = null;
 
     if (fullUser.address) {
-      //Save a copy of the user address
-      address = { ...fullUser.address };
+      const { _id, __v, ...cleanAddress } = fullUser.address;
+      address = {
+        name: fullUser.name,
+        ...cleanAddress,
+      };
     } else {
       address = {
         name: document.querySelector(".fullname-input").value,
@@ -203,6 +206,8 @@ async function createOrder() {
       address,
     };
 
+    console.log("Sending address:", JSON.stringify(address));
+    console.log("Full user address:", JSON.stringify(fullUser.address));
     const result = await postOrder(order);
 
     if (!result) {
