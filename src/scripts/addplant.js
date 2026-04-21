@@ -1,5 +1,4 @@
 import { getBaseUrl } from "../utils/api.js";
-
 // MAP SETUP
 const selectMap = L.map("select-map").setView([59.33, 18.06], 13);
 
@@ -47,6 +46,15 @@ const form = document.getElementById("plantForm");
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
+  // Auth gate user måste logga in först
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Du måste logga in först");
+    window.location.href = "/login.html";
+    return;
+  }
+
   const BASE_URL = getBaseUrl();
 
   const plantName = document.getElementById("plantName").value;
@@ -73,13 +81,12 @@ form.addEventListener("submit", async function (e) {
 
   try {
     console.log("TOKEN:", localStorage.getItem("token"));
-   
 
     const res = await fetch(BASE_URL + "plants", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newPlant),
     });
