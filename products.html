@@ -3,42 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hakim Livs - products</title>
+    <title>Sole Search</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   </head>
   <body>
 
     <!-- HEADER -->
     <header class="site-header">
-      <nav>
-        <a href="index.html" class="logo">Hakim Livs</a>
-        <ul class="nav-links">
-          <li><a href="products.html">Products</a></li>
-          <li><a href="cart.html">Cart (0)</a></li>
-          <li><a href="register.html">Register</a></li>
-          <li><a href="admin.html">Admin</a></li>
-        </ul>
-      </nav>
+      <script src="./src/scripts/header.js"></script>
     </header>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-      <h1>Products</h1>
-      <div id="products"></div>
+      <div class="products-filter-container">
+        <h2 class="products-rubric">PRODUCTS</h2>
+        <button id="filterBtn" class="filter-btn">FILTER</button>
+      </div>
+      <div class="products-wrapper">
+        <div id="products"></div>
+        <aside class="filterContainer">
+          <div id="filterDropdown" class="filter-dropdown hidden">
+              <select id="brandFilter">
+                  <option value="">All brands</option>
+              </select>
+              <br>
+              <select id="sizeFilter">
+                  <option value="">All sizes</option>
+              </select>
+              <br>
+              <select id="colorFilter">
+                  <option value="">All colors</option>
+              </select>
+              <br>
+              <select id="dropStatusFilter">
+                  <option value="">All statuses</option>
+              </select>
+              <br>
+              <input type="number" id="priceFilter" placeholder="Max price" />
+              <br>
+              <select id="stockFilter">
+                  <option value="">All</option>
+                  <option value="true">In stock</option>
+                  <option value="false">Out of stock</option>
+              </select>
+              <button id="applyFilter">Apply</button>
+          </div>
+        </aside>
+        
+      </div>
     </main>
+
+    <br>
+    <br>
 
     <!-- FOOTER -->
     <footer class="site-footer">
-      <div class="footer-content">
-        <p>&copy; 2024 Hakim Livs. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-          <a href="/terms">Terms</a>
-        </div>
-      </div>
+      <script src="./src/scripts/footer.js"></script>
     </footer>
 
-    <script type="module" src="./src/scripts/index.js"></script>
+    <script type="module" src="./src/scripts/products.js"></script>
   </body>
 </html>

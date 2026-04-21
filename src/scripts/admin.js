@@ -2,14 +2,25 @@ import { getProducts, createProduct } from "../utils/productsApi.js";
 
 const form = document.getElementById("createProductForm");
 const tbody = document.getElementById("productsTableBody");
+const nameInput = document.getElementById("name");
+const slugInput = document.getElementById("slug");
+
+nameInput.addEventListener("input", () => {
+  slugInput.value = nameInput.value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = document.getElementById("name").value.trim();
+  const name = nameInput.value.trim();
   const price = parseFloat(document.getElementById("price").value);
   const stock = parseInt(document.getElementById("stock").value, 10);
   const image = document.getElementById("image").value.trim();
-  const slug = document.getElementById("slug").value.trim();
+  const slug = slugInput.value.trim();
 
   try {
     await createProduct({ name, price, stock, image, slug });
