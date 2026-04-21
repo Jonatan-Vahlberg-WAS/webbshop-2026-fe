@@ -370,6 +370,7 @@ function renderUserTable(users, orders) {
           order.products.forEach((product) => {
             const tr = document.createElement("tr");
             const img = document.createElement("th");
+            let orderId = document.createElement("th");
             const productName = document.createElement("th");
             const size = document.createElement("th");
             const price = document.createElement("th");
@@ -383,13 +384,14 @@ function renderUserTable(users, orders) {
             imgEl.style.objectFit = "cover";
             img.appendChild(imgEl);
 
+            orderId.innerText = order._id;
             productName.innerText = product.name;
             size.innerText = product.size;
             price.innerText = `$${product.price}`;
             status.innerText = order.status;
             date.innerText = new Date(order.createdAt).toLocaleDateString();
 
-            tr.append(img, productName, size, price, status, date);
+            tr.append(img, orderId, productName, size, price, status, date);
             modalTbody.append(tr);
           });
         });
