@@ -304,7 +304,7 @@ function renderProductTable(products, variants) {
 }
 
 //function to view all users
-function renderUserTable(users, orders) {
+function renderUserTable(users, orders, products) {
   const userList = document.querySelector(".admin-user-tbody");
   userList.innerHTML = "";
 
@@ -324,7 +324,13 @@ function renderUserTable(users, orders) {
     name.innerText = user.isFlagged ? `🚩 ${user.name}` : user.name;
     email.innerText = user.email;
     numOfOrders.innerText = userOrders.length;
-    numOfWishlists.innerText = user.wishlist?.length ?? 0;
+
+    const validWishlistCount =
+      user.wishlist?.filter((item) =>
+        products.some((p) => p._id === item.product),
+      ).length ?? 0;
+
+    numOfWishlists.innerText = validWishlistCount;
 
     if (user.isFlagged) {
       tr.style.backgroundColor = "#ffe0e0";
@@ -454,12 +460,16 @@ function renderOrderTable(products, users, orders) {
       : [order.products];
 
     const orderUser = users.find((u) => u._id === order.user?.id);
+    console.log(order._id, order.user?.id, orderUser);
+
     if (!orderUser) return false;
 
     const matchCustomer =
       orderUser?.name.toLowerCase().includes(customerFilter) ?? true;
     const matchProduct = productItems.some((item) => {
       const product = products.find((p) => p._id === item.productId);
+      // orders with deleted products still show up
+      if (!product) return true;
       return product?.name.toLowerCase().includes(productFilter);
     });
     const matchStatus = statusFilter === "" || order.status === statusFilter;
@@ -659,7 +669,7 @@ async function onPageLoad() {
   const { products, variants, users, orders } = await fetchData();
 
   renderProductTable(products, variants);
-  renderUserTable(users, orders);
+  renderUserTable(users, orders, products);
   renderOrderTable(products, users, orders);
   renderStats(products, orders);
   renderProductSelect(products);
