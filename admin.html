@@ -92,7 +92,9 @@
               <button type="button" id="create-product-btn">
                 Create Product
               </button>
-              <button type="button" id="cancel-edit-btn" style="display:none;">Cancel</button>
+              <button type="button" id="cancel-edit-btn" style="display: none">
+                Cancel
+              </button>
             </form>
 
             <p class="product-error-message"></p>
@@ -114,6 +116,9 @@
                 <input type="number" id="stock" min="0" required />
               </div>
               <button type="button" id="create-variant-btn">Add Variant</button>
+              <button type="button" id="delete-product-btn">
+                Delete Product
+              </button>
             </form>
 
             <p class="variant-error-message"></p>
@@ -228,7 +233,7 @@
           </table>
         </div>
       </div>
-      <div id="order-detail-modal" class="modal-overlay" style="display:none;">
+      <div id="order-detail-modal" class="modal-overlay" style="display: none">
         <div class="modal-box">
           <div class="modal-header">
             <div>
@@ -242,9 +247,15 @@
           </div>
 
           <div class="modal-section">
-            <p><strong>Customer:</strong> <span id="modal-order-customer"></span></p>
-            <p><strong>Address:</strong> <span id="modal-order-address"></span></p>
-            <p><strong>Status:</strong> <span id="modal-order-status"></span></p>
+            <p>
+              <strong>Customer:</strong> <span id="modal-order-customer"></span>
+            </p>
+            <p>
+              <strong>Address:</strong> <span id="modal-order-address"></span>
+            </p>
+            <p>
+              <strong>Status:</strong> <span id="modal-order-status"></span>
+            </p>
             <p><strong>Total:</strong> <span id="modal-order-total"></span></p>
           </div>
 
@@ -260,34 +271,52 @@
           </table>
         </div>
       </div>
-      <div id="product-detail-modal" class="modal-overlay" style="display:none;">
-      <div class="modal-box">
-        <div class="modal-header">
-          <div>
-            <h2 id="modal-product-name"></h2>
-            <p id="modal-product-status"></p>
+      <div
+        id="product-detail-modal"
+        class="modal-overlay"
+        style="display: none">
+        <div class="modal-box">
+          <div class="modal-header">
+            <div>
+              <h2 id="modal-product-name"></h2>
+              <p id="modal-product-status"></p>
+            </div>
+            <button id="close-product-modal-btn">✕</button>
           </div>
-          <button id="close-product-modal-btn">✕</button>
-        </div>
 
-        <div class="modal-section">
-          <img id="modal-product-image" style="width:120px; height:120px; object-fit:cover; border: 2px solid black;" />
-          <p><strong>Price:</strong> <span id="modal-product-price"></span></p>
-          <p><strong>Description:</strong> <span id="modal-product-description"></span></p>
-          <p><strong>Drop Date:</strong> <span id="modal-product-dropdate"></span></p>
-        </div>
+          <div class="modal-section">
+            <img
+              id="modal-product-image"
+              style="
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border: 2px solid black;
+              " />
+            <p>
+              <strong>Price:</strong> <span id="modal-product-price"></span>
+            </p>
+            <p>
+              <strong>Description:</strong>
+              <span id="modal-product-description"></span>
+            </p>
+            <p>
+              <strong>Drop Date:</strong>
+              <span id="modal-product-dropdate"></span>
+            </p>
+          </div>
 
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Size</th>
-              <th>Stock</th>
-            </tr>
-          </thead>
-          <tbody id="modal-product-variants"></tbody>
-        </table>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody id="modal-product-variants"></tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </main>
 
     <!-- FOOTER -->

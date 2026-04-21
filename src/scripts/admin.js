@@ -10,6 +10,7 @@ import {
   deleteVariant,
   updateOrder,
   flagUser,
+  deleteProduct,
 } from "../utils/api.js";
 import { generateObjectId, decodeToken } from "../utils/utility.js";
 
@@ -46,7 +47,20 @@ function renderProductTable(products, variants) {
 
   productList.innerHTML = "";
 
-  const sortedVariants = [...variants].sort((a, b) => {
+  // variants.forEach((variant) => {
+  //   const match = products.find((p) => p._id === variant.productId);
+  //   if (!match) {
+  //     console.error("Orphaned variant found:", variant);
+  //     console.log("Variant productId:", variant.productId);
+  //   }
+  // });
+
+  // Filter out orphaned variants entirely before sorting
+  const validVariants = variants.filter((variant) =>
+    products.some((p) => p._id === variant.productId),
+  );
+
+  const sortedVariants = [...validVariants].sort((a, b) => {
     const productA = products.find((p) => p._id === a.productId);
     const productB = products.find((p) => p._id === b.productId);
 
@@ -58,6 +72,7 @@ function renderProductTable(products, variants) {
 
   sortedVariants.forEach((variant) => {
     const product = products.find((p) => p._id === variant.productId);
+    if (!product) return;
 
     const tr = document.createElement("tr");
     const name = document.createElement("th");
@@ -181,6 +196,7 @@ function renderProductTable(products, variants) {
       await deleteVariant(variant._id);
       tr.remove();
     });
+
     const statusBtn = document.createElement("button");
     if (product.status === "upcoming") {
       statusBtn.innerText = "Go Live";
@@ -1035,6 +1051,23 @@ const addVariantBtn = document.querySelector("#create-variant-btn");
 addVariantBtn.addEventListener("click", () => {
   createVariant();
 });
+
+//Function to delete product
+async function removeProduct() {
+  const productSelect = document.querySelector("#choose-product");
+  const productId = productSelect.value;
+  const result = await deleteProduct(productId);
+
+  if (result) {
+    const selectedOption = productSelect.querySelector(
+      `option[value="${productId}"]`,
+    );
+    selectedOption.remove();
+  }
+}
+
+const deleteProductBtn = document.querySelector("#delete-product-btn");
+deleteProductBtn.addEventListener("click", removeProduct);
 
 //For tabs rendering
 const tabButtons = document.querySelectorAll(".tabs button");
