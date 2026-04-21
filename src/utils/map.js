@@ -77,7 +77,7 @@ async function loadPlants() {
                     <button class="delete-btn">Ta bort</button>
                 `
                             : `
-                    <button class="trade-btn">Begär byte</button>
+                    <button class="trade-btn" data-id="${plant._id}">Begär byte</button>
                 `
                         }
             </div>
