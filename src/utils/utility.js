@@ -204,9 +204,6 @@ export async function updateCartBadge() {
   cart = cart.filter((i) => i.userId === user._id);
   const count = cart.length;
 
-  console.log("user object:", user);
-  console.log("cart items:", JSON.parse(localStorage.getItem("cart") || "[]"));
-
   if (count > 0) {
     badge.textContent = count;
     badge.style.display = "inline-block";
