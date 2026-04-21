@@ -236,56 +236,109 @@ confirmPurchaseBtn.addEventListener("click", (e) => {
 function summaryModal(order) {
   const background = document.createElement("div");
   background.classList.add("order-modal-background");
+  
   const modal = document.createElement("div");
   modal.classList.add("order-modal");
 
-  const closeBtn = document.createElement("button");
-  closeBtn.innerText = "Close";
+  // Header
+  const header = document.createElement("div");
+  header.classList.add("order-modal__header");
 
-  closeBtn.addEventListener("click", () => {
-    background.remove();
+  const title = document.createElement("h2");
+  title.classList.add("order-modal__title");
+  title.innerText = "Order Confirmed";
+
+  const subtitle = document.createElement("p");
+  subtitle.classList.add("order-modal__subtitle");
+  subtitle.innerText = `Order #${order._id}`;
+
+  const date = document.createElement("p");
+  date.classList.add("order-modal__date");
+  date.innerText = new Date(order.createdAt).toLocaleDateString("en-GB", {
+    day: "numeric", month: "long", year: "numeric"
   });
 
-  const orderNr = document.createElement("h1");
-  const orderDate = document.createElement("p");
+  const printBtn = document.createElement("button");
+  printBtn.classList.add("order-modal__print");
+  printBtn.innerText = "⎙";
+  printBtn.title = "Print Receipt";
+  printBtn.addEventListener("click", () => window.print());
 
-  orderNr.innerText = order._id;
-  orderDate.innerText = new Date(order.createdAt).toLocaleString();
+  const closeBtn = document.createElement("button");
+  closeBtn.classList.add("order-modal__close");
+  closeBtn.innerText = "✕";
+  closeBtn.title = "Close";
+  closeBtn.addEventListener("click", () => background.remove());
 
-  const userInfo = document.createElement("div");
-  const userName = document.createElement("p");
-  const userEmail = document.createElement("p");
-  const userAddress = document.createElement("p");
+  header.append(title, subtitle, date, printBtn, closeBtn);
 
-  userName.innerText = order.user.name;
-  userEmail.innerText = order.user.email;
+  // Customer info
+  const customerSection = document.createElement("div");
+  customerSection.classList.add("order-modal__section");
+
+  const customerLabel = document.createElement("p");
+  customerLabel.classList.add("order-modal__label");
+  customerLabel.innerText = "Shipping to";
+
+  const customerName = document.createElement("p");
+  customerName.classList.add("order-modal__value");
+  customerName.innerText = order.user.name;
+
   const addr = order.user.address;
-  userAddress.innerText = `${addr.street}, ${addr.city}, ${addr.postalCode}, ${addr.country}`;
-  userInfo.append(userName, userEmail, userAddress);
+  const customerAddress = document.createElement("p");
+  customerAddress.classList.add("order-modal__address");
+  customerAddress.innerText = `${addr.street}, ${addr.city}, ${addr.postalCode}, ${addr.country}`;
 
-  const productInfo = document.createElement("div");
+  customerSection.append(customerLabel, customerName, customerAddress);
+
+  // Products
+  const productsSection = document.createElement("div");
+  productsSection.classList.add("order-modal__section");
+
+  const productsLabel = document.createElement("p");
+  productsLabel.classList.add("order-modal__label");
+  productsLabel.innerText = "Items";
+
+  productsSection.append(productsLabel);
 
   order.products.forEach((product) => {
     const productCard = document.createElement("div");
+    productCard.classList.add("order-modal__product");
 
-    const productImg = document.createElement("img");
-    const productName = document.createElement("h2");
-    const productSize = document.createElement("p");
-    const productPrice = document.createElement("p");
-
-    // productImg.src = product.image;
+    const productName = document.createElement("span");
+    productName.classList.add("order-modal__product-name");
     productName.innerText = product.name;
-    productSize.innerText = product.size;
-    productPrice.innerText = `$ ${product.price}`;
 
-    productCard.append(productImg, productName, productSize, productPrice);
-    productInfo.append(productCard);
+    const productSize = document.createElement("span");
+    productSize.classList.add("order-modal__product-size");
+    productSize.innerText = `Size ${product.size}`;
+
+    const productPrice = document.createElement("span");
+    productPrice.classList.add("order-modal__product-price");
+    productPrice.innerText = `$${product.price}`;
+
+    productCard.append(productName, productSize, productPrice);
+    productsSection.append(productCard);
   });
 
-  const totalPrice = document.createElement("p");
-  totalPrice.innerText = `Total Cost: $ ${order.totalCost.toFixed(2)}`;
+  // Total
+  const totalSection = document.createElement("div");
+  totalSection.classList.add("order-modal__total");
 
-  modal.append(closeBtn, orderNr, orderDate, userInfo, productInfo, totalPrice);
+  const totalLabel = document.createElement("span");
+  totalLabel.innerText = "Total";
+
+  const totalAmount = document.createElement("span");
+  totalAmount.classList.add("order-modal__total-amount");
+  totalAmount.innerText = `$${order.totalCost.toFixed(2)}`;
+
+  totalSection.append(totalLabel, totalAmount);
+
+  modal.append(header, customerSection, productsSection, totalSection);
   background.append(modal);
   document.body.append(background);
+
+  background.addEventListener("click", (e) => {
+    if (e.target === background) background.remove();
+  });
 }
