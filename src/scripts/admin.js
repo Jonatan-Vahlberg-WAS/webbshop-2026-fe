@@ -11,6 +11,7 @@ import {
   updateOrder,
   flagUser,
   deleteProduct,
+  getProduct,
 } from "../utils/api.js";
 import {
   generateObjectId,
@@ -149,33 +150,6 @@ function renderProductTable(products, variants) {
       }
     });
 
-    // Edit product button
-    const editBtn = document.createElement("button");
-    editBtn.innerText = "Edit Product";
-    editBtn.style.backgroundColor = "black";
-    editBtn.style.color = "white";
-
-    editBtn.addEventListener("click", () => {
-      const formTitle = document.querySelector(".create-product h2");
-
-      editingProductId = product._id;
-
-      document.querySelector("#name").value = product.name;
-      document.querySelector("#description").value = product.description;
-      document.querySelector("#price").value = product.price;
-      document.querySelector("#image").value = product.image;
-      cancelEditBtn.style.display = "inline-block";
-
-      const date = new Date(product.dropDate);
-      document.querySelector("#release-date").value = date
-        .toISOString()
-        .slice(0, 16);
-
-      formTitle.innerText = "Edit Product";
-      document.querySelector("#create-product-btn").innerText =
-        "Update Product";
-    });
-
     // Delete size button
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete Size";
@@ -217,7 +191,7 @@ function renderProductTable(products, variants) {
         statusBtn.style.backgroundColor = "orange";
       });
 
-      productActions.append(editBtn, statusBtn);
+      productActions.append(statusBtn);
       variantActions.append(updateStockBtn, deleteBtn);
     } else if (product.status === "live") {
       statusBtn.innerText = "Mark Sold Out";
@@ -236,7 +210,7 @@ function renderProductTable(products, variants) {
         statusBtn.style.backgroundColor = "green";
       });
 
-      productActions.append(editBtn, statusBtn);
+      productActions.append(statusBtn);
       variantActions.append(updateStockBtn, deleteBtn);
     } else {
       // sold out — show Go Live button
@@ -263,7 +237,7 @@ function renderProductTable(products, variants) {
         statusBtn.style.backgroundColor = "orange";
       });
 
-      productActions.append(editBtn, statusBtn);
+      productActions.append(statusBtn);
       variantActions.append(updateStockBtn, deleteBtn);
     }
 
@@ -915,6 +889,33 @@ function cancelEdit() {
 
   cancelEditBtn.style.display = "none";
 }
+
+// Edit product button
+const editBtn = document.querySelector("#edit-product-btn");
+
+editBtn.addEventListener("click", async () => {
+  const formTitle = document.querySelector(".create-product h2");
+
+  const productSelect = document.querySelector("#choose-product");
+
+  editingProductId = productSelect.value;
+
+  const product = await getProduct(editingProductId);
+
+  document.querySelector("#name").value = product.name;
+  document.querySelector("#description").value = product.description;
+  document.querySelector("#price").value = product.price;
+  document.querySelector("#image").value = product.image;
+  cancelEditBtn.style.display = "inline-block";
+
+  const date = new Date(product.dropDate);
+  document.querySelector("#release-date").value = date
+    .toISOString()
+    .slice(0, 16);
+
+  formTitle.innerText = "Edit Product";
+  document.querySelector("#create-product-btn").innerText = "Update Product";
+});
 
 //edit product function
 async function editProduct() {
