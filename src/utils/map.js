@@ -42,7 +42,7 @@ async function loadPlants() {
                     `Vattenbehov: ${plant.water === 1 ? "Låg" : plant.water === 2 ? "Medel" : plant.water === 3 ? "Hög" : "Okänd"}`
                 ],
                     title: plant.plantName
-                }).addTo(map);
+                });
 
             // safer current user check (since backend auth not ready)
             const isOwner = false;
@@ -77,7 +77,7 @@ async function loadPlants() {
                     <button class="delete-btn">Ta bort</button>
                 `
                             : `
-                    <button class="trade-btn">Begär byte</button>
+                    <button class="trade-btn" data-id="${plant._id}">Begär byte</button>
                 `
                         }
             </div>
@@ -157,14 +157,14 @@ function error(err) {
 //filter sunlight for plants
 L.control.tagFilterButton({
     data: ['Ljusbehov: Låg', 'Ljusbehov: Medel', 'Ljusbehov: Hög'],
-    icon: '<i class="fa-solid fa-sun"></i>',
+    icon: '<i class="fa-regular fa-sun"></i>',
     filterOnEveryClick: true
 }).addTo(map);
 
 //filter plants type
 L.control.tagFilterButton({
     data: ['Vattenbehov: Låg', 'Vattenbehov: Medel', 'Vattenbehov: Hög'],
-    icon: '<i class="fa-solid fa-filter"></i>',
+    icon: '<i class="fa-solid fa-droplet"></i>',
     filterOnEveryClick: true
 }).addTo(map);
 
