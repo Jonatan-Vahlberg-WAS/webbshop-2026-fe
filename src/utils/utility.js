@@ -1,5 +1,5 @@
 import { getCurrentUser, isLoggedIn } from "../utils/auth.js";
-import { addWishlist } from "../utils/api.js";
+import { addWishlist, getMe } from "../utils/api.js";
 
 export function formatDateISO(isoString) {
   const date = new Date(isoString);
@@ -190,12 +190,22 @@ export function decodeToken(token) {
 }
 
 //bande count for cart
-export function updateCartBadge() {
+export async function updateCartBadge() {
   const badge = document.querySelector(".cart-badge");
   if (!badge) return;
 
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  if (!isLoggedIn()) {
+    badge.style.display = "none";
+    return;
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const user = await getMe();
+  cart = cart.filter((i) => i.userId === user._id);
   const count = cart.length;
+
+  console.log("user object:", user);
+  console.log("cart items:", JSON.parse(localStorage.getItem("cart") || "[]"));
 
   if (count > 0) {
     badge.textContent = count;
