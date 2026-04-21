@@ -258,12 +258,19 @@ function summaryModal(order) {
     day: "numeric", month: "long", year: "numeric"
   });
 
+  const printBtn = document.createElement("button");
+  printBtn.classList.add("order-modal__print");
+  printBtn.innerText = "⎙";
+  printBtn.title = "Print Receipt";
+  printBtn.addEventListener("click", () => window.print());
+
   const closeBtn = document.createElement("button");
   closeBtn.classList.add("order-modal__close");
   closeBtn.innerText = "✕";
+  closeBtn.title = "Close";
   closeBtn.addEventListener("click", () => background.remove());
 
-  header.append(title, subtitle, date, closeBtn);
+  header.append(title, subtitle, date, printBtn, closeBtn);
 
   // Customer info
   const customerSection = document.createElement("div");
