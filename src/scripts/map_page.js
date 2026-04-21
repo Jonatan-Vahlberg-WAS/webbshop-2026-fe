@@ -18,6 +18,9 @@ async function loadPlants() {
     console.log("PLANTS:", plants);
 
     plants.forEach((plant, index) => {
+      /* if (plant.plantName === "Monstera") { //TEST DEBUG
+        console.log("MONSTERA OWNER:", plant);
+      } */
       // safety check
       if (!plant.coordinates || plant.coordinates.length < 2) return;
 
@@ -139,7 +142,7 @@ document.addEventListener("click", async (event) => {
 
   const token = localStorage.getItem("token");
 
-  // 🔒 BLOCK immediately if not logged in
+  // BLOCK immediately if not logged in
   if (!token) {
     alert("Du måste logga in först");
     return;
@@ -159,14 +162,14 @@ document.addEventListener("click", async (event) => {
 
     const data = await res.json();
 
-    // 🔒 Token exists but invalid/expired
+    // Token exists but invalid/expired
     if (res.status === 401) {
       alert("Sessionen har gått ut. Logga in igen.");
       localStorage.removeItem("token");
       return;
     }
 
-    // ❌ Business logic error (own plant etc.)
+    // Business logic error (own plant etc.)
     if (!res.ok) {
       if (data.message === "You cannot trade your own plant") {
         alert("Du kan inte byta din egen växt");
@@ -176,9 +179,8 @@ document.addEventListener("click", async (event) => {
       return;
     }
 
-    // ✅ SUCCESS
+    // SUCCESS
     alert("Förfrågan skickad 🌱");
-
   } catch (error) {
     console.error(error);
     alert("Något gick fel");
