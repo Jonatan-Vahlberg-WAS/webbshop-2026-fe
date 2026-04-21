@@ -276,6 +276,7 @@
     font-weight: 600;
     margin-top: var(--spacing-sm);
     min-height: 1.2rem;
+    text-align: center;
 }
 
 /* PRODUCT DESCRIPTION */
