@@ -16,7 +16,9 @@ function getLatestDrops(products) {
 //SSE Function - opens a persistent one-way connection from the server to the browser at /products/events.
 //The server can then push events at any time without the client polling.
 function connectSSE() {
-  const es = new EventSource("/products/events");
+  const es = new EventSource(
+    "https://webbshop-2026-be.vercel.app/products/events",
+  );
 
   es.addEventListener("product-created", (e) => {
     //SSE transmits data as plain text strings
