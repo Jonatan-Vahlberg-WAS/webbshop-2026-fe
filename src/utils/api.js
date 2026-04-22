@@ -4,5 +4,5 @@ export function getBaseUrl() {
     return "http://localhost:3000/";
   }
   // TODO: Add deployed backend URL
-  return "https://your-backend.vercel.app/";
+  return "https://webbshop-2026-be-tan.vercel.app/";
 }

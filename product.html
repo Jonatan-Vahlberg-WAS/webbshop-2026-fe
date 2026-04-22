@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="product.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <script src="./src/scripts/header.js"></script>
+    </header>
+    <main class="product-page">
+      <div class="product-page__image-panel">
+        <div class="img-nav-col">
+          <button class="img-nav img-nav--up">
+            <img src="/public/arrow.svg" alt="previous" />
+          </button>
+          <button class="img-nav img-nav--down">
+            <img src="/public/arrow.svg" alt="next" />
+          </button>
+        </div>
+        <div class="product-main-image">
+          <img id="main-image" src="" alt="" />
+        </div>
+      </div>
+      <div class="product-page__info-panel">
+        <div class="brand-price-container">
+          <p class="product-brand" id="product-brand"></p>
+          <h1 class="product-name" id="product-name">Loading...</h1>
+          <h2 class="product-price" id="product-price"></h2>
+        </div>
+        <p id="countdown" class="product-countdown"></p>
+        <div class="product-sizes">
+          <div class="sizes-header">
+            <span>SIZES</span>
+            <span class="divider">|</span>
+            <span
+              ><a href="guide.html" style="color: #2c2c2c">SIZE CHART</a></span
+            >
+          </div>
+          <div id="size-selector"></div>
+        </div>
+        <div class="product-colors">
+          <p>COLOR</p>
+          <div id="color-selector"></div>
+        </div>
+        <div class="product-actions">
+          <button id="wishlistBtn">WISHLIST</button>
+          <button id="addToCartBtn">ADD TO CART</button>
+        </div>
+        <div class="product-description">
+          <p class="description-title">DESCRIPTION</p>
+          <p id="product-desc"></p>
+          <div id="product-meta"></div>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <script src="./src/scripts/footer.js"></script>
+    </footer>
+    <script type="module" src="src/scripts/product.js"></script>
+  </body>
+</html>
