@@ -6,9 +6,14 @@ async function loadMyPlants(user) {
   const res = await fetch("https://plottwistgrupp11.vercel.app/plants");
   const plants = await res.json();
 
-  const container = document.getElementById("plant-list");
+  console.log("FIRST PLANT:", plants[0]);
+  console.log("USER:", user);
 
-  container.innerHTML = plants
+  const myPlants = plants.filter(p => p.ownerId === user.id);
+  
+  const container = document.getElementById("plant-list");
+  
+  container.innerHTML = myPlants
     .map(
       (p) => `
       <div class="list-item">
